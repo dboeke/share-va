@@ -33,7 +33,6 @@ resource_tags = {
     aws-apigateway-stage                        = "Enforce: Set tags"
     aws-apigateway-api                          = "Enforce: Set tags"
    ### Add Sept 2021
-    aws-appstream-stack                         = "Enforce: Set tags"
     aws-appstream-fleet                         = "Enforce: Set tags"  
     aws-appstream-image                         = "Enforce: Set tags"
     aws-appstream-imageBuilder                  = "Enforce: Set tags"
@@ -135,7 +134,6 @@ policy_map  = {
     aws-apigateway-stage                          = "tmod:@turbot/aws-apigateway#/policy/types/stageTags"
     aws-apigateway-api                            = "tmod:@turbot/aws-apigateway#/policy/types/apiTags"
    ### Add Sept 2021
-    aws-appstream-stack                           = "tmod:@turbot/aws-appstream#/policy/types/stackTags"
     aws-appstream-fleet                           = "tmod:@turbot/aws-appstream#/policy/types/fleetTags"    
     aws-appstream-image                           = "tmod:@turbot/aws-appstream#/policy/types/imageTags"  
     aws-appstream-imageBuilder                   = "tmod:@turbot/aws-appstream#/policy/types/imageBuilderTags"  
@@ -353,10 +351,9 @@ policy_map_template  = {
     aws-vpc-security-networkAcl                   = "tmod:@turbot/aws-vpc-security#/policy/types/networkAclTagsTemplate"
     aws-waf-webacl                                = "tmod:@turbot/aws-waf#/policy/types/webaclTagsTemplate"
    ### Add Sept 2021
-    aws-appstream-stack                           = "tmod:@turbot/aws-appstream#/policy/types/stackTagsTemplate"
     aws-appstream-fleet                           = "tmod:@turbot/aws-appstream#/policy/types/fleetTagsTemplate"    
     aws-appstream-image                           = "tmod:@turbot/aws-appstream#/policy/types/imageTagsTemplate"  
-    aws-appstream-imageBuilder                   = "tmod:@turbot/aws-appstream#/policy/types/imageBuilderTagsTemplate"  
+    aws-appstream-imageBuilder                    = "tmod:@turbot/aws-appstream#/policy/types/imageBuilderTagsTemplate"  
     aws-glue-crawler                              = "tmod:@turbot/aws-glue#/policy/types/crawlerTagsTemplate"
     aws-glue-dev-endpoint                         = "tmod:@turbot/aws-glue#/policy/types/devEndpointTagsTemplate"
     aws-glue-job                                  = "tmod:@turbot/aws-glue#/policy/types/jobTagsTemplate"
