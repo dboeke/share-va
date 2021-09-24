@@ -36,7 +36,7 @@ resource "turbot_policy_setting" "default_tag_template" {
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
   {%- set required_tags = ${jsonencode(var.required_tags)} -%}
-  {%- set tag_value_map = ${jsonencode(var.required_tags)} -%}
+  {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
   {%- for ssm_param in $.region.children.items %}
   {%- if ssm_param.name in required_tags -%}
   - "{{required_tags[ssm_param.name]}}": "{{ssm_param.value}}"
