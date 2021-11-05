@@ -1,0 +1,22 @@
+query PolicySettings($filter: [String!], $paging: String) {
+  policySettings(filter: "resource:00000000000000000 limit:500", paging: "null") {
+    paging {
+      next
+    }
+    items {
+      isCalculated
+      exception
+      orphan
+      precedence
+      value
+      type {
+        uri
+        secret
+        title
+        description
+      }
+      template
+      templateInput
+    }
+  }
+}
