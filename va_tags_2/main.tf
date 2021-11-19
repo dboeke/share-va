@@ -17,6 +17,11 @@ resource "turbot_smart_folder" "vaec_aws_tagging" {
 }
 
 ## Vars to Map resources to tag
+variable "default_environment" {
+  description = "Default string to use when no environment tag can be found"
+  type        = string
+}
+
 variable "resource_tags" {
   description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
   type        = map
