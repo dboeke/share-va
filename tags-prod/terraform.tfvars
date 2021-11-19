@@ -123,7 +123,7 @@ resource_tags = {
 
 ## ENABLE FIRST
 non_vpc_resource_tags = { 
-    aws-acm-certificate                         = "Enforce: Set tags"
+    # aws-acm-certificate                         = "Enforce: Set tags"
     # aws-apigateway-stage                        = "Enforce: Set tags"
     # aws-apigateway-api                          = "Enforce: Set tags"
     # aws-appstream-stack                         = "Enforce: Set tags"
@@ -176,27 +176,15 @@ non_vpc_resource_tags = {
 
 ## ENABLE SECOND
 vpc_child_resource_tags = {     
-    # aws-ec2-networkInterface                    = "Enforce: Set tags"
-    # aws-rds-subnetGroup                         = "Enforce: Set tags"
-    # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
-    # aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
-    # aws-vpc-connect-transitGateway              = "Enforce: Set tags"
     # aws-vpc-connect-vpcPeeringConnection        = "Enforce: Set tags"
-    # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
-    # aws-vpc-connect-vpnGateway                  = "Enforce: Set tags"
-    # aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
     # aws-vpc-core-routeTable                     = "Enforce: Set tags"
     # aws-vpc-core-subnet                         = "Enforce: Set tags"
     # aws-vpc-internet-vpcEndpointService         = "Enforce: Set tags"
-    # aws-vpc-internet-natGateway                 = "Enforce: Set tags"
-    # aws-vpc-internet-egressOnlyInternetGateway  = "Enforce: Set tags"
-    # aws-vpc-internet-internetGateway            = "Enforce: Set tags"
     # aws-vpc-internet-vpcEndpoint                = "Enforce: Set tags"
     # aws-vpc-internet-elasticIp                  = "Enforce: Set tags"
     # aws-vpc-security-securityGroup              = "Enforce: Set tags"
     # aws-vpc-security-networkAcl                 = "Enforce: Set tags"
 }
-
 
 # can't use regional ssm parameters because they are global resources.
 global_resource_tags = { 
@@ -210,6 +198,17 @@ global_resource_tags = {
 
 ## ENABLE LAST
 vpc_referenced_tags = {
+    # aws-vpc-connect-vpnGateway                  = "Enforce: Set tags"
+    # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
+    # aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
+    # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
+    # aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
+    # aws-vpc-connect-transitGateway              = "Enforce: Set tags"
+    # aws-vpc-internet-natGateway                 = "Enforce: Set tags"
+    # aws-vpc-internet-egressOnlyInternetGateway  = "Enforce: Set tags"
+    # aws-vpc-internet-internetGateway            = "Enforce: Set tags"
+    # aws-ec2-networkInterface                    = "Enforce: Set tags"
+    # aws-rds-subnetGroup                         = "Enforce: Set tags"
     # aws-ec2-volume                              = "Enforce: Set tags"
     # aws-ec2-snapshot                            = "Enforce: Set tags"
     # aws-ec2-instance                            = "Enforce: Set tags"
