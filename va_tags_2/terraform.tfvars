@@ -16,6 +16,9 @@ wrong_tag_values = {
   "stage": "Stage"
   "PreProd instead": "Stage"
   "Production-SDC-new-volume instead": "Production"
+  "Production": "Production"
+  "Stage": "Stage"
+  "Development": "Development"
 }
 
 ## Set which AWS resources need to be tagged

@@ -202,7 +202,7 @@ resource "turbot_policy_setting" "vpc_resource_tag_template" {
       {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
       {%- set new_tags = new_tags + '"' + $.resource.parent.turbot.tags["Environment"] + '"\n' -%}
     {%- else -%}
-      {%- set new_tags["vaec:Environment"] = ${var.default_environment} -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": "${var.default_environment}"' -%}
     {%- endif -%}
     {%- if new_tags -%}
     {{ new_tags }}

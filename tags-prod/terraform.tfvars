@@ -10,12 +10,15 @@ required_tags = {
 
 # These tags are set incorrectly
 wrong_tag_values = {
-  "vlm-admin-dev": "Development"
+  "vlm-admin-dev instead": "Development"
   "development": "Development"
   "dev": "Development"
   "stage": "Stage"
-  "PreProd": "Stage"
-  "Production-SDC-new-volume": "Production"
+  "PreProd instead": "Stage"
+  "Production-SDC-new-volume instead": "Production"
+  "Production": "Production"
+  "Stage": "Stage"
+  "Development": "Development"
 }
 
 ## Set which AWS resources need to be tagged
