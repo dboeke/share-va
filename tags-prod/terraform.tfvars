@@ -29,10 +29,6 @@ wrong_tag_values = {
 ##
 ##  !!!!!ONLY ENABLE RESOURCES FROM MODS YOU HAVE INSTALLED!!!!!!
 
-resource_environment_tags = {
-    aws-ec2-volume                              = "Enforce: Set tags"
-}
-
 resource_tags = { 
     aws-acm-certificate                         = "Enforce: Set tags"
     aws-apigateway-stage                        = "Enforce: Set tags"
