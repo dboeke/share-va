@@ -1,22 +1,26 @@
-query PolicySettings($filter: [String!], $paging: String) {
-  policySettings(filter: "resource:00000000000000000 limit:500", paging: "null") {
-    paging {
-      next
-    }
-    items {
-      isCalculated
-      exception
-      orphan
-      precedence
-      value
-      type {
-        uri
-        secret
-        title
-        description
-      }
-      template
-      templateInput
-    }
-  }
-}
+{%- set new_tags = "" -%}
+{%- set required_tags = {"/vaec/tag/CKID":"vaec:CKID","/vaec/tag/VAECID":"vaec:VAECID"} -%}
+{%- set tag_value_map = {"/vaec/tag/CKID":"vaec:CKID","/vaec/tag/VAECID":"vaec:VAECID"} -%}
+{%- for ssm_param in $.region.children.items -%}
+  {%- if ssm_param.name in required_tags -%}
+    {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
+    {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if "vaec:Environment" in $.resource.turbot.tags -%}
+  {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
+    {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
+    {%- set new_tags = new_tags + '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n' -%}
+  {%- endif -%}
+{%- elif "Environment" in $.resource.turbot.tags -%}
+  {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
+  {%- set new_tags = new_tags + '"' + $.resource.turbot.tags["Environment"] + '"\n' -%}
+{%- elif "environment" in $.resource.turbot.tags -%}
+  {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
+  {%- set new_tags = new_tags + '"' + $.resource.turbot.tags["environment"] + '"\n' -%}
+{%- else -%}
+  {%- set new_tags = new_tags + '- "vaec:Environment": "Production"' -%}
+{%- endif -%}
+{%- if new_tags -%}
+{{ new_tags }}
+{%- endif -%}
