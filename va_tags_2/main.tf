@@ -22,7 +22,17 @@ variable "default_environment" {
   type        = string
 }
 
-variable "resource_tags" {
+variable "non_vpc_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "vpc_child_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "vpc_referenced_tags" {
   description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
   type        = map
 }

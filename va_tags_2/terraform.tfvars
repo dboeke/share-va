@@ -1,6 +1,6 @@
 ## Required Tags
 
-default_env = "Production"
+default_environment = "Production"
 
 # These tags must exist
 required_tags = {
