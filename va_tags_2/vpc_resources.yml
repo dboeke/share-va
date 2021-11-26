@@ -1,0 +1,35 @@
+Found
+
+     aws-vpc-connect-vpnGateway                  = "Enforce: Set tags"  $.VpcAttachments.VpcId
+     aws-vpc-internet-egressOnlyInternetGateway  = "Enforce: Set tags"  $.turbot.custom.VpcId
+     aws-vpc-internet-internetGateway            = "Enforce: Set tags"  $.Attachments.VpcId
+     aws-ec2-networkInterface                    = "Enforce: Set tags"  $.VpcId
+     aws-rds-subnetGroup                         = "Enforce: Set tags"  $.VpcId
+     aws-rds-dbInstance                          = "Enforce: Set tags"  $.DBSubnetGroup.VpcId
+     aws-ec2-instance                            = "Enforce: Set tags"  $.VpcId
+     aws-ec2-classicLoadBalancer                 = "Enforce: Set tags"  $.VPCId
+
+Research
+     # aws-ecs-cluster                             = "Enforce: Set tags"
+     # aws-eks-cluster                             = "Enforce: Set tags"
+     # aws-elasticache-cacheCluster                = "Enforce: Set tags" 
+     # aws-workspaces-workspace                    = "Enforce: Set tags"
+     # aws-redshift-clusterSubnetGroup             = "Enforce: Set tags"
+     # aws-redshift-cluster                        = "Enforce: Set tags"
+     # aws-rds-dbCluster                           = "Enforce: Set tags"
+     # aws-ec2-volume                              = "Enforce: Set tags"  
+     # aws-ec2-snapshot                            = "Enforce: Set tags"
+     # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
+     # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
+     # aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
+     # aws-vpc-connect-transitGateway              = "Enforce: Set tags"
+
+Nope
+     aws-vpc-core-dhcpOptions                    = "Enforce: Set tags" associated VPC Not Shown
+     aws-ec2-applicationLoadBalancer             = "Enforce: Set tags" associated VPC Not Shown
+     aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"  associated VPC Not Shown
+     aws-efs-fileSystem                          = "Enforce: Set tags"  associated VPC Not Shown
+
+
+Parent
+     aws-vpc-internet-natGateway                 = "Enforce: Set tags"  $.VpcId

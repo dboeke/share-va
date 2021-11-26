@@ -37,6 +37,11 @@ variable "vpc_referenced_tags" {
   type        = map
 }
 
+variable "vpc_referenced_resource_map" {
+  description = "Map of the name of the reference to the vpc id on a resource"
+  type        = map
+}
+
 variable "global_resource_tags" {
   description = "Map of the list of global resources that need to be tagged. ##TODO Not yet implemented"
   type        = map
