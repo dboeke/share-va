@@ -211,3 +211,112 @@ resource "turbot_policy_setting" "vpc_resource_tag_template" {
     {%- endif -%}
     TEMPLATE
 }
+
+
+## Sets tagging policy for each vpc related resource.
+resource "turbot_policy_setting" "vpc_related_resource_tag_enforcement" {
+  for_each        = var.vpc_referenced_tags 
+  resource        = turbot_smart_folder.vaec_aws_tagging.id
+  type            = var.policy_map[each.key]
+  value           = each.value
+}
+
+resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
+  for_each        = var.vpc_referenced_tags
+  resource        = turbot_smart_folder.vaec_aws_tagging.id
+  type            = var.policy_map_template[each.key]
+  # GraphQL to pull policy Statements
+  template_input  = <<-QUERY
+  { region {
+      name: Name
+      children(filter:"'/vaec/tag/' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
+        items {
+          name: get(path: "Name")
+          value: get(path: "Value")
+        }
+      }
+    }
+    resource {
+      parent {
+        children(filter:"resourceTypeLevel:self resourceType:tmod:@turbot/aws-vpc-core#/resource/types/vpc") {
+          items {
+            vpcId:get(path: "VpcId")
+            turbot {
+              tags
+            }
+          }
+        }
+      }
+      assoc_vpc_id: get(path:"${var.vpc_referenced_resource_map[each.key]}")
+      turbot {
+        tags
+      }
+    }
+  }
+  QUERY
+  
+  # Nunjucks template to set tags and check for tag validity.
+  template = <<-TEMPLATE
+    {%- set new_tags = "" -%}
+    {%- set required_tags = ${jsonencode(var.required_tags)} -%}
+    {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
+    {%- for ssm_param in $.region.children.items -%}
+      {%- if ssm_param.name in required_tags -%}
+        {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
+        {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {# vpc tags #}
+    {%- for assoc_vpc in $.resource.parent.children.items -%}
+      {%- if assoc_vpc["vpcId"] == $.resource.assoc_vpc_id -%}
+        {# grab connection id from vpc #}
+        {%- if assoc_vpc.turbot.tags["vaec:ConnectionID"] -%}
+          {%- set assoc_vpc_conn = assoc_vpc.turbot.tags["vaec:ConnectionID"] | truncate (3, false, "") -%}
+        {%- elif assoc_vpc.turbot.tags.ConnectionId -%}
+          {%- set assoc_vpc_conn = assoc_vpc.turbot.tags.ConnectionId | truncate (3, false, "") -%}
+        {%- elif assoc_vpc.turbot.tags.connectionId -%}
+          {%- set assoc_vpc_conn = assoc_vpc.turbot.tags.connectionId | truncate (3, false, "") -%}
+        {%- endif -%}
+        {# grab Environment from vpc #}
+        {%- if assoc_vpc.turbot.tags["vaec:Environment"] -%}
+          {%- set assoc_vpc_env = assoc_vpc.turbot.tags["vaec:Environment"] -%}
+        {%- elif assoc_vpc.turbot.tags.Environment -%}
+          {%- set assoc_vpc_env = assoc_vpc.turbot.tags.Environment -%}
+        {%- elif assoc_vpc.turbot.tags.environment -%}
+          {%- set assoc_vpc_env = assoc_vpc.turbot.tags.environment -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {# set environment tag #}
+    {%- set assoc_vpc_env = false -%}
+    {%- set assoc_vpc_conn = false -%}
+    {%- if "vaec:Environment" in $.resource.turbot.tags -%}
+      {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
+        {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
+        {%- set new_tags = new_tags + '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n' -%}
+      {%- endif -%}
+    {%- elif assoc_vpc_env -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
+      {%- set new_tags = new_tags + '"' + assoc_vpc_env + '"\n' -%}
+    {%- elif assoc_vpc_conn == "311" -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": "Production"' -%}
+    {%- elif assoc_vpc_conn == "312" -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": "Stage"' -%}
+    {%- elif assoc_vpc_conn == "313" -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": "Development"' -%}
+    {%- elif "Environment" in $.resource.turbot.tags -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
+      {%- set new_tags = new_tags + '"' + $.resource.turbot.tags["Environment"] + '"\n' -%}
+    {%- elif "environment" in $.resource.turbot.tags -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
+      {%- set new_tags = new_tags + '"' + $.resource.turbot.tags["environment"] + '"\n' -%}
+    {%- else -%}
+      {%- set new_tags = new_tags + '- "vaec:Environment": "${var.default_environment}"' -%}
+    {%- endif -%}
+    {%- if new_tags -%}
+    {{ new_tags }}
+    {%- else -%}
+    []
+    {%- endif -%}
+    TEMPLATE
+}

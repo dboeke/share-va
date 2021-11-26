@@ -31,7 +31,7 @@ wrong_tag_values = {
 
 resource_tags = { 
    ### Add Sept 2021
-    aws-appstream-imageBuilder                  = "Enforce: Set tags"
+#    aws-appstream-imageBuilder                  = "Enforce: Set tags"
     aws-workspaces-workspace                    = "Enforce: Set tags"	
     ##
     aws-ec2-instance                            = "Enforce: Set tags"
@@ -140,32 +140,45 @@ global_resource_tags = {
 ## ENABLE LAST
 vpc_referenced_tags = {
     # aws-vpc-connect-vpnGateway                  = "Enforce: Set tags"
-    # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
-    # aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
-    # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
-    # aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
-    # aws-vpc-connect-transitGateway              = "Enforce: Set tags"
-    # aws-vpc-internet-natGateway                 = "Enforce: Set tags"
     # aws-vpc-internet-egressOnlyInternetGateway  = "Enforce: Set tags"
     # aws-vpc-internet-internetGateway            = "Enforce: Set tags"
     # aws-ec2-networkInterface                    = "Enforce: Set tags"
     # aws-rds-subnetGroup                         = "Enforce: Set tags"
-    # aws-ec2-volume                              = "Enforce: Set tags"
-    # aws-ec2-snapshot                            = "Enforce: Set tags"
+    # aws-rds-dbInstance                          = "Enforce: Set tags"
     # aws-ec2-instance                            = "Enforce: Set tags"
     # aws-ec2-classicLoadBalancer                 = "Enforce: Set tags"
-    # aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
-    # aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"
-    # aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
-    # aws-ecs-cluster                             = "Enforce: Set tags"
-    # aws-efs-fileSystem                          = "Enforce: Set tags"
     # aws-eks-cluster                             = "Enforce: Set tags"
-    # aws-elasticache-cacheCluster                = "Enforce: Set tags"
-    # aws-workspaces-workspace                    = "Enforce: Set tags"
-    # aws-rds-dbInstance                          = "Enforce: Set tags"
     # aws-redshift-clusterSubnetGroup             = "Enforce: Set tags"
     # aws-redshift-cluster                        = "Enforce: Set tags"
+
+    #########################
+    ##TBD do not enable yet
+    #########################
+    # aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
+    # aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
+    # aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"
+    # aws-efs-fileSystem                          = "Enforce: Set tags"
+    # aws-ecs-cluster                             = "Enforce: Set tags"
+    # aws-elasticache-cacheCluster                = "Enforce: Set tags" 
+    # aws-workspaces-workspace                    = "Enforce: Set tags"
     # aws-rds-dbCluster                           = "Enforce: Set tags"
+    # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
+    # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
+}
+
+vpc_referenced_resource_map = {
+
+     aws-vpc-connect-vpnGateway                  = "VpcAttachments[0].VpcId"
+     aws-vpc-internet-egressOnlyInternetGateway  = "turbot.custom.VpcId"
+     aws-vpc-internet-internetGateway            = "Attachments[0].VpcId"
+     aws-ec2-networkInterface                    = "VpcId"
+     aws-rds-subnetGroup                         = "VpcId"
+     aws-rds-dbInstance                          = "DBSubnetGroup.VpcId"
+     aws-ec2-instance                            = "VpcId"
+     aws-ec2-classicLoadBalancer                 = "VPCId"
+     aws-eks-cluster                             = "resourcesVpcConfig.vpcId"
+     aws-redshift-cluster                        = "VpcId"
+     aws-redshift-clusterSubnetGroup             = "VpcId"
 }
 
 ## Mapping of resource name to resource tag policy
