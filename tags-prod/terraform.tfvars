@@ -31,35 +31,9 @@ wrong_tag_values = {
 
 resource_tags = { 
    ### Add Sept 2021
-#    aws-appstream-imageBuilder                  = "Enforce: Set tags"
-    aws-workspaces-workspace                    = "Enforce: Set tags"	
+#    aws-appstream-imageBuilder                  = "Enforce: Set tags"	
     ##
-    aws-ec2-instance                            = "Enforce: Set tags"
-#    aws-ec2-networkInterface                    = "Enforce: Set tags"
-#    aws-ec2-snapshot                            = "Enforce: Set tags"
-    aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"
-    aws-ec2-classicLoadBalancer                 = "Enforce: Set tags"
-    aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
-    aws-ecs-cluster                             = "Enforce: Set tags"
-    aws-efs-fileSystem                          = "Enforce: Set tags"
-    aws-eks-cluster                             = "Enforce: Set tags"
-    aws-elasticache-cacheCluster                = "Enforce: Set tags"
-    aws-rds-subnetGroup                         = "Enforce: Set tags"
-    aws-rds-dbInstance                          = "Enforce: Set tags"
-    aws-rds-dbCluster                           = "Enforce: Set tags"
-    aws-redshift-clusterSubnetGroup             = "Enforce: Set tags"
-    aws-redshift-cluster                        = "Enforce: Set tags"
-    # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
-    # aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
-    # aws-vpc-connect-transitGateway              = "Enforce: Set tags"
-    # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
-    # aws-vpc-connect-vpnGateway                  = "Enforce: Set tags"
-    # aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
-    # aws-vpc-core-vpc                            = "Enforce: Set tags"
-    # aws-vpc-internet-natGateway                 = "Enforce: Set tags"
-    # aws-vpc-internet-egressOnlyInternetGateway  = "Enforce: Set tags"
-    # aws-vpc-internet-internetGateway            = "Enforce: Set tags"
-       
+#    aws-ec2-snapshot                            = "Enforce: Set tags"       
 }
 
 ## ENABLE FIRST
@@ -98,7 +72,7 @@ non_vpc_resource_tags = {
      aws-inspector-assessmentTemplate            = "Enforce: Set tags"
      aws-kms-key                                 = "Enforce: Set tags"
      aws-lambda-function                         = "Enforce: Set tags"
-   #  aws-logs-logGroup                           = "Enforce: Set tags"
+     aws-logs-logGroup                           = "Enforce: Set tags"
      aws-rds-dbSnapshotManual                    = "Enforce: Set tags"
      aws-rds-dbClusterSnapshotManual             = "Enforce: Set tags"
      aws-rds-optionGroup                         = "Enforce: Set tags"
@@ -113,6 +87,18 @@ non_vpc_resource_tags = {
      aws-ssm-document                            = "Enforce: Set tags"
      aws-ssm-maintenanceWindow                   = "Enforce: Set tags"
      aws-stepfunctions-stateMachine              = "Enforce: Set tags"
+     aws-workspaces-workspace                    = "Enforce: Set tags"
+     aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"
+     aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
+     aws-ecs-cluster                             = "Enforce: Set tags"
+     aws-efs-fileSystem                          = "Enforce: Set tags"
+     aws-elasticache-cacheCluster                = "Enforce: Set tags"
+     aws-rds-dbCluster                           = "Enforce: Set tags"
+     aws-vpc-connect-customerGateway             = "Enforce: Set tags"
+     aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
+     aws-vpc-connect-transitGateway              = "Enforce: Set tags"
+     aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
+     aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
 }
 
 ## ENABLE SECOND
@@ -139,17 +125,17 @@ global_resource_tags = {
 
 ## ENABLE LAST
 vpc_referenced_tags = {
-    # aws-vpc-connect-vpnGateway                  = "Enforce: Set tags"
-    # aws-vpc-internet-egressOnlyInternetGateway  = "Enforce: Set tags"
-    # aws-vpc-internet-internetGateway            = "Enforce: Set tags"
-    # aws-ec2-networkInterface                    = "Enforce: Set tags"
-    # aws-rds-subnetGroup                         = "Enforce: Set tags"
-    # aws-rds-dbInstance                          = "Enforce: Set tags"
-    # aws-ec2-instance                            = "Enforce: Set tags"
-    # aws-ec2-classicLoadBalancer                 = "Enforce: Set tags"
-    # aws-eks-cluster                             = "Enforce: Set tags"
-    # aws-redshift-clusterSubnetGroup             = "Enforce: Set tags"
-    # aws-redshift-cluster                        = "Enforce: Set tags"
+     aws-vpc-connect-vpnGateway                  = "Enforce: Set tags"
+     aws-vpc-internet-egressOnlyInternetGateway  = "Enforce: Set tags"
+     aws-vpc-internet-internetGateway            = "Enforce: Set tags"
+     aws-ec2-networkInterface                    = "Enforce: Set tags"
+     aws-rds-subnetGroup                         = "Enforce: Set tags"
+     aws-rds-dbInstance                          = "Enforce: Set tags"
+     aws-ec2-instance                            = "Enforce: Set tags"
+     aws-ec2-classicLoadBalancer                 = "Enforce: Set tags"
+     aws-eks-cluster                             = "Enforce: Set tags"
+     aws-redshift-clusterSubnetGroup             = "Enforce: Set tags"
+     aws-redshift-cluster                        = "Enforce: Set tags"
 
     #########################
     ##TBD do not enable yet
