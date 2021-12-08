@@ -18,14 +18,14 @@ resource "turbot_policy_setting" "default_tag_template" {
   template_input  = <<-QUERY
   - |
     {
-      acct: account {
-        id: get(path:"Id")
+      account {
+        id: Id
       }
     }
   - |
     {
       org: resource(id:${var.org_account_turbot_id}) {
-        descendants(filter: "resourceTypeId:'tmod:@turbot/aws-organizations#/resource/types/organizationalAccount' resourceTypeLevel:self {{$.acct.id}}) {
+        descendants(filter: "resourceTypeId:'tmod:@turbot/aws-organizations#/resource/types/organizationalAccount' resourceTypeLevel:self {{$.account.id}}") {
           items {
             id: get(path:"Id")
             tags: get(path:"Tags")
