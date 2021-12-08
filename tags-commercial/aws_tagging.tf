@@ -16,40 +16,45 @@ resource "turbot_policy_setting" "default_tag_template" {
   type            = var.policy_map_template[each.key]
   # GraphQL to pull policy Statements
   template_input  = <<-QUERY
-  {
-    region {
-        children(filter:"'/vaec/tag/' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
+  - |
+    {
+      acct: account {
+        id: get(path:"Id")
+      }
+    }
+  - |
+    {
+      org: resource(id:${var.org_account_turbot_id}) {
+        descendants(filter: "resourceTypeId:'tmod:@turbot/aws-organizations#/resource/types/organizationalAccount' resourceTypeLevel:self {{$.acct.id}}) {
           items {
-            name: get(path: "Name")
-            value: get(path: "Value")
+            id: get(path:"Id")
+            tags: get(path:"Tags")
           }
         }
       }
-    resource {
-      turbot {
-        tags
+      resource {
+        tags: get(path: "Tags") 
+          turbot {
+            metadata
+        }
       }
     }
-  }
   QUERY
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
+  {%- set new_tags = "" -%}
   {%- set required_tags = ${jsonencode(var.required_tags)} -%}
-  {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
-  {%- for ssm_param in $.region.children.items %}
-  {%- if ssm_param.name in required_tags -%}
-  - "{{required_tags[ssm_param.name]}}": "{{ssm_param.value}}"
-  {% endif %}
-  {%- endfor -%}
-  {%- if "vaec:Environment" in $.resource.turbot.tags -%}
-	  {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
-  - "vaec:Environment": {{tag_value_map[$.resource.turbot.tags["vaec:Environment"]]}}
+  {%- for org_acct in $.org.descendants.items -%}
+    {%- if org_acct['id'] == $.resource.turbot.metadata.aws.accountId -%}
+      {%- for tag in org_acct['tags'] -%}
+        {%- if tag['Key'] in required_tags -%}
+          {%- set new_tags = new_tags + '- "' + required_tags[tag['Key']] + '": ' -%}
+          {%- set new_tags = new_tags + '"' + tag['Value']+ '"\n' -%}
+        {% endif %}
+      {%- endfor -%}
     {%- endif -%}
-  {%- elif "Environment" in $.resource.turbot.tags -%}
-  - "vaec:Environment": {{$.resource.turbot.tags["Environment"]}}
-  {%- elif "environment" in $.resource.turbot.tags -%}
-  - "vaec:Environment": {{$.resource.turbot.tags["environment"]}}
-  {%- endif -%}
+  {%- endfor -%}
+  {{ new_tags }}
   TEMPLATE
 }

@@ -1,9 +1,12 @@
 ## Required Tags
+org_account_turbot_id = "242201884484672"
 
 # These tags must exist
 required_tags = {
-  "/vaec/tag/VAECID": "vaec:VAECID"
-  "/vaec/tag/CKID": "vaec:CKID"
+  "vaec:VAECID": "vaec:VAECID"
+  "vaec:CKID": "vaec:CKID"
+  "VAECID": "vaec:VAECID"
+  "CKID": "vaec:CKID"
 }
 
 # These tags are set incorrectly
@@ -24,11 +27,9 @@ wrong_tag_values = {
 ##
 ##  !!!!!ONLY ENABLE RESOURCES FROM MODS YOU HAVE INSTALLED!!!!!!
 
-resource_environment_tags = {
-    aws-ec2-volume                              = "Enforce: Set tags"
-}
 
 resource_tags = { 
+    aws-ec2-volume                              = "Enforce: Set tags"
     aws-acm-certificate                         = "Enforce: Set tags"
     aws-apigateway-stage                        = "Enforce: Set tags"
     aws-apigateway-api                          = "Enforce: Set tags"

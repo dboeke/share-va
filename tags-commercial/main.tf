@@ -46,3 +46,8 @@ variable "wrong_tag_values" {
   description = "This is a list of tag names that must exist on all resources."
   type        = map
 }
+
+variable "org_account_turbot_id" {
+  description = "Turbot resource id for Org Master Account."
+  type        = string
+}
