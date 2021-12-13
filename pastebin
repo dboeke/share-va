@@ -1,26 +1,15 @@
-{%- set new_tags = "" -%}
-{%- set required_tags = {"/vaec/tag/CKID":"vaec:CKID","/vaec/tag/VAECID":"vaec:VAECID"} -%}
-{%- set tag_value_map = {"/vaec/tag/CKID":"vaec:CKID","/vaec/tag/VAECID":"vaec:VAECID"} -%}
-{%- for ssm_param in $.region.children.items -%}
-  {%- if ssm_param.name in required_tags -%}
-    {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
-    {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- if "vaec:Environment" in $.resource.turbot.tags -%}
-  {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
-    {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
-    {%- set new_tags = new_tags + '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n' -%}
-  {%- endif -%}
-{%- elif "Environment" in $.resource.turbot.tags -%}
-  {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
-  {%- set new_tags = new_tags + '"' + $.resource.turbot.tags["Environment"] + '"\n' -%}
-{%- elif "environment" in $.resource.turbot.tags -%}
-  {%- set new_tags = new_tags + '- "vaec:Environment": ' -%}
-  {%- set new_tags = new_tags + '"' + $.resource.turbot.tags["environment"] + '"\n' -%}
-{%- else -%}
-  {%- set new_tags = new_tags + '- "vaec:Environment": "Production"' -%}
-{%- endif -%}
-{%- if new_tags -%}
-{{ new_tags }}
-{%- endif -%}
+begin;
+  set local search_path to ldap_turbot, public; -- update the schema name
+  set local statement_timeout = 3600000;  -- Increase the timeout if required 
+  explain(analyze, buffers)
+
+  update
+    resources
+  set
+    resource_group_ids = array_uniq_stable(array_cat(resource_group_ids, '{206163115608600}'::bigint[]))::bigint[]  -- replace 206163115608600 with the smart folder to be attached
+  where
+    id = 222103709428044 -- pass the resource id on which the sf will get attached
+  and
+    (resource_group_ids is null or not (resource_group_ids @> '{206163115608600}'::bigint[])); -- replace 206163115608600 with the smart folder to be attached
+
+rollback; -- change it to end if you want to commit the changes
