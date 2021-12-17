@@ -11,7 +11,6 @@ terraform {
 }
 
 variable "vpc_id" {}
-variable "alb_sg_id" {}
 
 resource "aws_security_group" "turbot_api" {
   name        = "turbot_api_for_vaec"
@@ -57,16 +56,6 @@ resource "aws_security_group_rule" "EnCaseforensics" {
   cidr_blocks       = ["10.247.2.210/32","10.247.2.230/32","10.247.2.246/32"]
   security_group_id = aws_security_group.turbot_api.id
   description       = "EnCase forensics"
-}
-
-resource "aws_security_group_rule" "alb_to_api" {
-  type                     = "ingress"
-  from_port                = 8443
-  to_port                  = 8443
-  protocol                 = "tcp"
-  source_security_group_id = var.alb_sg_id
-  security_group_id        = aws_security_group.turbot_api.id
-  description              = "HTTPS from LB to API Containers"
 }
 
 resource "aws_security_group_rule" "ePOtoMcAfeeagent" {
@@ -139,16 +128,6 @@ resource "aws_security_group_rule" "PKICAKerberosUDP" {
   description       = "PKI CA Kerberos UDP"
 }
 
-resource "aws_security_group_rule" "alb_to_api_highports" {
-  type                     = "ingress"
-  from_port                = 32768
-  to_port                  = 65535
-  protocol                 = "tcp"
-  source_security_group_id = var.alb_sg_id
-  security_group_id        = aws_security_group.turbot_api.id
-  description              = "HTTPS high ports from LB to API Containers"
-}
-
 resource "aws_security_group_rule" "api_to_api" {
   type                     = "ingress"
   from_port                = -1
@@ -217,4 +196,60 @@ resource "aws_security_group_rule" "NessusScanAccess445" {
   cidr_blocks       = ["10.0.0.0/8"]
   security_group_id = aws_security_group.turbot_api.id
   description       = "Nessus Scan Access"
+}
+
+resource "aws_security_group" "turbot_alb" {
+  name        = "turbot_alb_for_vaec"
+  description = "Allow inbound traffic to alb and connection to api"
+  vpc_id      = var.vpc_id
+}
+
+resource "aws_security_group_rule" "alb_inbound" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.turbot_api.id
+  description       = "allow inbound https"
+}
+
+resource "aws_security_group_rule" "alb_to_api" {
+  type                     = "ingress"
+  from_port                = 8443
+  to_port                  = 8443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.alb_inbound.id
+  security_group_id        = aws_security_group.turbot_api.id
+  description              = "HTTPS from LB to API Containers"
+}
+
+resource "aws_security_group_rule" "alb_to_api_highports" {
+  type                     = "ingress"
+  from_port                = 32768
+  to_port                  = 65535
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.alb_inbound.id
+  security_group_id        = aws_security_group.turbot_api.id
+  description              = "HTTPS high ports from LB to API Containers"
+}
+
+resource "aws_security_group_rule" "from_alb_to_api" {
+  type                     = "egress"
+  from_port                = 8443
+  to_port                  = 8443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.turbot_api.id
+  security_group_id        = aws_security_group.alb_inbound.id
+  description              = "HTTPS from LB to API Containers"
+}
+
+resource "aws_security_group_rule" "from_alb_to_api_highports" {
+  type                     = "egress"
+  from_port                = 32768
+  to_port                  = 65535
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.turbot_api.id
+  security_group_id        = aws_security_group.alb_inbound.id
+  description              = "HTTPS high ports from LB to API Containers"
 }
