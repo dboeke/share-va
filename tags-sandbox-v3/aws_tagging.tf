@@ -35,24 +35,24 @@ resource "turbot_policy_setting" "non_vpc_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-    {# --------------------------- #}
-    {#    initialize variables     #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-    initialize variables     -#}
+    {#- --------------------------- -#}
     {%- set new_tags = "" -%}
     {%- set required_tags = ${jsonencode(var.required_tags)} -%}
     {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
-    {# --------------------------- #}
-    {# set default tags from ssm   #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#- set default tags from ssm   -#}
+    {#- --------------------------- -#}
     {%- for ssm_param in $.region.children.items -%}
       {%- if ssm_param.name in required_tags -%}
         {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
         {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
       {%- endif -%}
     {%- endfor -%}
-    {# --------------------------- #}
-    {#     set environment tag     #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-     set environment tag     -#}
+    {#- --------------------------- -#}
     {%- set env_tag = "null" -%}
     {%- if "Environment" in $.resource.turbot.tags -%}
       {%- if $.resource.turbot.tags["Environment"] in tag_value_map -%}
@@ -67,10 +67,11 @@ resource "turbot_policy_setting" "non_vpc_tag_template" {
       {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n'  -%}
       {%- endif -%}
+    {%- endif -%}
     {%- set new_tags = new_tags + '- "vaec:Environment": ' + env_tag -%}
-    {# --------------------------- #}
-    {#     output required tags    #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-     output required tags    -#}
+    {#- --------------------------- -#}
     {{ new_tags }}
     TEMPLATE
 }
@@ -115,34 +116,34 @@ resource "turbot_policy_setting" "vpc_resource_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-    {# --------------------------- #}
-    {#    initialize variables     #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-    initialize variables     -#}
+    {#- --------------------------- -#}
     {%- set new_tags = "" -%}
     {%- set required_tags = ${jsonencode(var.required_tags)} -%}
     {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
     {%- set conn_id_map = ${jsonencode(var.conn_id_map)} -%}
-    {# --------------------------- #}
-    {# set default tags from ssm   #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#- set default tags from ssm   -#}
+    {#- --------------------------- -#}
     {%- for ssm_param in $.region.children.items -%}
       {%- if ssm_param.name in required_tags -%}
         {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
         {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
       {%- endif -%}
     {%- endfor -%}
-    {# --------------------------- #}
-    {# grab connection id from vpc #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#- grab connection id from vpc -#}
+    {#- --------------------------- -#}
     {%- set connectionId = "none" -%}
     {%- if $.resource.parent.turbot.tags["vaec:ConnectionID"] -%}
       {%- set connectionId=$.resource.parent.turbot.tags["vaec:ConnectionID"] | truncate (3, false, "") -%}
     {%- elif $.resource.parent.turbot.tags["ConnectionID"] -%}
       {%- set connectionId=$.resource.parent.turbot.tags["ConnectionID"] | truncate (3, false, "") -%}
     {%- endif -%}
-    {# --------------------------- #}
-    {#     set environment tag     #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-     set environment tag     -#}
+    {#- --------------------------- -#}
     {%- set env_tag = "null" -%}
     {%- if connectionId in conn_id_map -%}
       {%- set env_tag = '"' + conn_id_map[connectionId] + '"\n' -%}
@@ -159,10 +160,11 @@ resource "turbot_policy_setting" "vpc_resource_tag_template" {
       {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n'  -%}
       {%- endif -%}
+    {%- endif -%}
     {%- set new_tags = new_tags + '- "vaec:Environment": ' + env_tag -%}
-    {# --------------------------- #}
-    {#     output required tags    #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-     output required tags    -#}
+    {#- --------------------------- -#}
     {{ new_tags }}
     TEMPLATE
 }
@@ -212,30 +214,30 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-    {# --------------------------- #}
-    {#    initialize variables     #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-    initialize variables     -#}
+    {#- --------------------------- -#}
     {%- set new_tags = "" -%}
     {%- set required_tags = ${jsonencode(var.required_tags)} -%}
     {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
     {%- set conn_id_map = ${jsonencode(var.conn_id_map)} -%}
-    {# --------------------------- #}
-    {# set default tags from ssm   #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#- set default tags from ssm   -#}
+    {#- --------------------------- -#}
     {%- for ssm_param in $.region.children.items -%}
       {%- if ssm_param.name in required_tags -%}
         {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
         {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
       {%- endif -%}
     {%- endfor -%}
-    {# --------------------------- #}
-    {# grab connection id from vpc #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#- grab connection id from vpc -#}
+    {#- --------------------------- -#}
     {%- set assoc_vpc_env = false -%}
     {%- set assoc_vpc_conn = false -%}
     {%- for assoc_vpc in $.resource.parent.children.items -%}
       {%- if assoc_vpc["vpcId"] == $.resource.assoc_vpc_id -%}
-        {# grab connection id from vpc #}
+        {#- grab connection id from vpc -#}
         {%- if assoc_vpc.turbot.tags["vaec:ConnectionID"] -%}
           {%- set assoc_vpc_conn = assoc_vpc.turbot.tags["vaec:ConnectionID"] | truncate (3, false, "") -%}
         {%- elif assoc_vpc.turbot.tags.ConnectionId -%}
@@ -243,7 +245,7 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
         {%- elif assoc_vpc.turbot.tags.connectionId -%}
           {%- set assoc_vpc_conn = assoc_vpc.turbot.tags.connectionId | truncate (3, false, "") -%}
         {%- endif -%}
-        {# grab Environment from vpc #}
+        {#- grab Environment from vpc -#}
         {%- if assoc_vpc.turbot.tags["vaec:Environment"] -%}
           {%- set assoc_vpc_env = assoc_vpc.turbot.tags["vaec:Environment"] -%}
         {%- elif assoc_vpc.turbot.tags.Environment -%}
@@ -253,9 +255,9 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
         {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
-    {# --------------------------- #}
-    {#     set environment tag     #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-     set environment tag     -#}
+    {#- --------------------------- -#}
     {%- set env_tag = "null" -%}
     {%- if assoc_vpc_conn in conn_id_map -%}
       {%- set env_tag = '"' + conn_id_map[assoc_vpc_conn] + '"\n' -%}
@@ -274,10 +276,11 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
       {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n'  -%}
       {%- endif -%}
+    {%- endif -%}
     {%- set new_tags = new_tags + '- "vaec:Environment": ' + env_tag -%}
-    {# --------------------------- #}
-    {#     output required tags    #}
-    {# --------------------------- #}
+    {#- --------------------------- -#}
+    {#-     output required tags    -#}
+    {#- --------------------------- -#}
     {{ new_tags }}
     TEMPLATE
 }
