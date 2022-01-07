@@ -11,7 +11,7 @@ variable "turbot_profile" {
 
 ## Create Smart Folder at the Turbot level
 
-resource "turbot_smart_folder" "vaec_aws_tagging_v3" {
+resource "turbot_smart_folder" "vaec_aws_tagging" {
   parent = "tmod:@turbot/turbot#/"
   title  = "VAEC AWS Tagging Policies v3"
 }
