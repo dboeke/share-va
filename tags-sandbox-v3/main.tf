@@ -58,11 +58,21 @@ variable "required_tags" {
   type        = map
 }
 variable "conn_id_map" {
-  description = "This is a list of tag names that must exist on all resources."
+  description = "This is a list of allowed connection keys."
   type        = map
 }
 
 variable "wrong_tag_values" {
-  description = "This is a list of tag names that must exist on all resources."
+  description = "This is a list of environment values to map to correct values"
   type        = map
+}
+
+variable "conn_key_map" {
+  description = "This is a list of tag names that could contain the connection key."
+  type        = array
+}
+
+variable "env_key_map" {
+  description = "This is a list of tag names that could contain the environment type."
+  type        = array
 }

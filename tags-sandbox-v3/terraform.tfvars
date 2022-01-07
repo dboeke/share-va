@@ -12,6 +12,22 @@ conn_id_map = {
   "313" : "Development"
 }
 
+conn_key_map = [
+  "ConnectionID",
+  "ConnectionId",
+  "connectionID",
+  "connectionId",
+  "connectionid",
+  "vaec:ConnectionID"
+]
+
+env_key_map = [
+  "Environment",
+  "environment",
+  "vaec:environment",
+  "vaec:Environment"
+]
+
 # These tags are set incorrectly
 wrong_tag_values = {
   "Production" : "Production"

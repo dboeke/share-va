@@ -123,6 +123,7 @@ resource "turbot_policy_setting" "vpc_resource_tag_template" {
     {%- set required_tags = ${jsonencode(var.required_tags)} -%}
     {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
     {%- set conn_id_map = ${jsonencode(var.conn_id_map)} -%}
+    {%- set conn_key_map = ${jsonencode(var.conn_key_map)} -%}
     {#- --------------------------- -#}
     {#- set default tags from ssm   -#}
     {#- --------------------------- -#}
@@ -136,11 +137,11 @@ resource "turbot_policy_setting" "vpc_resource_tag_template" {
     {#- grab connection id from vpc -#}
     {#- --------------------------- -#}
     {%- set connectionId = "none" -%}
-    {%- if $.resource.parent.turbot.tags["vaec:ConnectionID"] -%}
-      {%- set connectionId=$.resource.parent.turbot.tags["vaec:ConnectionID"] | truncate (3, false, "") -%}
-    {%- elif $.resource.parent.turbot.tags["ConnectionID"] -%}
-      {%- set connectionId=$.resource.parent.turbot.tags["ConnectionID"] | truncate (3, false, "") -%}
-    {%- endif -%}
+    {%- for conn_tag_key in conn_key_map -%}
+      {%- if conn_tag_key in $.resource.parent.turbot.tags -%}
+        {%- set connectionId = $.resource.parent.turbot.tags[conn_tag_key] | truncate (3, false, "") -%}
+      {%- endif -%}
+    {%- endfor -%}
     {#- --------------------------- -#}
     {#-     set environment tag     -#}
     {#- --------------------------- -#}
@@ -221,6 +222,8 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
     {%- set required_tags = ${jsonencode(var.required_tags)} -%}
     {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
     {%- set conn_id_map = ${jsonencode(var.conn_id_map)} -%}
+    {%- set conn_key_map = ${jsonencode(var.conn_key_map)} -%}
+    {%- set env_key_map = ${jsonencode(var.env_key_map)} -%}
     {#- --------------------------- -#}
     {#- set default tags from ssm   -#}
     {#- --------------------------- -#}
@@ -237,22 +240,18 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
     {%- set assoc_vpc_conn = false -%}
     {%- for assoc_vpc in $.resource.parent.children.items -%}
       {%- if assoc_vpc["vpcId"] == $.resource.assoc_vpc_id -%}
-        {#- grab connection id from vpc -#}
-        {%- if assoc_vpc.turbot.tags["vaec:ConnectionID"] -%}
-          {%- set assoc_vpc_conn = assoc_vpc.turbot.tags["vaec:ConnectionID"] | truncate (3, false, "") -%}
-        {%- elif assoc_vpc.turbot.tags.ConnectionId -%}
-          {%- set assoc_vpc_conn = assoc_vpc.turbot.tags.ConnectionId | truncate (3, false, "") -%}
-        {%- elif assoc_vpc.turbot.tags.connectionId -%}
-          {%- set assoc_vpc_conn = assoc_vpc.turbot.tags.connectionId | truncate (3, false, "") -%}
-        {%- endif -%}
+      {#- grab connection id from vpc -#}
+        {%- for conn_tag_key in conn_key_map -%}
+          {%- if conn_tag_key in assoc_vpc.turbot.tags -%}
+            {%- set assoc_vpc_conn = assoc_vpc.turbot.tags[conn_tag_key] | truncate (3, false, "") -%}
+          {%- endif -%}
+        {%- endfor -%}
         {#- grab Environment from vpc -#}
-        {%- if assoc_vpc.turbot.tags["vaec:Environment"] -%}
-          {%- set assoc_vpc_env = assoc_vpc.turbot.tags["vaec:Environment"] -%}
-        {%- elif assoc_vpc.turbot.tags.Environment -%}
-          {%- set assoc_vpc_env = assoc_vpc.turbot.tags.Environment -%}
-        {%- elif assoc_vpc.turbot.tags.environment -%}
-          {%- set assoc_vpc_env = assoc_vpc.turbot.tags.environment -%}
-        {%- endif -%}
+        {%- for env_tag_key in env_key_map -%}
+          {%- if env_tag_key in assoc_vpc.turbot.tags -%}
+            {%- set assoc_vpc_env = assoc_vpc.turbot.tags[env_tag_key] -%}
+          {%- endif -%}
+        {%- endfor -%}
       {%- endif -%}
     {%- endfor -%}
     {#- --------------------------- -#}
