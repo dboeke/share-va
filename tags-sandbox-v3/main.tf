@@ -18,6 +18,11 @@ resource "turbot_smart_folder" "vaec_aws_tagging" {
 
 ## Vars to Map resources to tag
 
+variable "global_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
 variable "non_vpc_resource_tags" {
   description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
   type        = map

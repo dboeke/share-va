@@ -1,7 +1,5 @@
 ## Required Tags
 
-default_environment = "Production"
-
 # These tags must exist
 required_tags = {
   "/vaec/tag/VAECID" : "vaec:VAECID"
