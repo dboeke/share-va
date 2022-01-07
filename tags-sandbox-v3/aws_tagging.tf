@@ -260,7 +260,7 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
     {%- if assoc_vpc_conn in conn_id_map -%}
       {%- set env_tag = '"' + conn_id_map[assoc_vpc_conn] + '"\n' -%}
     {%- elif assoc_vpc_env in tag_value_map -%}
-      {%- set env_tag = '"' + tag_value_map[assoc_vpc_env + '"\n' -%}
+      {%- set env_tag = '"' + tag_value_map[assoc_vpc_env] + '"\n' -%}
     {%- elif "Environment" in $.resource.turbot.tags -%}
       {%- if $.resource.turbot.tags["Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["Environment"]] + '"\n'  -%}
