@@ -285,14 +285,14 @@ resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
 }
 
 ## Sets tagging policy for VPCs
-resource "turbot_policy_setting" "vpc_resource_tag_enforcement" {
+resource "turbot_policy_setting" "vpc_tag_enforcement" {
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTags"
   value           = "Enforce: Set tags"
 }
 
 ## Sets tagging template for VPCs
-resource "turbot_policy_setting" "vpc_resource_tag_template" {
+resource "turbot_policy_setting" "vpc_tag_template" {
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTagsTemplate"
   template_input  = <<-QUERY
