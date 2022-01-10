@@ -12,7 +12,7 @@ conn_id_map = {
   "313" : "Development"
 }
 
-conn_key_map = [
+conn_key_list = [
   "ConnectionID",
   "ConnectionId",
   "connectionID",
@@ -21,7 +21,7 @@ conn_key_map = [
   "vaec:ConnectionID"
 ]
 
-env_key_map = [
+env_key_list = [
   "Environment",
   "environment",
   "vaec:environment",

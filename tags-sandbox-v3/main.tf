@@ -67,12 +67,12 @@ variable "wrong_tag_values" {
   type        = map
 }
 
-variable "conn_key_map" {
+variable "conn_key_list" {
   description = "This is a list of tag names that could contain the connection key."
   type        = list
 }
 
-variable "env_key_map" {
+variable "env_key_list" {
   description = "This is a list of tag names that could contain the environment type."
   type        = list
 }
