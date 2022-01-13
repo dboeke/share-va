@@ -16,6 +16,11 @@ resource "turbot_smart_folder" "vaec_aws_tagging" {
   title  = "VAEC AWS Tagging Policies v3"
 }
 
+resource "turbot_smart_folder" "vaec_aws_snapshot_tagging" {
+  parent = "tmod:@turbot/turbot#/"
+  title  = "VAEC AWS EC2 Snapshot Tagging v3"
+}
+
 ## Vars to Map resources to tag
 
 variable "global_resource_tags" {
@@ -34,6 +39,11 @@ variable "vpc_child_resource_tags" {
 }
 
 variable "vpc_referenced_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "vpc_unreferenced_tags" {
   description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
   type        = map
 }

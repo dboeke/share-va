@@ -213,8 +213,10 @@ vpc_child_resource_tags = {
   aws-vpc-internet-elasticIp           = "Enforce: Set tags"
   aws-vpc-internet-vpcEndpoint         = "Enforce: Set tags"
   aws-vpc-internet-vpcEndpointService  = "Enforce: Set tags"
+  aws-vpc-security-flowLog             = "Enforce: Set tags"
   aws-vpc-security-networkAcl          = "Enforce: Set tags"
   aws-vpc-security-securityGroup       = "Enforce: Set tags"
+
 }
 
 # can't use regional ssm parameters because they are global resources.
@@ -240,34 +242,33 @@ vpc_referenced_tags = {
   aws-vpc-connect-vpnGateway                 = "Enforce: Set tags"
   aws-vpc-internet-egressOnlyInternetGateway = "Enforce: Set tags"
   aws-vpc-internet-internetGateway           = "Enforce: Set tags"
+}
 
-  #########################
-  ##TBD do not enable yet
-  #########################
-  # aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
-  # aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
-  # aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"
-  # aws-efs-fileSystem                          = "Enforce: Set tags"
-  # aws-ecs-cluster                             = "Enforce: Set tags"
-  # aws-elasticache-cacheCluster                = "Enforce: Set tags" 
-  # aws-workspaces-workspace                    = "Enforce: Set tags"
-  # aws-rds-dbCluster                           = "Enforce: Set tags"
-  # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
-  # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
+vpc_unreferenced_tags = {
+  aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
+  aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
+  aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"
+  aws-efs-fileSystem                          = "Enforce: Set tags"
+  aws-ecs-cluster                             = "Enforce: Set tags"
+  aws-elasticache-cacheCluster                = "Enforce: Set tags" 
+  aws-workspaces-workspace                    = "Enforce: Set tags"
+  aws-rds-dbCluster                           = "Enforce: Set tags"
+  aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
+  aws-vpc-connect-customerGateway             = "Enforce: Set tags"
 }
 
 vpc_referenced_resource_map = {
   aws-ec2-classicLoadBalancer                = "VPCId"
   aws-ec2-instance                           = "VpcId"
   aws-ec2-networkInterface                   = "VpcId"
-  aws-eks-cluster                            = "resourcesVpcConfig.vpcId"
-  aws-rds-dbInstance                         = "DBSubnetGroup.VpcId"
   aws-rds-subnetGroup                        = "VpcId"
   aws-redshift-cluster                       = "VpcId"
   aws-redshift-clusterSubnetGroup            = "VpcId"
   aws-vpc-connect-vpnGateway                 = "VpcAttachments[0].VpcId"
   aws-vpc-internet-egressOnlyInternetGateway = "turbot.custom.VpcId"
   aws-vpc-internet-internetGateway           = "Attachments[0].VpcId"
+  aws-eks-cluster                            = "resourcesVpcConfig.vpcId"
+  aws-rds-dbInstance                         = "DBSubnetGroup.VpcId"
 }
 
 ## Mapping of resource name to resource tag policy
@@ -380,6 +381,7 @@ policy_map = {
   aws-vpc-internet-natGateway                = "tmod:@turbot/aws-vpc-internet#/policy/types/natGatewayTags"
   aws-vpc-internet-vpcEndpoint               = "tmod:@turbot/aws-vpc-internet#/policy/types/vpcEndpointTags"
   aws-vpc-internet-vpcEndpointService        = "tmod:@turbot/aws-vpc-internet#/policy/types/vpcEndpointServiceTags"
+  aws-vpc-security-flowLog                   = "tmod:@turbot/aws-vpc-security#/policy/types/flowLogTags"
   aws-vpc-security-networkAcl                = "tmod:@turbot/aws-vpc-security#/policy/types/networkAclTags"
   aws-vpc-security-securityGroup             = "tmod:@turbot/aws-vpc-security#/policy/types/securityGroupTags"
   aws-waf-webacl                             = "tmod:@turbot/aws-waf#/policy/types/webaclTags"
@@ -496,6 +498,7 @@ policy_map_template = {
   aws-vpc-internet-natGateway                = "tmod:@turbot/aws-vpc-internet#/policy/types/natGatewayTagsTemplate"
   aws-vpc-internet-vpcEndpoint               = "tmod:@turbot/aws-vpc-internet#/policy/types/vpcEndpointTagsTemplate"
   aws-vpc-internet-vpcEndpointService        = "tmod:@turbot/aws-vpc-internet#/policy/types/vpcEndpointServiceTagsTemplate"
+  aws-vpc-security-flowLog                   = "tmod:@turbot/aws-vpc-security#/policy/types/flowLogTagsTemplate"
   aws-vpc-security-networkAcl                = "tmod:@turbot/aws-vpc-security#/policy/types/networkAclTagsTemplate"
   aws-vpc-security-securityGroup             = "tmod:@turbot/aws-vpc-security#/policy/types/securityGroupTagsTemplate"
   aws-waf-webacl                             = "tmod:@turbot/aws-waf#/policy/types/webaclTagsTemplate"
