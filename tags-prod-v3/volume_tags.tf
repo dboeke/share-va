@@ -1,15 +1,15 @@
 #####################################################################
-## Tagging for snapshots, checking vol for environment tag
+## Tagging for ebs volumes, checking instance for environment tag
 #####################################################################
-resource "turbot_policy_setting" "snapshot_tag_enforcement" {
-  resource = turbot_smart_folder.vaec_aws_snapshot_tagging.id
-  type     = "tmod:@turbot/aws-ec2#/policy/types/snapshotTags"
+resource "turbot_policy_setting" "volume_tag_enforcement" {
+  resource = turbot_smart_folder.vaec_aws_tagging.id
+  type     = "tmod:@turbot/aws-ec2#/policy/types/volumeTags"
   value    = "Enforce: Set tags"
 }
 
 resource "turbot_policy_setting" "snapshot_tag_template" {
   resource        = turbot_smart_folder.vaec_aws_snapshot_tagging.id
-  type            = "tmod:@turbot/aws-ec2#/policy/types/snapshotTagsTemplate"
+  type            = "tmod:@turbot/aws-ec2#/policy/types/volumeTagsTemplate"
   template_input  = <<-QUERY
   { 
     region {
@@ -23,16 +23,16 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     }
     resource {
       parent {
-        children(filter:"resourceTypeLevel:self resourceType:tmod:@turbot/aws-ec2#/resource/types/volume limit:5000") {
+        children(filter:"resourceTypeLevel:self resourceType:tmod:@turbot/aws-ec2#/resource/types/instance limit:5000") {
           items {
-            volId: get(path: "VolumeId")
+            instance_id: get(path: "InstanceId")
             turbot {
               tags
             }
           }
         }
       }
-      assoc_vol_id: get(path:"VolumeId")
+      attachments: get(path:"Attachments")
       turbot {
         tags
       }
@@ -61,14 +61,18 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {#- ---------------------------- -#}
     {#- grab environment from volume -#}
     {#- ---------------------------- -#}
-    {%- set assoc_vol_env = false -%}
-    {%- for assoc_vol in $.resource.parent.children.items -%}
-      {%- if assoc_vol["volId"] == $.resource.assoc_vol_id -%}
-        {#- grab Environment from Volume -#}
+    {%- set assoc_instance_env = false -%}
+    {%- set attachments = "" -%}
+    {%- for attachment in $.resource.attachments -%}
+      {%- set attachments = attachments + "," + attachment.InstanceId -%}
+    {%- endfor -%}
+    {%- for assoc_instance in $.resource.parent.children.items -%}
+      {%- if assoc_instance["instance_id"] in attachments -%}
+        {#- grab Environment from Instance -#}
         {%- for env_tag_key in env_key_list -%}
-          {%- if env_tag_key in assoc_vol.turbot.tags -%}
-            {%- if assoc_vol.turbot.tags[env_tag_key] in tag_value_map -%}
-                {%- set assoc_vol_env = assoc_vol.turbot.tags[env_tag_key] -%}
+          {%- if env_tag_key in assoc_instance.turbot.tags -%}
+            {%- if assoc_instance.turbot.tags[env_tag_key] in tag_value_map -%}
+                {%- set assoc_instance_env = assoc_instance.turbot.tags[env_tag_key] -%}
             {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
@@ -78,8 +82,8 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {#-     set environment tag     -#}
     {#- --------------------------- -#}
     {%- set env_tag = "null" -%}
-    {%- if assoc_vol_env in tag_value_map -%}
-      {%- set env_tag = '"' + tag_value_map[assoc_vol_env] + '"\n' -%}
+    {%- if assoc_instance_env in tag_value_map -%}
+      {%- set env_tag = '"' + tag_value_map[assoc_instance_env] + '"\n' -%}
     {%- elif "Environment" in $.resource.turbot.tags -%}
       {%- if $.resource.turbot.tags["Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["Environment"]] + '"\n'  -%}
@@ -95,9 +99,6 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
       {%- endif -%}
     {%- endif -%}
     {%- set new_tags = new_tags + '- "vaec:Environment": ' + env_tag -%}
-    {#- --------------------------- -#}
-    {#-     output required tags    -#}
-    {#- --------------------------- -#}
     {{ new_tags }}
     TEMPLATE
 }

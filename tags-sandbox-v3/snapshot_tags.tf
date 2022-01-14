@@ -23,7 +23,7 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     }
     resource {
       parent {
-        children(filter:"resourceTypeLevel:self resourceType:tmod:@turbot/aws-ec2#/resource/types/volume") {
+        children(filter:"resourceTypeLevel:self resourceType:tmod:@turbot/aws-ec2#/resource/types/volume limit:5000") {
           items {
             volId: get(path: "VolumeId")
             turbot {
