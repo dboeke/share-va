@@ -7,8 +7,8 @@ resource "turbot_policy_setting" "volume_tag_enforcement" {
   value    = "Enforce: Set tags"
 }
 
-resource "turbot_policy_setting" "snapshot_tag_template" {
-  resource        = turbot_smart_folder.vaec_aws_snapshot_tagging.id
+resource "turbot_policy_setting" "volume_tag_template" {
+  resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = "tmod:@turbot/aws-ec2#/policy/types/volumeTagsTemplate"
   template_input  = <<-QUERY
   { 
