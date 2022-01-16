@@ -88,10 +88,11 @@ def run_controls(profile, start_index, execute):
 
                 if ((index - start_index + 1) % batch == 0):
                     total_batches = total_batches + 1
+                    print("Pausing for 7.5 min")
                     time.sleep(cooldown)
                     if (total_batches == max_batch):
                         break
-
+        print("Pausing for 7.5 min")
         time.sleep(cooldown)
 
 if __name__ == "__main__":
