@@ -11,7 +11,7 @@ import time
 @click.option('-e', '--execute', is_flag=True, help="Will re-run controls when found.")
 def run_controls(profile, start_index, execute):
     config_file = None
-    batch = 80
+    batch = 40
     cooldown = 450
     max_batch = -1
 
@@ -68,9 +68,9 @@ def run_controls(profile, start_index, execute):
             mutation = '''
             mutation RunControl($input: RunControlInput!) {
                 runControl(input: $input) {
-                turbot {
-                    id
-                }
+                    turbot {
+                        id
+                    }
                 }
             }
             '''
@@ -92,6 +92,7 @@ def run_controls(profile, start_index, execute):
                     if (total_batches == max_batch):
                         break
 
+        time.sleep(cooldown)
 
 if __name__ == "__main__":
     try:
