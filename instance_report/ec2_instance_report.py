@@ -7,9 +7,17 @@ import boto3
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
-@click.option('-b', '--bucket', default="", help="[String] Name of bucket to upload report to.")
+@click.option('-b', '--bucket', default="", help="[String] Name of bucket to upload report to, leave blank to skip upload to s3.")
 
 def run_report(profile, bucket):
+    """ Finds all ec2 instances and exports a csv report with important metadata"""
+    """
+    Examples
+    ---------------
+    Run report in prod:                   "$ python3 ec2_instance_report.py -p prod"
+    Run report in prod and upload to s3:  "$ python3 ec2_instance_report.py -p prod -b my_bucket_name"
+    """
+
     config = turbot.Config(None, profile)
     headers = {'Authorization': 'Basic {}'.format(config.auth_token)}
     endpoint = HTTPEndpoint(config.graphql_endpoint, headers)
