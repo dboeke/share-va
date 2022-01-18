@@ -29,7 +29,7 @@ def run_report(profile, bucket):
                     instance_id: get(path: "InstanceId")
                     state: get(path: "State.Name")
                     ip: get(path: "PrivateIpAddress")
-                    platform: get(path: "PlatformDetails")
+                    platform: get(path: "Image.PlatformDetails")
                     architecture: get(path: "Architecture")
                     image_id: get(path: "ImageId")
                     image_name: get(path: "Image.Name")
