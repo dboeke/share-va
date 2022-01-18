@@ -1,5 +1,4 @@
 accounts = {
-  "899206412154": "DMI",
   "477270829360": "securitylogs-gov-internal",
   "348021725816": "security-gov-internal",
   "348286891446": "core-gov-internal",

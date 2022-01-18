@@ -140,7 +140,6 @@ wrong_tag_values = {
   "staging" : "Stage"
 }
 
-## ENABLE FIRST
 non_vpc_resource_tags = {
   aws-acm-certificate                      = "Enforce: Set tags"
   aws-apigateway-api                       = "Enforce: Set tags"
@@ -195,8 +194,6 @@ non_vpc_resource_tags = {
 
 vpc_unreferenced_tags = {
   aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
-  aws-ec2-applicationLoadBalancer             = "Enforce: Set tags"
-  aws-ec2-networkLoadBalancer                 = "Enforce: Set tags"
   aws-ecs-cluster                             = "Enforce: Set tags"
   aws-elasticache-cacheCluster                = "Enforce: Set tags" 
   aws-workspaces-workspace                    = "Enforce: Set tags"
@@ -207,7 +204,6 @@ vpc_unreferenced_tags = {
   aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
 }
 
-## ENABLE SECOND
 vpc_child_resource_tags = {
   aws-vpc-connect-vpcPeeringConnection = "Enforce: Set tags"
   aws-vpc-core-routeTable              = "Enforce: Set tags"
@@ -231,7 +227,6 @@ global_resource_tags = {
   aws-waf-webacl                       = "Enforce: Set tags"
 }
 
-## ENABLE LAST
 vpc_referenced_tags = {
   aws-ec2-classicLoadBalancer                = "Enforce: Set tags"
   aws-ec2-instance                           = "Enforce: Set tags"
@@ -248,6 +243,8 @@ vpc_referenced_tags = {
 
 vpc_referenced_resource_map = {
   aws-ec2-classicLoadBalancer                = "VPCId"
+  aws-ec2-applicationLoadBalancer            = "VpcId"
+  aws-ec2-networkLoadBalancer                = "VpcId"
   aws-ec2-instance                           = "VpcId"
   aws-ec2-networkInterface                   = "VpcId"
   aws-rds-subnetGroup                        = "VpcId"
