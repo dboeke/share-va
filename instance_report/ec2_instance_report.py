@@ -61,8 +61,8 @@ def run_report(profile, bucket):
 
     print("\nFound {} Total Instances".format(len(instances)))
     
-    date = datetime.now().strftime("%Y_%m_%d-%I:%M")
-    filename = f"instance_report_{profile}_{date}"
+    date = datetime.now().strftime("%Y_%m_%d-%H:%M:%S")
+    filename = f"instance_report_{profile}_{date}.csv"
 
     with open(filename, mode='w') as report_file:
         report_writer = csv.writer(report_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
