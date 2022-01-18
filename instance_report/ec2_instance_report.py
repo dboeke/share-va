@@ -1,7 +1,7 @@
 import turbot
 import click
 from sgqlc.endpoint.http import HTTPEndpoint
-import pprint
+from pprint import pprint as pp
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
@@ -58,7 +58,7 @@ def run_report(profile):
 
     print("\nFound {} Total Instances".format(len(instances)))
 
-    pprint(instances)
+    pp(instances)
 
 
 if __name__ == "__main__":
