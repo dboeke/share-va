@@ -59,7 +59,7 @@ def run_report(profile):
 
     print("\nFound {} Total Instances".format(len(instances)))
     
-    date = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    date = datetime.now().strftime("%Y_%m_%d-%I:%M%p")
     filename = f"instance_report_{profile}_{date}"
 
     with open(filename, mode='w') as report_file:
