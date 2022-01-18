@@ -1,7 +1,8 @@
 import turbot
 import click
 from sgqlc.endpoint.http import HTTPEndpoint
-from pprint import pprint as pp
+from datetime import datetime
+import csv
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
@@ -57,8 +58,36 @@ def run_report(profile):
             paging = result['data']['instances']['paging']['next']
 
     print("\nFound {} Total Instances".format(len(instances)))
+    
+    date = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    filename = f"ec2_instance_report_{profile}_{date}"
 
-    pp(instances)
+    with open(filename, mode='w') as report_file:
+        report_writer = csv.writer(report_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        # Header
+        report_writer.writerow([
+            'Account','Region','VAECID','CKID',
+            'Environment','Instance Id','Name',
+            'State','Platform','Arch','IP Addr',
+            'Image Id','Image Name'
+        ])
+        for instance in instances:
+            name = instance['tags']['Name'] if ('Name' in instance['tags']) else 'Null'
+            environment = instance['tags']['vaec:Environment'] if ('vaec:Environment' in instance['tags']) else 'Null'
+            vaecid = instance['tags']['vaec:VAECID'] if ('vaec:VAECID' in instance['tags']) else 'Null'
+            ckid = instance['tags']['vaec:CKID'] if ('vaec:CKID' in instance['tags']) else 'Null'
+            report_writer.writerow([
+                instance['turbot']['metadata']['aws']['accountId'],
+                instance['turbot']['metadata']['aws']['regionName'],
+                vaecid, ckid, environment,
+                instance['instance_id'], name,
+                instance['state'],
+                instance['platform'],
+                instance['architecture'],
+                instance['ip'],
+                instance['image_id'],
+                instance['image_name']
+            ])
 
 
 if __name__ == "__main__":
