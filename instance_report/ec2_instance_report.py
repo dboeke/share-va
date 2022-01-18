@@ -60,7 +60,7 @@ def run_report(profile):
     print("\nFound {} Total Instances".format(len(instances)))
     
     date = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-    filename = f"ec2_instance_report_{profile}_{date}"
+    filename = f"instance_report_{profile}_{date}"
 
     with open(filename, mode='w') as report_file:
         report_writer = csv.writer(report_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -77,7 +77,7 @@ def run_report(profile):
             vaecid = instance['tags']['vaec:VAECID'] if ('vaec:VAECID' in instance['tags']) else 'Null'
             ckid = instance['tags']['vaec:CKID'] if ('vaec:CKID' in instance['tags']) else 'Null'
             report_writer.writerow([
-                instance['turbot']['metadata']['aws']['accountId'],
+                f"{instance['turbot']['metadata']['aws']['partition']}:{instance['turbot']['metadata']['aws']['accountId']}",
                 instance['turbot']['metadata']['aws']['regionName'],
                 vaecid, ckid, environment,
                 instance['instance_id'], name,
