@@ -3,11 +3,13 @@ import click
 from sgqlc.endpoint.http import HTTPEndpoint
 from datetime import datetime
 import csv
+import boto3
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
+@click.option('-b', '--bucket', default="", help="[String] Name of bucket to upload report to.")
 
-def run_report(profile):
+def run_report(profile, bucket):
     config = turbot.Config(None, profile)
     headers = {'Authorization': 'Basic {}'.format(config.auth_token)}
     endpoint = HTTPEndpoint(config.graphql_endpoint, headers)
@@ -88,6 +90,14 @@ def run_report(profile):
                 instance['image_id'],
                 instance['image_name']
             ])
+    
+    if len(bucket) > 0:
+        s3_client = boto3.client('s3')
+        try:
+            response = s3_client.upload_file(filename, bucket, filename)
+        except ClientError as e:
+            print(e)
+        
 
 
 if __name__ == "__main__":
