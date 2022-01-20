@@ -180,7 +180,7 @@ non_vpc_resource_tags = {
   aws-rds-optionGroup                      = "Enforce: Set tags"
   aws-redshift-clusterParameterGroup       = "Enforce: Set tags"
   aws-redshift-clusterSnapshotManual       = "Enforce: Set tags"
-  # aws-s3-bucket                            = "Enforce: Set tags"
+  aws-s3-bucket                            = "Enforce: Set tags"
   aws-secretsmanager-secret                = "Enforce: Set tags"
   aws-sns-topic                            = "Enforce: Set tags"
   aws-sqs-queue                            = "Enforce: Set tags"
@@ -210,7 +210,7 @@ vpc_child_resource_tags = {
   aws-vpc-internet-vpcEndpointService  = "Enforce: Set tags"
   aws-vpc-security-flowLog             = "Enforce: Set tags"
   aws-vpc-security-networkAcl          = "Enforce: Set tags"
-  # aws-vpc-security-securityGroup       = "Enforce: Set tags"
+  aws-vpc-security-securityGroup       = "Enforce: Set tags"
 
 }
 
