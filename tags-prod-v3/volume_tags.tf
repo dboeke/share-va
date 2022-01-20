@@ -14,7 +14,7 @@ resource "turbot_policy_setting" "volume_tag_template" {
   { 
     region {
       name: Name
-      children(filter:"'/vaec/tag/' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
+      children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
         items {
           name: get(path: "Name")
           value: get(path: "Value")
