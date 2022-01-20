@@ -141,7 +141,6 @@ wrong_tag_values = {
 }
 
 non_vpc_resource_tags = {
-  aws-cloudformation-stack                 = "Skip"
   # aws-acm-certificate                      = "Enforce: Set tags"
   # aws-apigateway-api                       = "Enforce: Set tags"
   # aws-apigateway-stage                     = "Enforce: Set tags"
@@ -226,7 +225,7 @@ global_resource_tags = {
 }
 
 vpc_referenced_tags = {
-  #aws-ec2-classicLoadBalancer                = "Enforce: Set tags"
+  #giaws-ec2-classicLoadBalancer                = "Enforce: Set tags"
   # aws-ec2-applicationLoadBalancer            = "Enforce: Set tags"
   # aws-ec2-networkLoadBalancer                = "Enforce: Set tags"
   # aws-ec2-instance                           = "Enforce: Set tags"
