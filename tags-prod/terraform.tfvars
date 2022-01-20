@@ -141,13 +141,13 @@ wrong_tag_values = {
 }
 
 non_vpc_resource_tags = {
-  # aws-acm-certificate                      = "Enforce: Set tags"
-  # aws-apigateway-api                       = "Enforce: Set tags"
-  # aws-apigateway-stage                     = "Enforce: Set tags"
-  # aws-appstream-fleet                      = "Enforce: Set tags"
-  # aws-appstream-image                      = "Enforce: Set tags"
-  # aws-athena-namedQuery                    = "Enforce: Set tags"
-  # aws-athena-workgroup                     = "Enforce: Set tags"
+  aws-acm-certificate                      = "Enforce: Set tags"
+  aws-apigateway-api                       = "Enforce: Set tags"
+  aws-apigateway-stage                     = "Enforce: Set tags"
+  aws-appstream-fleet                      = "Enforce: Set tags"
+  aws-appstream-image                      = "Enforce: Set tags"
+  aws-athena-namedQuery                    = "Enforce: Set tags"
+  aws-athena-workgroup                     = "Enforce: Set tags"
   # aws-cloudtrail-trail                     = "Enforce: Set tags"
   # aws-cloudwatch-alarm                     = "Enforce: Set tags"
   # aws-codebuild-project                    = "Enforce: Set tags"
