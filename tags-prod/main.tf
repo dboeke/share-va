@@ -13,13 +13,19 @@ variable "turbot_profile" {
 
 resource "turbot_smart_folder" "vaec_aws_tagging" {
   parent = "tmod:@turbot/turbot#/"
-  title  = "VAEC AWS Tagging Policies v2"
+  title  = "VAEC AWS Tagging Policies v4"
+}
+
+resource "turbot_smart_folder" "vaec_aws_snapshot_tagging" {
+  parent = "tmod:@turbot/turbot#/"
+  title  = "VAEC AWS EC2 Snapshot Tagging v4"
 }
 
 ## Vars to Map resources to tag
-variable "default_environment" {
-  description = "Default string to use when no environment tag can be found"
-  type        = string
+
+variable "global_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
 }
 
 variable "non_vpc_resource_tags" {
@@ -37,18 +43,13 @@ variable "vpc_referenced_tags" {
   type        = map
 }
 
-variable "vpc_referenced_resource_map" {
-  description = "Map of the name of the reference to the vpc id on a resource"
-  type        = map
-}
-
-variable "resource_tags" {
+variable "vpc_unreferenced_tags" {
   description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
   type        = map
 }
 
-variable "global_resource_tags" {
-  description = "Map of the list of global resources that need to be tagged. ##TODO Not yet implemented"
+variable "vpc_referenced_resource_map" {
+  description = "Map of the name of the reference to the vpc id on a resource"
   type        = map
 }
 
@@ -66,8 +67,22 @@ variable "required_tags" {
   description = "This is a list of tag names that must exist on all resources."
   type        = map
 }
+variable "conn_id_map" {
+  description = "This is a list of allowed connection keys."
+  type        = map
+}
 
 variable "wrong_tag_values" {
-  description = "This is a list of tag names that must exist on all resources."
+  description = "This is a list of environment values to map to correct values"
   type        = map
+}
+
+variable "conn_key_list" {
+  description = "This is a list of tag names that could contain the connection key."
+  type        = list
+}
+
+variable "env_key_list" {
+  description = "This is a list of tag names that could contain the environment type."
+  type        = list
 }

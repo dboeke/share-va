@@ -1,21 +1,22 @@
-###############################
-## Sets tagging policy for VPCs
-###############################
-resource "turbot_policy_setting" "vpc_tag_enforcement" {
+#####################################################################
+## Tagging for resources related to the VPC that have VPC References
+#####################################################################
+resource "turbot_policy_setting" "vpc_related_resource_tag_enforcement" {
+  for_each        = var.vpc_referenced_tags 
   resource        = turbot_smart_folder.vaec_aws_tagging.id
-  type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTags"
-  value           = "Enforce: Set tags"
+  type            = var.policy_map[each.key]
+  value           = each.value
 }
 
-## Sets tagging template for VPCs
-resource "turbot_policy_setting" "vpc_tag_template" {
+resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
+  for_each        = var.vpc_referenced_tags
   resource        = turbot_smart_folder.vaec_aws_tagging.id
-  type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTagsTemplate"
+  type            = var.policy_map_template[each.key]
+  # GraphQL to pull policy Statements
   template_input  = <<-QUERY
-  {
-    region {
+  { region {
       name: Name
-      children(filter:"'/vaec/tag/' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
+      children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
         items {
           name: get(path: "Name")
           value: get(path: "Value")
@@ -23,6 +24,17 @@ resource "turbot_policy_setting" "vpc_tag_template" {
       }
     }
     resource {
+      parent {
+        children(filter:"resourceTypeLevel:self resourceType:tmod:@turbot/aws-vpc-core#/resource/types/vpc") {
+          items {
+            vpcId:get(path: "VpcId")
+            turbot {
+              tags
+            }
+          }
+        }
+      }
+      assoc_vpc_id: get(path:"${var.vpc_referenced_resource_map[each.key]}")
       turbot {
         tags
       }
@@ -40,6 +52,7 @@ resource "turbot_policy_setting" "vpc_tag_template" {
     {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
     {%- set conn_id_map = ${jsonencode(var.conn_id_map)} -%}
     {%- set conn_key_list = ${jsonencode(var.conn_key_list)} -%}
+    {%- set env_key_list = ${jsonencode(var.env_key_list)} -%}
     {#- --------------------------- -#}
     {#- set default tags from ssm   -#}
     {#- --------------------------- -#}
@@ -52,18 +65,32 @@ resource "turbot_policy_setting" "vpc_tag_template" {
     {#- --------------------------- -#}
     {#- grab connection id from vpc -#}
     {#- --------------------------- -#}
-    {%- set connectionId = "none" -%}
-    {%- for conn_tag_key in conn_key_list -%}
-      {%- if conn_tag_key in $.resource.turbot.tags -%}
-        {%- set connectionId = $.resource.turbot.tags[conn_tag_key] | truncate (3, false, "") -%}
+    {%- set assoc_vpc_env = false -%}
+    {%- set assoc_vpc_conn = false -%}
+    {%- for assoc_vpc in $.resource.parent.children.items -%}
+      {%- if assoc_vpc["vpcId"] == $.resource.assoc_vpc_id -%}
+      {#- grab connection id from vpc -#}
+        {%- for conn_tag_key in conn_key_list -%}
+          {%- if conn_tag_key in assoc_vpc.turbot.tags -%}
+            {%- set assoc_vpc_conn = assoc_vpc.turbot.tags[conn_tag_key] | truncate (3, false, "") -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {#- grab Environment from vpc -#}
+        {%- for env_tag_key in env_key_list -%}
+          {%- if env_tag_key in assoc_vpc.turbot.tags -%}
+            {%- set assoc_vpc_env = assoc_vpc.turbot.tags[env_tag_key] -%}
+          {%- endif -%}
+        {%- endfor -%}
       {%- endif -%}
     {%- endfor -%}
     {#- --------------------------- -#}
     {#-     set environment tag     -#}
     {#- --------------------------- -#}
     {%- set env_tag = "null" -%}
-    {%- if connectionId in conn_id_map -%}
-      {%- set env_tag = '"' + conn_id_map[connectionId] + '"\n' -%}
+    {%- if assoc_vpc_conn in conn_id_map -%}
+      {%- set env_tag = '"' + conn_id_map[assoc_vpc_conn] + '"\n' -%}
+    {%- elif assoc_vpc_env in tag_value_map -%}
+      {%- set env_tag = '"' + tag_value_map[assoc_vpc_env] + '"\n' -%}
     {%- elif "Environment" in $.resource.turbot.tags -%}
       {%- if $.resource.turbot.tags["Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["Environment"]] + '"\n'  -%}
@@ -85,3 +112,4 @@ resource "turbot_policy_setting" "vpc_tag_template" {
     {{ new_tags }}
     TEMPLATE
 }
+

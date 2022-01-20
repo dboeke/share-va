@@ -1,28 +1,27 @@
-#####################################################################
-## Tagging for resources related to the VPC that have VPC References
-#####################################################################
-resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_enforcement" {
-  for_each        = var.vpc_unreferenced_tags 
+## Sets tagging policy for each resource type in the resource_tags map.
+resource "turbot_policy_setting" "non_vpc_tag_enforcement" {
+  for_each        = var.non_vpc_resource_tags
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = var.policy_map[each.key]
   value           = each.value
 }
 
-resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_template" {
-  for_each        = var.vpc_unreferenced_tags
+## Sets the default tag template for all resources.
+resource "turbot_policy_setting" "non_vpc_tag_template" {
+  for_each        = var.non_vpc_resource_tags
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = var.policy_map_template[each.key]
   # GraphQL to pull policy Statements
   template_input  = <<-QUERY
   {
     region {
-        children(filter:"'/vaec/tag/' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
-          items {
-            name: get(path: "Name")
-            value: get(path: "Value")
-          }
+      children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
+        items {
+          name: get(path: "Name")
+          value: get(path: "Value")
         }
       }
+    }
     resource {
       turbot {
         tags
@@ -33,7 +32,7 @@ resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-   {#- --------------------------- -#}
+    {#- --------------------------- -#}
     {#-    initialize variables     -#}
     {#- --------------------------- -#}
     {%- set new_tags = "" -%}
@@ -73,4 +72,3 @@ resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_template" {
     {{ new_tags }}
     TEMPLATE
 }
-
