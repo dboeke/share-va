@@ -225,19 +225,19 @@ global_resource_tags = {
 }
 
 vpc_referenced_tags = {
-  # aws-ec2-classicLoadBalancer                = "Enforce: Set tags"
-  # aws-ec2-applicationLoadBalancer            = "Enforce: Set tags"
-  # aws-ec2-networkLoadBalancer                = "Enforce: Set tags"
+  aws-ec2-classicLoadBalancer                = "Enforce: Set tags"
+  aws-ec2-applicationLoadBalancer            = "Enforce: Set tags"
+  aws-ec2-networkLoadBalancer                = "Enforce: Set tags"
   # aws-ec2-instance                           = "Enforce: Set tags"
   # aws-ec2-networkInterface                   = "Enforce: Set tags"
-  # aws-eks-cluster                            = "Enforce: Set tags"
+  aws-eks-cluster                            = "Enforce: Set tags"
   # aws-rds-dbInstance                         = "Enforce: Set tags"
   # aws-rds-subnetGroup                        = "Enforce: Set tags"
-  # aws-redshift-cluster                       = "Enforce: Set tags"
-  # aws-redshift-clusterSubnetGroup            = "Enforce: Set tags"
-  # aws-vpc-connect-vpnGateway                 = "Enforce: Set tags"
-  # aws-vpc-internet-egressOnlyInternetGateway = "Enforce: Set tags"
-  # aws-vpc-internet-internetGateway           = "Enforce: Set tags"
+  aws-redshift-cluster                       = "Enforce: Set tags"
+  aws-redshift-clusterSubnetGroup            = "Enforce: Set tags"
+  aws-vpc-connect-vpnGateway                 = "Enforce: Set tags"
+  aws-vpc-internet-egressOnlyInternetGateway = "Enforce: Set tags"
+  aws-vpc-internet-internetGateway           = "Enforce: Set tags"
 }
 
 vpc_referenced_resource_map = {
