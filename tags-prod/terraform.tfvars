@@ -202,30 +202,30 @@ vpc_unreferenced_tags = {
 }
 
 vpc_child_resource_tags = {
-  # aws-vpc-connect-vpcPeeringConnection = "Enforce: Set tags"
-  # aws-vpc-core-routeTable              = "Enforce: Set tags"
+  aws-vpc-connect-vpcPeeringConnection = "Enforce: Set tags"
+  aws-vpc-core-routeTable              = "Enforce: Set tags"
   # aws-vpc-core-subnet                  = "Enforce: Set tags"
-  # aws-vpc-internet-elasticIp           = "Enforce: Set tags"
-  # aws-vpc-internet-vpcEndpoint         = "Enforce: Set tags"
-  # aws-vpc-internet-vpcEndpointService  = "Enforce: Set tags"
-  # aws-vpc-security-flowLog             = "Enforce: Set tags"
-  # aws-vpc-security-networkAcl          = "Enforce: Set tags"
+  aws-vpc-internet-elasticIp           = "Enforce: Set tags"
+  aws-vpc-internet-vpcEndpoint         = "Enforce: Set tags"
+  aws-vpc-internet-vpcEndpointService  = "Enforce: Set tags"
+  aws-vpc-security-flowLog             = "Enforce: Set tags"
+  aws-vpc-security-networkAcl          = "Enforce: Set tags"
   # aws-vpc-security-securityGroup       = "Enforce: Set tags"
 
 }
 
 # can't use regional ssm parameters because they are global resources.
 global_resource_tags = {
-  #aws-cloudfront-distribution          = "Enforce: Set tags"
-  # aws-cloudfront-streamingDistribution = "Enforce: Set tags"
-  # aws-iam-role                         = "Enforce: Set tags"
-  # aws-iam-user                         = "Enforce: Set tags"
-  # aws-route53-hostedZone               = "Enforce: Set tags"
-  # aws-waf-webacl                       = "Enforce: Set tags"
+  aws-cloudfront-distribution          = "Enforce: Set tags"
+  aws-cloudfront-streamingDistribution = "Enforce: Set tags"
+  aws-iam-role                         = "Enforce: Set tags"
+  aws-iam-user                         = "Enforce: Set tags"
+  aws-route53-hostedZone               = "Enforce: Set tags"
+  aws-waf-webacl                       = "Enforce: Set tags"
 }
 
 vpc_referenced_tags = {
-  #giaws-ec2-classicLoadBalancer                = "Enforce: Set tags"
+  # aws-ec2-classicLoadBalancer                = "Enforce: Set tags"
   # aws-ec2-applicationLoadBalancer            = "Enforce: Set tags"
   # aws-ec2-networkLoadBalancer                = "Enforce: Set tags"
   # aws-ec2-instance                           = "Enforce: Set tags"
