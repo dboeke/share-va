@@ -190,15 +190,15 @@ non_vpc_resource_tags = {
 }
 
 vpc_unreferenced_tags = {
-  # aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
-  # aws-ecs-cluster                             = "Enforce: Set tags"
-  # aws-elasticache-cacheCluster                = "Enforce: Set tags" 
-  # aws-workspaces-workspace                    = "Enforce: Set tags"
-  # aws-rds-dbCluster                           = "Enforce: Set tags"
-  # aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
-  # aws-vpc-connect-customerGateway             = "Enforce: Set tags"
-  # aws-vpc-connect-transitGateway              = "Enforce: Set tags"
-  # aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
+  aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
+  aws-ecs-cluster                             = "Enforce: Set tags"
+  aws-elasticache-cacheCluster                = "Enforce: Set tags" 
+  aws-workspaces-workspace                    = "Enforce: Set tags"
+  aws-rds-dbCluster                           = "Enforce: Set tags"
+  aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
+  aws-vpc-connect-customerGateway             = "Enforce: Set tags"
+  aws-vpc-connect-transitGateway              = "Enforce: Set tags"
+  aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
 }
 
 vpc_child_resource_tags = {
