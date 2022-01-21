@@ -41,7 +41,6 @@ resource "turbot_policy_setting" "volume_tag_template" {
         }
       }
     }
-  }
   QUERY
   
   # Nunjucks template to set tags and check for tag validity.
