@@ -15,22 +15,25 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {
       snap: snapshot {
         assoc_vol_id: get(path:"VolumeId")
+      }
+    }
+  - |
+    {
+      snapshot {
+        assoc_vol_id: get(path:"VolumeId")
         turbot {
           tags
         }
       }
       params: region {
-          children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
-            items {
-              name: get(path: "Name")
-              value: get(path: "Value")
-            }
+        children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
+          items {
+            name: get(path: "Name")
+            value: get(path: "Value")
           }
         }
-    }
-  - |
-    {
-      vol: resources(filter: "title:'{{ $.snap['assoc_vol_id'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/volume") {
+      }
+      vols: resources(filter: "title:'{{ $.snap['assoc_vol_id'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/volume") {
         items {
           turbot {
             tags
@@ -45,8 +48,8 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {% for ssm_param in $.params.children.items %}
     - {{ ssm_param['name'] }}: "{{ ssm_param['value'] }}"
     {% endfor %}
-    - volId: "{{ $.snap['assoc_vol_id'] }}"
-    {% for key, value in $.vol.items[0].turbot.tags %}
+    - volId: "{{ $.snapshot['assoc_vol_id'] }}"
+    {% for key, value in $.vols.items[0].turbot.tags %}
     - {{ key }}: "{{ value }}"
     {% endfor %}
     TEMPLATE
