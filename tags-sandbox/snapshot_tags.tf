@@ -20,7 +20,6 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
   - |
     {
       snapshot {
-        assoc_vol_id: get(path:"VolumeId")
         turbot {
           tags
         }
@@ -33,7 +32,7 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
           }
         }
       }
-      vols: resources(filter: "title:'{{ $.snap['assoc_vol_id'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/volume") {
+      vols: resources(filter:"title:'{{ $.snap['assoc_vol_id'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/volume") {
         items {
           turbot {
             tags
@@ -45,12 +44,58 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-    {% for ssm_param in $.params.children.items %}
-    - {{ ssm_param['name'] }}: "{{ ssm_param['value'] }}"
-    {% endfor %}
-    - volId: "{{ $.snapshot['assoc_vol_id'] }}"
-    {% for key, value in $.vols.items[0].turbot.tags %}
-    - {{ key }}: "{{ value }}"
-    {% endfor %}
+    {#- --------------------------- -#}
+    {#-    initialize variables     -#}
+    {#- --------------------------- -#}
+    {%- set new_tags = "" -%}
+    {%- set required_tags = ${jsonencode(var.required_tags)} -%}
+    {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
+    {%- set env_key_list = ${jsonencode(var.env_key_list)} -%}
+    {#- --------------------------- -#}
+    {#- set default tags from ssm   -#}
+    {#- --------------------------- -#}
+    {%- for ssm_param in $.params.children.items -%}
+      {%- if ssm_param.name in required_tags -%}
+        {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
+        {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {#- ---------------------------- -#}
+    {#- grab environment from volume -#}
+    {#- ---------------------------- -#}
+    {%- set assoc_vol_env = false -%}
+    {#- grab Environment from Volume -#}
+    {%- for env_tag_key in env_key_list -%}
+      {%- if env_tag_key in $.vols.items[0].turbot.tags -%}
+        {%- if $.vols.items[0].turbot.tags[env_tag_key] in tag_value_map -%}
+          {%- set assoc_vol_env = $.vols.items[0].turbot.tags[env_tag_key] -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {#- --------------------------- -#}
+    {#-     set environment tag     -#}
+    {#- --------------------------- -#}
+    {%- set env_tag = "null" -%}
+    {%- if assoc_vol_env in tag_value_map -%}
+      {%- set env_tag = '"' + tag_value_map[assoc_vol_env] + '"\n' -%}
+    {%- elif "Environment" in $.resource.turbot.tags -%}
+      {%- if $.resource.turbot.tags["Environment"] in tag_value_map -%}
+        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["Environment"]] + '"\n'  -%}
+      {%- endif -%}
+    {%- elif "environment" in $.resource.turbot.tags -%}
+      {%- if $.resource.turbot.tags["environment"] in tag_value_map -%}
+        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["environment"]] + '"\n'  -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if (env_tag == "null") and ("vaec:Environment" in $.resource.turbot.tags) -%}
+      {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
+        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n'  -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- set new_tags = new_tags + '- "vaec:Environment": ' + env_tag -%}
+    {#- --------------------------- -#}
+    {#-     output required tags    -#}
+    {#- --------------------------- -#}
+    {{ new_tags }}
     TEMPLATE
 }

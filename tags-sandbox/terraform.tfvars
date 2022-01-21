@@ -4,6 +4,8 @@
 required_tags = {
   "/vaec/tag/VAECID" : "vaec:VAECID"
   "/vaec/tag/CKID" : "vaec:CKID"
+  "/vaec/tag/env" : "vaec:env"
+  "/vaec/tag/test" : "vaec:test"
 }
 
 conn_id_map = {
