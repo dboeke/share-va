@@ -64,19 +64,14 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {#- grab environment from volume -#}
     {#- ---------------------------- -#}
     {%- set assoc_vol_env = false -%}
-    {#- grab Environment from Volume -#}
-    {%- for env_tag_key in env_key_list -%}
-      {%- if $.vols.items not null -%}
-        ## Test
-      {%- endif -%}
-    {%- endfor -%}
+
     {#- --------------------------- -#}
     {#-     set environment tag     -#}
     {#- --------------------------- -#}
     {%- set env_tag = "null" -%}
     {%- if assoc_vol_env in tag_value_map -%}
       {%- set env_tag = '"' + tag_value_map[assoc_vol_env] + '"\n' -%}
-    {%- elif "renvironment" in $.snapshot.turbot.tags -%}
+    {%- elif "Environment" in $.snapshot.turbot.tags -%}
       {%- if $.snapshot.turbot.tags["Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.snapshot.turbot.tags["Environment"]] + '"\n'  -%}
       {%- endif -%}
