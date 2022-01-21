@@ -78,7 +78,7 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {%- set env_tag = "null" -%}
     {%- if assoc_vol_env in tag_value_map -%}
       {%- set env_tag = '"' + tag_value_map[assoc_vol_env] + '"\n' -%}
-    {%- elif "Environment" in $.snapshot.turbot.tags -%}
+    {%- elif "renvironment" in $.snapshot.turbot.tags -%}
       {%- if $.snapshot.turbot.tags["Environment"] in tag_value_map -%}
         {%- set env_tag = '"' + tag_value_map[$.snapshot.turbot.tags["Environment"]] + '"\n'  -%}
       {%- endif -%}
