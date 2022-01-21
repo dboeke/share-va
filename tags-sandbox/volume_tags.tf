@@ -68,9 +68,11 @@ resource "turbot_policy_setting" "volume_tag_template" {
     {%- set assoc_instance_env = false -%}
     {#- grab Environment from Instance -#}
     {%- for env_tag_key in env_key_list -%}
-      {%- if env_tag_key in $.instances.items[0].turbot.tags -%}
-        {%- if $.instances.items[0].turbot.tags[env_tag_key] in tag_value_map -%}
-          {%- set assoc_vol_env = $.instances.items[0].turbot.tags[env_tag_key] -%}
+      {%- if $.instances.items[0] -%}
+        {%- if env_tag_key in $.instances.items[0].turbot.tags -%}
+          {%- if $.instances.items[0].turbot.tags[env_tag_key] in tag_value_map -%}
+            {%- set assoc_vol_env = $.instances.items[0].turbot.tags[env_tag_key] -%}
+          {%- endif -%}
         {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
