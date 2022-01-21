@@ -1,7 +1,7 @@
 #####################################################################
 ## Tagging for ebs volumes, checking instance for environment tag
 #####################################################################
-/*
+
 resource "turbot_policy_setting" "volume_tag_enforcement" {
   resource = turbot_smart_folder.vaec_aws_tagging.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/volumeTags"
@@ -103,4 +103,3 @@ resource "turbot_policy_setting" "volume_tag_template" {
     {{ new_tags }}
     TEMPLATE
 }
-*/
