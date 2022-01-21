@@ -4,7 +4,7 @@
 resource "turbot_policy_setting" "snapshot_tag_enforcement" {
   resource = turbot_smart_folder.vaec_aws_snapshot_tagging.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/snapshotTags"
-  value    = "Check: Tags are correct"
+  value    = "Enforce: Set tags"
 }
 
 resource "turbot_policy_setting" "snapshot_tag_template" {
