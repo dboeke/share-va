@@ -55,7 +55,7 @@ resource "turbot_policy_setting" "volume_tag_template" {
     {#- --------------------------- -#}
     {#- set default tags from ssm   -#}
     {#- --------------------------- -#}
-    {%- for ssm_param in $.region.children.items -%}
+    {%- for ssm_param in $.params.children.items -%}
       {%- if ssm_param.name in required_tags -%}
         {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
         {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
@@ -70,7 +70,7 @@ resource "turbot_policy_setting" "volume_tag_template" {
       {%- if $.instances.items[0] -%}
         {%- if env_tag_key in $.instances.items[0].turbot.tags -%}
           {%- if $.instances.items[0].turbot.tags[env_tag_key] in tag_value_map -%}
-            {%- set assoc_vol_env = $.instances.items[0].turbot.tags[env_tag_key] -%}
+            {%- set assoc_instance_env = $.instances.items[0].turbot.tags[env_tag_key] -%}
           {%- endif -%}
         {%- endif -%}
       {%- endif -%}
