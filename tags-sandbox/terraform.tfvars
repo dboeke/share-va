@@ -143,90 +143,21 @@ wrong_tag_values = {
 }
 
 non_vpc_resource_tags = {
-  aws-acm-certificate                      = "Enforce: Set tags"
-  aws-apigateway-api                       = "Enforce: Set tags"
-  aws-apigateway-stage                     = "Enforce: Set tags"
-  aws-appstream-fleet                      = "Enforce: Set tags"
-  aws-appstream-image                      = "Enforce: Set tags"
-  aws-athena-namedQuery                    = "Enforce: Set tags"
-  aws-athena-workgroup                     = "Enforce: Set tags"
-  aws-cloudformation-stack                 = "Skip"
-  aws-cloudtrail-trail                     = "Enforce: Set tags"
-  aws-cloudwatch-alarm                     = "Enforce: Set tags"
-  aws-codebuild-project                    = "Enforce: Set tags"
-  aws-codecommit-repository                = "Enforce: Set tags"
-  aws-config-rule                          = "Enforce: Set tags"
-  aws-dynamodb-table                       = "Enforce: Set tags"
-  aws-ec2-ami                              = "Enforce: Set tags"
-  aws-ec2-autoScalingGroup                 = "Enforce: Set tags"
-  aws-ec2-launchTemplate                   = "Enforce: Set tags"
-  aws-ec2-targetGroup                      = "Enforce: Set tags"
-  aws-ecr-repository                       = "Enforce: Set tags"
-  aws-elasticache-snapshot                 = "Enforce: Set tags"
-  aws-elasticsearch-domain                 = "Enforce: Set tags"
-  aws-glacier-vault                        = "Enforce: Set tags"
-  aws-glue-crawler                         = "Enforce: Set tags"
-  aws-glue-dev-endpoint                    = "Enforce: Set tags"
-  aws-glue-job                             = "Enforce: Set tags"
-  aws-glue-ml-transform                    = "Enforce: Set tags"
-  aws-glue-trigger                         = "Enforce: Set tags"
-  aws-glue-workflow                        = "Enforce: Set tags"
-  aws-inspector-assessmentTemplate         = "Enforce: Set tags"
-  aws-kinesis-stream                       = "Enforce: Set tags"
-  aws-kms-key                              = "Enforce: Set tags"
-  aws-lambda-function                      = "Enforce: Set tags"
-  aws-logs-logGroup                        = "Enforce: Set tags"
-  aws-rds-dbClusterParameterGroup          = "Enforce: Set tags"
-  aws-rds-dbClusterSnapshotManual          = "Enforce: Set tags"
-  aws-rds-dbParameterGroup                 = "Enforce: Set tags"
-  aws-rds-dbSnapshotManual                 = "Enforce: Set tags"
-  aws-rds-optionGroup                      = "Enforce: Set tags"
-  aws-redshift-clusterParameterGroup       = "Enforce: Set tags"
-  aws-redshift-clusterSnapshotManual       = "Enforce: Set tags"
-  aws-s3-bucket                            = "Enforce: Set tags"
-  aws-secretsmanager-secret                = "Enforce: Set tags"
-  aws-sns-topic                            = "Enforce: Set tags"
-  aws-sqs-queue                            = "Enforce: Set tags"
-  aws-ssm-document                         = "Enforce: Set tags"
-  aws-ssm-maintenanceWindow                = "Enforce: Set tags"
-  aws-stepfunctions-stateMachine           = "Enforce: Set tags"
-  # aws-appstream-image-builder                 = "Enforce: Set tags"
-  # aws-appstream-stack                         = "Enforce: Set tags"
+ 
 }
 
 vpc_unreferenced_tags = {
-  aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
-  aws-ecs-cluster                             = "Enforce: Set tags"
-  aws-elasticache-cacheCluster                = "Enforce: Set tags" 
-  aws-workspaces-workspace                    = "Enforce: Set tags"
-  aws-rds-dbCluster                           = "Enforce: Set tags"
-  aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
-  aws-vpc-connect-customerGateway             = "Enforce: Set tags"
-  aws-vpc-connect-transitGateway              = "Enforce: Set tags"
-  aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
+
 }
 
 vpc_child_resource_tags = {
-  aws-vpc-connect-vpcPeeringConnection = "Enforce: Set tags"
-  aws-vpc-core-routeTable              = "Enforce: Set tags"
-  aws-vpc-core-subnet                  = "Enforce: Set tags"
-  aws-vpc-internet-elasticIp           = "Enforce: Set tags"
-  aws-vpc-internet-vpcEndpoint         = "Enforce: Set tags"
-  aws-vpc-internet-vpcEndpointService  = "Enforce: Set tags"
-  aws-vpc-security-flowLog             = "Enforce: Set tags"
-  aws-vpc-security-networkAcl          = "Enforce: Set tags"
-  aws-vpc-security-securityGroup       = "Enforce: Set tags"
+
 
 }
 
 # can't use regional ssm parameters because they are global resources.
 global_resource_tags = {
-  aws-cloudfront-distribution          = "Enforce: Set tags"
-  aws-cloudfront-streamingDistribution = "Enforce: Set tags"
-  aws-iam-role                         = "Enforce: Set tags"
-  aws-iam-user                         = "Enforce: Set tags"
-  aws-route53-hostedZone               = "Enforce: Set tags"
-  aws-waf-webacl                       = "Enforce: Set tags"
+
 }
 
 vpc_referenced_tags = {
