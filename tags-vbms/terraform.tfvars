@@ -172,7 +172,7 @@ non_vpc_resource_tags = {
   # aws-kinesis-stream                       = "Enforce: Set tags"
   # aws-kms-key                              = "Enforce: Set tags"
   # aws-lambda-function                      = "Enforce: Set tags"
-  # aws-logs-logGroup                        = "Enforce: Set tags"
+  aws-logs-logGroup                        = "Enforce: Set tags"
   # aws-rds-dbClusterParameterGroup          = "Enforce: Set tags"
   # aws-rds-dbClusterSnapshotManual          = "Enforce: Set tags"
   # aws-rds-dbParameterGroup                 = "Enforce: Set tags"
@@ -208,7 +208,7 @@ vpc_child_resource_tags = {
   # aws-vpc-internet-elasticIp           = "Enforce: Set tags"
   # aws-vpc-internet-vpcEndpoint         = "Enforce: Set tags"
   # aws-vpc-internet-vpcEndpointService  = "Enforce: Set tags"
-  # aws-vpc-security-flowLog             = "Enforce: Set tags"
+  aws-vpc-security-flowLog             = "Enforce: Set tags"
   # aws-vpc-security-networkAcl          = "Enforce: Set tags"
   # aws-vpc-security-securityGroup       = "Enforce: Set tags"
 
