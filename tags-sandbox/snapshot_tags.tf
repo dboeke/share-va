@@ -64,7 +64,9 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {#- grab environment from volume -#}
     {#- ---------------------------- -#}
     {%- set assoc_vol_env = false -%}
-
+    {%- if $.vols -%}
+      {%- set new_tags = new_tags + '- "debug": "true"' -%}
+    {%- endif -%}
     {#- --------------------------- -#}
     {#-     set environment tag     -#}
     {#- --------------------------- -#}
