@@ -1,0 +1,5 @@
+fields @timestamp, `/vashi/hive/newton.index.schemaname`, `/vashi/hive/hive_a.initialSize`, `/vashi/hive/hive_a.finalSize`
+| filter `/vashi/hive/hive_a.index.indexname` = 'policy_values_dependencies_idx'
+| sort @timestamp desc
+| limit 20
+
