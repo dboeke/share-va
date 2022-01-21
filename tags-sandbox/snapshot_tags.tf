@@ -78,18 +78,18 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
     {%- set env_tag = "null" -%}
     {%- if assoc_vol_env in tag_value_map -%}
       {%- set env_tag = '"' + tag_value_map[assoc_vol_env] + '"\n' -%}
-    {%- elif "Environment" in $.resource.turbot.tags -%}
-      {%- if $.resource.turbot.tags["Environment"] in tag_value_map -%}
-        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["Environment"]] + '"\n'  -%}
+    {%- elif "Environment" in $.snapshot.turbot.tags -%}
+      {%- if $.snapshot.turbot.tags["Environment"] in tag_value_map -%}
+        {%- set env_tag = '"' + tag_value_map[$.snapshot.turbot.tags["Environment"]] + '"\n'  -%}
       {%- endif -%}
-    {%- elif "environment" in $.resource.turbot.tags -%}
-      {%- if $.resource.turbot.tags["environment"] in tag_value_map -%}
-        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["environment"]] + '"\n'  -%}
+    {%- elif "environment" in $.snapshot.turbot.tags -%}
+      {%- if $.snapshot.turbot.tags["environment"] in tag_value_map -%}
+        {%- set env_tag = '"' + tag_value_map[$.snapshot.turbot.tags["environment"]] + '"\n'  -%}
       {%- endif -%}
     {%- endif -%}
-    {%- if (env_tag == "null") and ("vaec:Environment" in $.resource.turbot.tags) -%}
-      {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
-        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n'  -%}
+    {%- if (env_tag == "null") and ("vaec:Environment" in $.snapshot.turbot.tags) -%}
+      {%- if $.snapshot.turbot.tags["vaec:Environment"] in tag_value_map -%}
+        {%- set env_tag = '"' + tag_value_map[$.snapshot.turbot.tags["vaec:Environment"]] + '"\n'  -%}
       {%- endif -%}
     {%- endif -%}
     {%- set new_tags = new_tags + '- "vaec:Environment": ' + env_tag -%}
