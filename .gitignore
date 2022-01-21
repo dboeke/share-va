@@ -302,11 +302,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Testing configuration
-*.tfvars
-!default.tfvars
-!demo*.tfvars
-
 # trimbot virtual environment
 .venv
 .packaging
