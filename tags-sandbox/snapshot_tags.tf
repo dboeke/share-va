@@ -4,7 +4,7 @@
 resource "turbot_policy_setting" "snapshot_tag_enforcement" {
   resource = turbot_smart_folder.vaec_aws_snapshot_tagging.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/snapshotTags"
-  value    = "Enforce: Set tags"
+  value    = "Check: Tags are correct"
 }
 
 resource "turbot_policy_setting" "snapshot_tag_template" {
@@ -13,26 +13,24 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
   template_input  = <<-QUERY
   - |
     {
-      region {
-        name: Name
-        children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
-          items {
-            name: get(path: "Name")
-            value: get(path: "Value")
-          }
-        }
-      }
-      resource {
+      snap: snapshot {
         assoc_vol_id: get(path:"VolumeId")
         turbot {
           tags
         }
       }
+      params: region {
+          children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
+            items {
+              name: get(path: "Name")
+              value: get(path: "Value")
+            }
+          }
+        }
     }
   - |
     {
-      resources(filter: "title:'{{ $.resource.volId }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/volume")
-      {
+      vol: resources(filter: "title:'{{ $.snap['assoc_vol_id'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/volume") {
         items {
           turbot {
             tags
@@ -44,12 +42,12 @@ resource "turbot_policy_setting" "snapshot_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-    {%- for ssm_param in $.region.children.items -%}
+    {% for ssm_param in $.params.children.items %}
     - {{ ssm_param['name'] }}: "{{ ssm_param['value'] }}"
-    {%- endfor -%}
-    - volId: "{{ $.resource['assoc_vol_id'] }}"
-    {%- for key, value in $.resources.items.turbot.tags -%}
+    {% endfor %}
+    - volId: "{{ $.snap['assoc_vol_id'] }}"
+    {% for key, value in $.vol.items[0].turbot.tags %}
     - {{ key }}: "{{ value }}"
-    {%- endfor -%}
+    {% endfor %}
     TEMPLATE
 }
