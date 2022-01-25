@@ -4,6 +4,7 @@ from sgqlc.endpoint.http import HTTPEndpoint
 from datetime import datetime
 import csv
 import boto3
+from botocore.exceptions import ClientError
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
