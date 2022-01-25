@@ -123,7 +123,7 @@ def run_report(profile, bucket):
             if not result['data']['volumes']['paging']['next']:
                 break
             else:
-                paging = result['data']['disks']['paging']['next']
+                paging = result['data']['volumes']['paging']['next']
 
         if keys[region]['total'] > 0:
             print("\nFound {} volumes.".format(keys[region]['total']))
