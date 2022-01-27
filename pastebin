@@ -5,18 +5,18 @@ set local search_path to console, public;
 update
   resources
 set
-  resource_group_ids = array_uniq_stable(array_cat(resource_group_ids, '{"247049619220962"}'::bigint[]))::bigint[]
+  resource_group_ids = array_uniq_stable(array_cat(resource_group_ids, '{"247049619220963"}'::bigint[]))::bigint[]
 where
   id = 207525075917252
 and
-  (resource_group_ids is null or not (resource_group_ids @> '{"247049619220962"}'::bigint[]));
+  (resource_group_ids is null or not (resource_group_ids @> '{"247049619220963"}'::bigint[]));
 
 
 insert into
   smart_folder_activities
   (resource_id, smart_folder_id, type)
 values
-  (207525075917252, 247049619220962, 'attach') on conflict do nothing;
+  (207525075917252, 247049619220963, 'attach') on conflict do nothing;
 
 
 end;
