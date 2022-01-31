@@ -1,1 +1,23 @@
-SELECT pg_size_pretty(sum(pg_relation_size(quote_ident(schemaname) || '.' || quote_ident(tablename)))::bigint) FROM pg_tables WHERE schemaname = 'schema_name';
+begin;
+set local statement_timeout=9000000;
+set local search_path to console, public;
+
+update
+  resources
+set
+  resource_group_ids = array_uniq_stable(array_cat(resource_group_ids, '{"247049619220963"}'::bigint[]))::bigint[]
+where
+  id = 207525075917252
+and
+  (resource_group_ids is null or not (resource_group_ids @> '{"247049619220963"}'::bigint[]));
+
+
+insert into
+  smart_folder_activities
+  (resource_id, smart_folder_id, type)
+values
+  (207525075917252, 247049619220963, 'attach') on conflict do nothing;
+
+
+end;
+
