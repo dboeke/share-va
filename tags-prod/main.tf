@@ -13,12 +13,7 @@ variable "turbot_profile" {
 
 resource "turbot_smart_folder" "vaec_aws_tagging" {
   parent = "tmod:@turbot/turbot#/"
-  title  = "VAEC AWS Tagging Policies v4"
-}
-
-resource "turbot_smart_folder" "vaec_aws_snapshot_tagging" {
-  parent = "tmod:@turbot/turbot#/"
-  title  = "VAEC AWS EC2 Snapshot Tagging v4"
+  title  = "VAEC AWS Tagging Policies v5"
 }
 
 ## Vars to Map resources to tag
