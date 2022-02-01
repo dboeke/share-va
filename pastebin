@@ -9,5 +9,7 @@ select resource_id, path, resource_group_id, create_timestamp, update_timestamp,
 
 select policy_hierarchy_id, policy_setting_id, create_timestamp, update_timestamp, delete_timestamp from policy_hierarchy_settings_history where id = (select setting_id from policy_values where id = 246789668744069);
 
+select resource_id, policy_type_id, create_timestamp, update_timestamp, delete_timestamp from policy_settings_history where id = (select setting_id from policy_values where id = 246789668744069);
+
 end;
 
