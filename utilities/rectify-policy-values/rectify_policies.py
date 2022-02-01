@@ -9,10 +9,9 @@ import os
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
-@click.option('-s', '--start-index', default=0, help="[Int] Sets the starting point in the returned control collection. All controls starting at the starting point will be run.")
-@click.option('-e', '--execute', is_flag=True, help="Will re-run controls when found.")
+@click.option('-c', '--cooldown', default="60", help="[Integer] Seconds to wait between batches.")
 
-def rectify(profile, start_index, execute):
+def rectify(profile, cooldown):
     config_file = None
 
     config = turbot.Config(config_file, profile)
@@ -58,6 +57,8 @@ def rectify(profile, start_index, execute):
         else:
             print("{} found...".format(len(targets)))
             paging = result['data']['targets']['paging']['next']
+        print("Pausing for {} seconds".format(cooldown))
+        time.sleep(cooldown)
 
 if __name__ == "__main__":
     rectify()
