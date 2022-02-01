@@ -57,7 +57,7 @@ def rectify(profile, cooldown):
         else:
             paging = result['data']['targets']['paging']['next']
         print("Pausing for {} seconds".format(cooldown))
-        time.sleep(cooldown)
+        time.sleep(int(cooldown))
 
 if __name__ == "__main__":
     rectify()
