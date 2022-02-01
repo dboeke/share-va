@@ -34,9 +34,8 @@ def rectify(profile, cooldown):
     '''
 
     filter = "state:error,tbd controlCategoryId:'tmod:@turbot/turbot#/control/categories/resourceTags'"
-    targets = []
     paging = None
-    print("Looking for targets...")
+    print("Starting...")
 
     while True:
         variables = {'filter': filter, 'paging': paging}
@@ -49,13 +48,13 @@ def rectify(profile, cooldown):
 
         for item in result['data']['targets']['items']:
             if 'id' in item['resource'] and len(item['resource']['id']) > 12:
+                print("Resource: {}".format(item['resource']['id']))
                 cmd = "psql -h $RDSHOST -d turbot -U turbot -c 'select * from rectify_policy_values({}::bigint);'".format(item['resource']['id'])
                 subprocess.run(cmd, shell=True)
 
         if not result['data']['targets']['paging']['next']:
             break
         else:
-            print("{} found...".format(len(targets)))
             paging = result['data']['targets']['paging']['next']
         print("Pausing for {} seconds".format(cooldown))
         time.sleep(cooldown)
