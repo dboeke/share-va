@@ -1,25 +1,150 @@
-{
- 	notifications(filter: "policyValueId:246789668744069") {
-    items {
-      notificationType
-      turbot {
-        createTimestamp
-      }
-      oldPolicyValue {
-        value
-        turbot {
-          settingId
-          timestamp
-        }
-      }
-      policyValue {
-        value
-        turbot {
-          settingId
-          timestamp
-        }
-      }
-    }
-  }
-}
+begin;
+set local statement_timeout=9000000;
+set local search_path to console, public;
+
+create or replace function rectify_policy_values (bigint)
+returns boolean
+language plpgsql
+volatile
+as $$
+declare
+  log boolean;
+begin
+
+  create temp table if not exists updated_policy_values (
+    id
+    bigint,
+
+    policy_type_id
+    bigint,
+
+    resource_id
+    bigint,
+
+    data
+    jsonb,
+
+    setting_id
+    bigint,
+
+    new_data
+    jsonb
+  );
+
+  create index updated_policy_values_id_idx               on updated_policy_values   using   btree (id);
+  create index updated_policy_values_policy_type_id_idx   on updated_policy_values   using   btree (policy_type_id);
+  create index updated_policy_values_resource_id_idx      on updated_policy_values   using   btree (resource_id);
+  create index updated_policy_values_data_idx             on updated_policy_values   using   gin   (data);
+  create index updated_policy_values_setting_id_idx       on updated_policy_values   using   btree (setting_id);
+  create index updated_policy_values_new_data_idx         on updated_policy_values   using   gin   (new_data);
+
+  insert into updated_policy_values
+  (
+    id,
+    policy_type_id,
+    resource_id,
+    data
+  )
+  select
+    id,
+    policy_type_id,
+    resource_id,
+    data
+  from
+    policy_values
+  where
+    resource_path <@ (select path from resources where id = $1);
+
+  -- fetch any required setting above the current resource
+  -- fetch the setting id closest to the current resource.
+  -- check if the value > setting_id is not equal to the policy setting id or policy hierarchy id then set it to policy hierarchy setting id.
+  update
+    updated_policy_values
+  set
+    (setting_id, new_data)
+  =
+  (
+    select
+      rphs.id as phs_id,
+      ps.data
+    from policy_settings as ps
+    inner join policy_hierarchy_settings as rphs on (ps.id = rphs.policy_setting_id)
+    inner join policy_hierarchy as rph on ( rphs.policy_hierarchy_id = rph.id )
+    where
+      ps.policy_type_id = updated_policy_values.policy_type_id
+    and
+      rph.path @> ( select path from policy_hierarchy where resource_id = updated_policy_values.resource_id and resource_group_id is null )
+    order by ps.precedence, rph.path desc
+    limit 1
+  );
+
+  -- If there is no must and should setting then it should fallback to the default value
+  -- set the new_data to the default policy by framing the jsonb object picking only necessary attributes
+  update
+    updated_policy_values
+  set
+    new_data = jsonb_build_object
+      (
+        'value', coalesce( jsonb_get(r.data, 'resolvedSchema', 'default'), jsonb_get(r.data, 'schema', 'default'), jsonb_get(updated_policy_values.data, 'value') ),
+        'precedence', coalesce(jsonb_get(r.data, 'resolvedSchema', 'defaultMetadata', 'precedence'), '"should"'::jsonb),
+        'input', jsonb_get(r.data, 'input'),
+        'inline', jsonb_get(r.data, 'inline'),
+        'defaultTemplateInput', jsonb_get(r.data, 'defaultTemplateInput'),
+        'defaultTemplate', jsonb_get(r.data, 'defaultTemplate'),
+        'function', jsonb_get(r.data, 'function'),
+        'container', jsonb_get(r.data, 'container'),
+        'stateMachine', jsonb_get(r.data, 'stateMachine'),
+        'default', true
+      )
+  from
+    resources as r
+  where
+    r.id = updated_policy_values.policy_type_id
+  and
+    updated_policy_values.setting_id is null;
+
+  update policy_values as pv
+  set
+    setting_id = upv.setting_id,
+    data = ( pv.data || upv.new_data )  - '{input, inline, defaultTemplateInput, defaultTemplate, function, container, stateMachine, template, templateInput }'::text[],
+    actor_identity_id = (select * from turbot_identity_resource_id()), -- pass actor information to the policy values.
+    next_tick_timestamp = ( case
+          when
+            ( select not is_static(upv.new_data) )
+          then
+            now_ms()
+        end
+      ),
+    value_mode = ( case
+      when
+        ( select is_static( upv.new_data ) )
+      then
+        'immediate'
+      else
+        'calculated'
+      end
+    )::policy_value_mode
+  from updated_policy_values as upv
+  where
+    pv.id = upv.id
+  and
+    not (
+      -- (upv.data->>'value' = upv.new_data->>'value') or
+      -- (upv.data->>'value' is null and upv.new_data->>'value' is null) or
+      (coalesce(pv.setting_id, 1)::bigint = coalesce(upv.setting_id, 1)::bigint) or
+      (pv.setting_id is null and upv.setting_id is null)
+    );
+
+  -- Drop temporary tables
+  drop table if exists updated_policy_values;
+
+  return true;
+  end;
+$$;
+
+alter function rectify_policy_values(bigint) set search_path=console, public;
+
+select * from rectify_policy_values(resourceId::bigint);
+
+end;
 
