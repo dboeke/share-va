@@ -64,5 +64,3 @@ def rectify(profile, cooldown):
 
 if __name__ == "__main__":
     rectify()
-
-    if x and len(x) > 12:
