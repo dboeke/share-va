@@ -45,11 +45,13 @@ def rectify(profile, cooldown):
             for error in result['errors']:
                 print(error)
             break
-
+        
+        cmd = 'export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region us-gov-west-1 --username turbot )"'
+        output = subprocess.run(cmd, shell=True)
+                
         for item in result['data']['targets']['items']:
             if 'id' in item['resource'] and len(item['resource']['id']) > 12:
                 print("Resource: {}".format(item['resource']['id']))
-                output = subprocess.run('export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region us-gov-west-1 --username turbot )"')
                 cmd = "psql -h $RDSHOST -d turbot -U turbot -c 'select * from rectify_policy_values({}::bigint);'".format(item['resource']['id'])
                 output = subprocess.run(cmd, shell=True)
 
