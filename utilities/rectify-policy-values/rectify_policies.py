@@ -50,7 +50,7 @@ def rectify(profile, cooldown):
         output = subprocess.run(cmd, shell=True)
                 
         for item in result['data']['targets']['items']:
-            if 'id' in item['resource'] and len(item['resource']['id']) > 12:
+            if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
                 print("Resource: {}".format(item['resource']['id']))
                 cmd = "psql -h $RDSHOST -d turbot -U turbot -c 'select * from rectify_policy_values({}::bigint);'".format(item['resource']['id'])
                 output = subprocess.run(cmd, shell=True)
@@ -64,3 +64,5 @@ def rectify(profile, cooldown):
 
 if __name__ == "__main__":
     rectify()
+
+    if x and len(x) > 12:
