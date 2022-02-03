@@ -67,11 +67,12 @@ def rectify(profile, cooldown):
             if "reason" in item:
                 if item['reason'] == "Bad Request: Expected only 1 winning policy setting for policy":
                     if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
-                        print("Resource: {}".format(item['resource']['id']))
+                        print("Rectifying Resource: {}".format(item['resource']['id']))
                         cmd = export + "psql -h $RDSHOST -d turbot -U turbot -c 'select * from rectify_policy_values({}::bigint);'".format(item['resource']['id'])
                         output = subprocess.run(cmd, shell=True)
                         export = ""
             
+            print("running policy value for: {}".format(item['turbot']['id']))
             vars = {'input': {'id': item['turbot']['id']}}
             try:
                 run = endpoint(mutation, vars)
