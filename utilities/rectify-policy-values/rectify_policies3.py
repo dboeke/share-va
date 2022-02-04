@@ -88,12 +88,12 @@ def rectify(profile, cooldown, host, port, region, timeout, state_filter):
                 
         for item in result['data']['targets']['items']:
             
-            # if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
-            #     print("Rectifying Resource: {}".format(item['resource']['id']))
-            #     rec_query = "select * from rectify_policy_values({}::bigint);".format(item['resource']['id'])
-            #     cur.execute(rec_query)
-            #     query_results = cur.fetchall()
-            #     print(query_results)
+            if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
+                print("Rectifying Resource: {}".format(item['resource']['id']))
+                rec_query = "select * from rectify_policy_values({}::bigint);".format(item['resource']['id'])
+                cur.execute(rec_query)
+                query_results = cur.fetchall()
+                print(query_results)
             
             print("running policy value for: {}".format(item['turbot']['id']))
             vars = {'input': {'id': item['turbot']['id']}}
