@@ -17,9 +17,10 @@ import boto3
 @click.option('--port', default="5432", help="[Integer] ip port of rds instance.")
 @click.option('--region', default="us-gov-west-1", help="[String] region name of instance")
 @click.option('--timeout', default="20", help="[Float] how long to wait on graphql call to run policy values")
+@click.option('--state-filter', default="", help="[Float] e.g. state:error")
 
 
-def rectify(profile, cooldown, host, port, region, timeout):
+def rectify(profile, cooldown, host, port, region, timeout, state_filter):
     config_file = None
     config = turbot.Config(config_file, profile)
     headers = {'Authorization': 'Basic {}'.format(config.auth_token)}
@@ -59,6 +60,10 @@ def rectify(profile, cooldown, host, port, region, timeout):
     '''
 
     filter = "controlCategoryId:'tmod:@turbot/turbot#/control/categories/resourceTags'"
+    if len(state_filter):
+        filter = f"{state_filter} {filter}"
+
+    print(f"Using filter: {filter}")
     paging = None
     print("Starting...")
 
@@ -83,14 +88,12 @@ def rectify(profile, cooldown, host, port, region, timeout):
                 
         for item in result['data']['targets']['items']:
             
-            if "reason" in item:
-                if item['reason'] == "Bad Request: Expected only 1 winning policy setting for policy":
-                    if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
-                        print("Rectifying Resource: {}".format(item['resource']['id']))
-                        rec_query = "select * from rectify_policy_values({}::bigint);".format(item['resource']['id'])
-                        cur.execute(rec_query)
-                        query_results = cur.fetchall()
-                        print(query_results)
+            if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
+                print("Rectifying Resource: {}".format(item['resource']['id']))
+                rec_query = "select * from rectify_policy_values({}::bigint);".format(item['resource']['id'])
+                cur.execute(rec_query)
+                query_results = cur.fetchall()
+                print(query_results)
             
             print("running policy value for: {}".format(item['turbot']['id']))
             vars = {'input': {'id': item['turbot']['id']}}
