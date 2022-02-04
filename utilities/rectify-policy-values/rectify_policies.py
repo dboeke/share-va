@@ -10,13 +10,14 @@ import os
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
 @click.option('-c', '--cooldown', default="60", help="[Integer] Seconds to wait between batches.")
+@click.option('-t', '--timeout', default="10", help="[Integer] Seconds to wait for graphql response")
 
-def rectify(profile, cooldown):
+def rectify(profile, cooldown, timeout):
     config_file = None
 
     config = turbot.Config(config_file, profile)
     headers = {'Authorization': 'Basic {}'.format(config.auth_token)}
-    endpoint = HTTPEndpoint(config.graphql_endpoint, headers)
+    endpoint = HTTPEndpoint(config.graphql_endpoint, base_headers=headers, timeout=float(timeout))
 
     query = '''
         query Targets($filter: [String!]!, $paging: String) {

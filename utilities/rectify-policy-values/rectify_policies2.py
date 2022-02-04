@@ -16,13 +16,14 @@ import boto3
 @click.option('--host', help="[String] fully qualified hostname of Turbot RDS instance.")
 @click.option('--port', default="5432", help="[Integer] ip port of rds instance.")
 @click.option('--region', default="us-gov-west-1", help="[String] region name of instance")
+@click.option('--timeout', default="20", help="[Float] how long to wait on graphql call to run policy values")
 
 
-def rectify(profile, cooldown, host, port, region):
+def rectify(profile, cooldown, host, port, region, timeout):
     config_file = None
     config = turbot.Config(config_file, profile)
     headers = {'Authorization': 'Basic {}'.format(config.auth_token)}
-    endpoint = HTTPEndpoint(config.graphql_endpoint, headers)
+    endpoint = HTTPEndpoint(config.graphql_endpoint, base_headers=headers, timeout=float(timeout))
 
     #gets the credentials from .aws/credentials
     session = boto3.Session()
@@ -57,7 +58,7 @@ def rectify(profile, cooldown, host, port, region):
         }
     '''
 
-    filter = "state:error controlCategoryId:'tmod:@turbot/turbot#/control/categories/resourceTags'"
+    filter = "controlCategoryId:'tmod:@turbot/turbot#/control/categories/resourceTags'"
     paging = None
     print("Starting...")
 
