@@ -87,8 +87,8 @@ def rectify(profile, cooldown, host, port, region, timeout):
                 if item['reason'] == "Bad Request: Expected only 1 winning policy setting for policy":
                     if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
                         print("Rectifying Resource: {}".format(item['resource']['id']))
-                        query = "select * from rectify_policy_values({}::bigint);".format(item['resource']['id'])
-                        cur.execute(query)
+                        rec_query = "select * from rectify_policy_values({}::bigint);".format(item['resource']['id'])
+                        cur.execute(rec_query)
                         query_results = cur.fetchall()
                         print(query_results)
             
