@@ -6,17 +6,27 @@ import pprint
 import time
 import subprocess
 import os
+import psycopg2
+import boto3
+
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
 @click.option('-c', '--cooldown', default="60", help="[Integer] Seconds to wait between batches.")
+@click.option('--host', help="[String] fully qualified hostname of Turbot RDS instance.")
+@click.option('--port', default="5432", help="[Integer] ip port of rds instance.")
+@click.option('--region', default="us-gov-west-1", help="[String] region name of instance")
 
-def rectify(profile, cooldown):
+
+def rectify(profile, cooldown, host, port, region):
     config_file = None
-
     config = turbot.Config(config_file, profile)
     headers = {'Authorization': 'Basic {}'.format(config.auth_token)}
     endpoint = HTTPEndpoint(config.graphql_endpoint, headers)
+
+    #gets the credentials from .aws/credentials
+    session = boto3.Session()
+    client = session.client('rds')
 
     query = '''
         query Targets($filter: [String!]!, $paging: String) {
@@ -60,7 +70,13 @@ def rectify(profile, cooldown):
                 print(error)
             break
 
-        export = 'export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region us-gov-west-1 --username turbot )" ; '
+        token = client.generate_db_auth_token(DBHostname=host, Port=port, DBUsername="turbot", Region=region)
+
+        try:
+            conn = psycopg2.connect(host=host, port=port, database="turbot", user="turbot", password=token, sslmode='require', sslrootcert="SSLCERTIFICATE")
+            cur = conn.cursor()
+        except Exception as e:
+            print("Database connection failed due to {}".format(e))    
                 
         for item in result['data']['targets']['items']:
             
@@ -68,9 +84,10 @@ def rectify(profile, cooldown):
                 if item['reason'] == "Bad Request: Expected only 1 winning policy setting for policy":
                     if 'id' in item['resource'] and item['resource']['id'] and len(item['resource']['id']) > 12:
                         print("Rectifying Resource: {}".format(item['resource']['id']))
-                        cmd = export + "psql -h $RDSHOST -d turbot -U turbot -c 'select * from rectify_policy_values({}::bigint);'".format(item['resource']['id'])
-                        output = subprocess.run(cmd, shell=True)
-                        export = ""
+                        query = "select * from rectify_policy_values({}::bigint);".format(item['resource']['id'])
+                        cur.execute(query)
+                        query_results = cur.fetchall()
+                        print(query_results)
             
             print("running policy value for: {}".format(item['turbot']['id']))
             vars = {'input': {'id': item['turbot']['id']}}
