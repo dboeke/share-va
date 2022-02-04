@@ -71,14 +71,15 @@ def rectify(profile, cooldown):
                         cmd = export + "psql -h $RDSHOST -d turbot -U turbot -c 'select * from rectify_policy_values({}::bigint);'".format(item['resource']['id'])
                         output = subprocess.run(cmd, shell=True)
                         export = ""
-            
-            print("running policy value for: {}".format(item['turbot']['id']))
-            vars = {'input': {'id': item['turbot']['id']}}
-            try:
-                run = endpoint(mutation, vars)
-                print(run)
-            except Exception as e:
-                print(e)
+                
+                else:
+                    print("running policy value for: {}".format(item['turbot']['id']))
+                    vars = {'input': {'id': item['turbot']['id']}}
+                    try:
+                        run = endpoint(mutation, vars)
+                        print(run)
+                    except Exception as e:
+                        print(e)
 
         if not result['data']['targets']['paging']['next']:
             break
