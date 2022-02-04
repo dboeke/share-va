@@ -69,7 +69,9 @@ def rectify(profile, cooldown, host, port, region):
             for error in result['errors']:
                 print(error)
             break
-
+        
+        session = boto3.Session()
+        client = session.client('rds')
         token = client.generate_db_auth_token(DBHostname=host, Port=port, DBUsername="turbot", Region=region)
 
         try:
