@@ -27,8 +27,8 @@ def rectify(profile, cooldown, host, port, region, timeout, state_filter):
     endpoint = HTTPEndpoint(config.graphql_endpoint, base_headers=headers, timeout=float(timeout))
 
     #gets the credentials from .aws/credentials
-    # session = boto3.Session()
-    # client = session.client('rds')
+    session = boto3.Session()
+    client = session.client('rds')
 
     query = '''
         query Targets($filter: [String!]!, $paging: String) {
@@ -76,15 +76,15 @@ def rectify(profile, cooldown, host, port, region, timeout, state_filter):
                 print(error)
             break
         
-        # session = boto3.Session()
-        # client = session.client('rds')
-        # token = client.generate_db_auth_token(DBHostname=host, Port=port, DBUsername="turbot", Region=region)
+        session = boto3.Session()
+        client = session.client('rds')
+        token = client.generate_db_auth_token(DBHostname=host, Port=port, DBUsername="turbot", Region=region)
 
-        # try:
-        #     conn = psycopg2.connect(host=host, port=port, database="turbot", user="turbot", password=token, sslmode='require', sslrootcert="SSLCERTIFICATE")
-        #     cur = conn.cursor()
-        # except Exception as e:
-        #     print("Database connection failed due to {}".format(e))    
+        try:
+            conn = psycopg2.connect(host=host, port=port, database="turbot", user="turbot", password=token, sslmode='require', sslrootcert="SSLCERTIFICATE")
+            cur = conn.cursor()
+        except Exception as e:
+            print("Database connection failed due to {}".format(e))    
                 
         for item in result['data']['targets']['items']:
             
