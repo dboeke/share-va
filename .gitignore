@@ -249,6 +249,7 @@ dmypy.json
 ### Terraform ###
 # Local .terraform directories
 .terraform*
+.teraform.lock.*
 
 # .tfstate files
 *.tfstate
