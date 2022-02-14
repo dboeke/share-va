@@ -33,7 +33,7 @@ resource "turbot_policy_setting" "efs_resource_tag_template" {
           }
         }
       }
-      enis: resources(filter:"title:'{{ $.eni['mounts'][0]['NetworkInterfaceId'] }}' resourceType:tmod:@turbot/aws-efs#/resource/types/fileSystem") {
+      enis: resources(filter:"title:'{{ $.eni['mounts'][0]['NetworkInterfaceId'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/networkInterface") {
         items {
           turbot {
             tags
