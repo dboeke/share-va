@@ -21,17 +21,15 @@ resource "turbot_policy_setting" "non_vpc_tag_template" {
     }
   - |
     {
-      {
-        acct: resource(id:"${var.org_arn}/{{$.account.id}}") {
-          tags: get(path:"turbot.tags")
-        }
-        resource {
-          tags: get(path:"turbot.tags")
-          acct_id: get(path:"turbot.custom.aws.accountId")
-        }
-        tenant: resource(id:"vaectenant"){
-          data
-        }
+      acct: resource(id:"${var.org_arn}/{{$.account.id}}") {
+        tags: get(path:"turbot.tags")
+      }
+      resource {
+        tags: get(path:"turbot.tags")
+        acct_id: get(path:"turbot.custom.aws.accountId")
+      }
+      tenant: resource(id:"vaectenant"){
+        data
       }
     }
   QUERY
