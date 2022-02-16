@@ -4,7 +4,7 @@ org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
 # These tags must exist
 required_tags = {
   "vaec:VAECID" : "vaec:VAECID"
-  "vaec:VAECID" : "vaec:CKID"
+  "vaec:CKID" : "vaec:CKID"
 }
 
 conn_id_map = {
