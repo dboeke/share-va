@@ -21,9 +21,9 @@ def update_mods(profile, output_dir, cooldown, download):
 
     query = '''
         query MyQuery {
-            resources(filter: "resourceTypeId:tmod:@turbot/turbot#/resource/types/mod resourceTypeLevel:self limit:1000") {
-                items {
-                    title
+            installed: resources(filter: "resourceTypeId:tmod:@turbot/turbot#/resource/types/mod resourceTypeLevel:self limit:1000") {
+                mods: items {
+                    id: title
                 }
             }
         }
