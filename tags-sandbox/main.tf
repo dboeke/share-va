@@ -9,11 +9,16 @@ variable "turbot_profile" {
   description = "Enter profile matching your turbot cli credentials."
 }
 
+variable "org_arn" {
+  description = "Enter arn of the aws organization root."
+  type        = string
+}
+
 ## Create Smart Folder at the Turbot level
 
 resource "turbot_smart_folder" "vaec_aws_tagging" {
   parent = "tmod:@turbot/turbot#/"
-  title  = "VAEC AWS Tagging Policies v5"
+  title  = "VAEC AWS Tagging Policies v6"
 }
 
 ## Vars to Map resources to tag
