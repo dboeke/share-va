@@ -47,7 +47,7 @@ def update_mods(profile, output_dir, cooldown, download):
             download_cmd = f"turbot download {mod['id']} --output {output_dir}{sep}{file_name}.zip"
             print(f"Downloading {mod['id']}")
             subprocess.run(download_cmd, shell=True)
-        upload_cmd = f"turbot up --zip-file {output_dir}{sep}{file_name}.zip"
+        upload_cmd = f"turbot up --zip-file {output_dir}{sep}{file_name}.zip --profile {profile}"
         print(f"Installing {mod['id']}")
         subprocess.run(upload_cmd, shell=True)
 
