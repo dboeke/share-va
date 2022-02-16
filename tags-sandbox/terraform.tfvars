@@ -1,4 +1,4 @@
-org_arn = "arn:aws-us-gov:organizations::348286891446:organization/o-fgsg4evelb"
+org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
 
 ## Required Tags
 # These tags must exist
