@@ -20,13 +20,10 @@ def update_mods(profile, output_dir, cooldown, download):
     endpoint = HTTPEndpoint(config.graphql_endpoint, base_headers=headers, timeout=240)
 
     query = '''
-        query Mods($status: [ModVersionStatus!]) {
-            latest: modVersionSearches(status: $status) {
-                mods: items {
-                    name
-                    versions {
-                        version
-                    }
+        query MyQuery {
+            resources(filter: "resourceTypeId:tmod:@turbot/turbot#/resource/types/mod resourceTypeLevel:self limit:1000") {
+                items {
+                    title
                 }
             }
         }
@@ -35,7 +32,7 @@ def update_mods(profile, output_dir, cooldown, download):
     modlist = {}
     print("Finding installed mods")
 
-    variables = {'status':["RECOMMENDED"]}
+    variables = {}
     result = endpoint(query, variables)
 
     if "errors" in result:
@@ -43,12 +40,14 @@ def update_mods(profile, output_dir, cooldown, download):
             print(error)
         exit()
             
-    for mod in result['data']['latest']['mods']:
+    for mod in result['data']['installed']['mods']:
         sep = "" if output_dir.endswith("/") else "/"
         if download:
-            download_cmd = f"turbot download @turbot/{mod['name']} --output {output_dir}{sep}turbot_{mod['name']}.zip"
+            download_cmd = f"turbot download {mod['id']} --output {output_dir}{sep}turbot_{mod['id']}.zip"
+            print(f"Downloading {mod['id']}")
             subprocess.run(download_cmd, shell=True)
         upload_cmd = f"turbot up --zip-file {output_dir}{sep}turbot_{mod['name']}.zip"
+        print(f"Installing {mod['id']}")
         subprocess.run(upload_cmd, shell=True)
 
         print("Pausing for {} seconds".format(cooldown))
