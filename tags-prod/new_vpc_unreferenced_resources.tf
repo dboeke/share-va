@@ -1,4 +1,4 @@
-resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_template" {
+resource "turbot_policy_setting" "new_vpc_unreferenced_resource_tag_template" {
   for_each        = var.new_vpc_unreferenced_tags
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = var.policy_map_template[each.key]
