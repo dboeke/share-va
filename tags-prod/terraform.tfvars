@@ -1,5 +1,5 @@
 ###  Check this for correct value on Prod
-## Sandbox  org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
+org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
 
 new_non_vpc_resource_tags = {
   # aws-acm-certificate                      = "Enforce: Set tags"
