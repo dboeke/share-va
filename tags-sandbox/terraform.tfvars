@@ -50,8 +50,6 @@ non_vpc_resource_tags = {
   aws-ssm-maintenanceWindow                = "Enforce: Set tags"
   aws-stepfunctions-stateMachine           = "Enforce: Set tags"
   ####
-  aws-cloudfront-distribution          = "Enforce: Set tags"
-  aws-cloudfront-streamingDistribution = "Enforce: Set tags"
   aws-iam-role                         = "Enforce: Set tags"
   aws-iam-user                         = "Enforce: Set tags"
   aws-route53-hostedZone               = "Enforce: Set tags"

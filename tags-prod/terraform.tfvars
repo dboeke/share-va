@@ -48,6 +48,11 @@ new_non_vpc_resource_tags = {
   # aws-ssm-document                         = "Enforce: Set tags"
   # aws-ssm-maintenanceWindow                = "Enforce: Set tags"
   # aws-stepfunctions-stateMachine           = "Enforce: Set tags"
+  ##
+  #aws-iam-role                         = "Enforce: Set tags"
+  #aws-iam-user                         = "Enforce: Set tags"
+  #aws-route53-hostedZone               = "Enforce: Set tags"
+  #aws-waf-webacl                       = "Enforce: Set tags"
 }
 
 non_vpc_resource_tags = {
