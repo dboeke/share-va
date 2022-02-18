@@ -15,8 +15,32 @@ resource "turbot_smart_folder" "vaec_aws_tagging" {
   title  = "VAEC AWS Tagging Policies v5"
 }
 
-## Vars to Map resources to tag
+##############################
+## Tag Enforcement Maps
+##############################
+variable "enforce_non_vpc_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
 
+variable "enforce_vpc_child_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "enforce_vpc_referenced_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "enforce_vpc_unreferenced_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+##############################
+## OLD Tag Template Maps
+##############################
 variable "non_vpc_resource_tags" {
   description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
   type        = map
@@ -37,6 +61,32 @@ variable "vpc_unreferenced_tags" {
   type        = map
 }
 
+##############################
+## NEW tag template maps
+##############################
+variable "new_non_vpc_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "new_vpc_child_resource_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "new_vpc_referenced_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+variable "new_vpc_unreferenced_tags" {
+  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
+  type        = map
+}
+
+##############################
+## Vars to Map resources to tag
+##############################
 variable "vpc_referenced_resource_map" {
   description = "Map of the name of the reference to the vpc id on a resource"
   type        = map
@@ -76,6 +126,9 @@ variable "env_key_list" {
   type        = list
 }
 
+##############################
+##  Nunjucks Templates
+##############################
 variable "template_init" {
   description = "Nunjucks calc policy template."
   type        = string

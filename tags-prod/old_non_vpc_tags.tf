@@ -1,11 +1,3 @@
-## Sets tagging policy for each resource type in the resource_tags map.
-resource "turbot_policy_setting" "non_vpc_tag_enforcement" {
-  for_each        = var.non_vpc_resource_tags
-  resource        = turbot_smart_folder.vaec_aws_tagging.id
-  type            = var.policy_map[each.key]
-  value           = each.value
-}
-
 ## Sets the default tag template for all resources.
 resource "turbot_policy_setting" "non_vpc_tag_template" {
   for_each        = var.non_vpc_resource_tags

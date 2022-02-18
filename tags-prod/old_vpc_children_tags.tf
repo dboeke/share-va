@@ -1,14 +1,3 @@
-###############################
-## TAGS for children of the VPC
-###############################
-resource "turbot_policy_setting" "vpc_resource_tag_enforcement" {
-  for_each        = var.vpc_child_resource_tags
-  resource        = turbot_smart_folder.vaec_aws_tagging.id
-  type            = var.policy_map[each.key]
-  value           = each.value
-}
-
-## Sets the default tag template for all VPC resources.
 resource "turbot_policy_setting" "vpc_resource_tag_template" {
   for_each        = var.vpc_child_resource_tags
   resource        = turbot_smart_folder.vaec_aws_tagging.id

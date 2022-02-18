@@ -1,14 +1,3 @@
-###############################
-## Sets tagging policy for VPCs
-###############################
-resource "turbot_policy_setting" "vpc_tag_enforcement" {
-  resource        = turbot_smart_folder.vaec_aws_tagging.id
-  type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTags"
-  #value           = "Enforce: Set tags"
-  value           = "Check: Tags are correct"
-}
-
-## Sets tagging template for VPCs
 resource "turbot_policy_setting" "vpc_tag_template" {
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTagsTemplate"
