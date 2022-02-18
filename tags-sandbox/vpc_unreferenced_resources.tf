@@ -40,7 +40,7 @@ resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-    {%- if ($.resource.tags) and ($.env_tag.data) and ($.tenant.data) and ($.region.children.vpcs) -%}
+    {%- if ($.resource.tags) and ($.env_tag.data) and ($.tenant.data) -%}
     ${var.template_init}
     ${var.template_org_tags}
     ${var.template_env_tag}
