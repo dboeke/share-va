@@ -1,4 +1,5 @@
-resource "turbot_policy_setting" "new_vpc_tag_template" {
+## Sets tagging template for VPCs
+resource "turbot_policy_setting" "vpc_tag_template" {
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTagsTemplate"
   template_input  = <<-QUERY
