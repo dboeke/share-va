@@ -1,16 +1,18 @@
-###############################
-## Sets tagging policy for VPCs
-###############################
-resource "turbot_policy_setting" "vpc_tag_enforcement" {
+#####################################################################
+## Tagging for resources related to the VPC that have VPC References
+#####################################################################
+resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_enforcement" {
+  for_each        = var.new_vpc_unreferenced_tags 
   resource        = turbot_smart_folder.vaec_aws_tagging.id
-  type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTags"
-  value           = "Enforce: Set tags"
+  type            = var.policy_map[each.key]
+  value           = each.value
 }
 
-## Sets tagging template for VPCs
-resource "turbot_policy_setting" "vpc_tag_template" {
+resource "turbot_policy_setting" "vpc_unreferenced_resource_tag_template" {
+  for_each        = var.new_vpc_unreferenced_tags
   resource        = turbot_smart_folder.vaec_aws_tagging.id
-  type            = "tmod:@turbot/aws-vpc-core#/policy/types/vpcTagsTemplate"
+  type            = var.policy_map_template[each.key]
+  # GraphQL to pull policy Statements
   template_input  = <<-QUERY
   - |
     {
@@ -41,10 +43,10 @@ resource "turbot_policy_setting" "vpc_tag_template" {
     {%- if ($.resource.tags) and ($.env_tag.data) and ($.tenant.data) and ($.region.children.vpcs) -%}
     ${var.template_init}
     ${var.template_org_tags}
-    ${var.template_self_conn_id}
     ${var.template_env_tag}
     ${var.template_tenant_tags}
     ${var.template_output_tags}
     {%- endif -%}
     TEMPLATE
 }
+

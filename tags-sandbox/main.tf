@@ -23,11 +23,6 @@ resource "turbot_smart_folder" "vaec_aws_tagging" {
 
 ## Vars to Map resources to tag
 
-variable "global_resource_tags" {
-  description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
-  type        = map
-}
-
 variable "non_vpc_resource_tags" {
   description = "Map of the list of resources that need to be tagged. please update in terraform.tfvars:"
   type        = map
@@ -63,26 +58,36 @@ variable "policy_map_template" {
   type        = map
 }
 
-variable "required_tags" {
-  description = "This is a list of tag names that must exist on all resources."
-  type        = map
-}
-variable "conn_id_map" {
-  description = "This is a list of allowed connection keys."
-  type        = map
+variable "template_init" {
+  description = "Nunjucks calc policy template."
+  type        = string
 }
 
-variable "wrong_tag_values" {
-  description = "This is a list of environment values to map to correct values"
-  type        = map
+variable "template_org_tags" {
+  description = "Nunjucks calc policy template."
+  type        = string
 }
-
-variable "conn_key_list" {
-  description = "This is a list of tag names that could contain the connection key."
-  type        = list
+variable "template_parent_conn_id" {
+  description = "Nunjucks calc policy template."
+  type        = string
 }
-
-variable "env_key_list" {
-  description = "This is a list of tag names that could contain the environment type."
-  type        = list
+variable "template_self_conn_id" {
+  description = "Nunjucks calc policy template."
+  type        = string
+}
+variable "template_related_conn_id" {
+  description = "Nunjucks calc policy template."
+  type        = string
+}
+variable "template_env_tag" {
+  description = "Nunjucks calc policy template."
+  type        = string
+}
+variable "template_tenant_tags" {
+  description = "Nunjucks calc policy template."
+  type        = string
+}
+variable "template_output_tags" {
+  description = "Nunjucks calc policy template."
+  type        = string
 }

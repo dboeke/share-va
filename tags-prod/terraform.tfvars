@@ -1,143 +1,53 @@
-## Required Tags
+###  Check this for correct value on Prod
+## Sandbox  org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
 
-# These tags must exist
-required_tags = {
-  "/vaec/tag/VAECID" : "vaec:VAECID"
-  "/vaec/tag/CKID" : "vaec:CKID"
-}
-
-conn_id_map = {
-  "311" : "Production"
-  "312" : "Stage"
-  "313" : "Development"
-}
-
-conn_key_list = [
-  "ConnectionID",
-  "ConnectionId",
-  "connectionID",
-  "connectionId",
-  "connectionid",
-  "vaec:ConnectionID"
-]
-
-env_key_list = [
-  "Environment",
-  "environment",
-  "vaec:environment",
-  "vaec:Environment"
-]
-
-# These tags are set incorrectly
-wrong_tag_values = {
-  "Production" : "Production"
-  "Stage" : "Stage"
-  "Development" : "Development"
-  "Demo" : "Development"
-  "demo" : "Development"
-  "DEV" : "Development"
-  "Dev" : "Development"
-  "dev" : "Development"
-  "DEV02" : "Development"
-  "Dev02" : "Development"
-  "dev8" : "Development"
-  "DEVELOPMENT" : "Development"
-  "development" : "Development"
-  "Development " : "Development"
-  "Development2" : "Development"
-  "Development-2" : "Development"
-  "Development-A" : "Development"
-  "Development-CST" : "Development"
-  "Development-SBX" : "Development"
-  "devl" : "Development"
-  "devperf" : "Development"
-  "dev-shared" : "Development"
-  "DEVTEST" : "Development"
-  "DR Sandbox" : "Development"
-  "dr-dev" : "Development"
-  "fti-dev" : "Development"
-  "ivs-sandbox" : "Development"
-  "ldx-dev" : "Development"
-  "map-sandbox" : "Development"
-  "pexip-dev" : "Development"
-  "POC" : "Development"
-  "poc" : "Development"
-  "QA" : "Development"
-  "qa" : "Development"
-  "SANDBOX" : "Development"
-  "Sandbox" : "Development"
-  "sandbox" : "Development"
-  "SQA" : "Development"
-  "sqa" : "Development"
-  "SQA1" : "Development"
-  "SQA2" : "Development"
-  "SQA3" : "Development"
-  "SQA3C" : "Development"
-  "SQA4" : "Development"
-  "SQA5" : "Development"
-  "SQA6" : "Development"
-  "SQA7" : "Development"
-  "Test" : "Development"
-  "test" : "Development"
-  "Testing" : "Development"
-  "tst" : "Development"
-  "UAT" : "Development"
-  "uat" : "Development"
-  "UAT01" : "Development"
-  "UAT02" : "Development"
-  "UAT03" : "Development"
-  "aip-prod" : "Production"
-  "dr-prod" : "Production"
-  "fti-prod" : "Production"
-  "ivs-prod" : "Production"
-  "map-prod" : "Production"
-  "prd" : "Production"
-  "PROD" : "Production"
-  "Prod" : "Production"
-  "prod" : "Production"
-  "prod8" : "Production"
-  "Prod-A" : "Production"
-  "prod-aux" : "Production"
-  "prod-gov-internal" : "Production"
-  "Prod-Ops" : "Production"
-  "prod-shared" : "Production"
-  "Produciton" : "Production"
-  "PRODUCTION" : "Production"
-  "production" : "Production"
-  "Production-2" : "Production"
-  "Production-A" : "Production"
-  "Production-AUX" : "Production"
-  "Production-BCK" : "Production"
-  "Production-CM" : "Production"
-  "Production-CST" : "Production"
-  "Production-K" : "Production"
-  "Production-L" : "Production"
-  "Production-VPX" : "Production"
-  "DR-PreProd" : "Stage"
-  "fti-stage" : "Stage"
-  "ivs-staging" : "Stage"
-  "map-staging" : "Stage"
-  "Pre Production" : "Stage"
-  "PREPROD" : "Stage"
-  "PreProd" : "Stage"
-  "preprod" : "Stage"
-  "Pre-Prod" : "Stage"
-  "pre-prod" : "Stage"
-  "PreProduction" : "Stage"
-  "Pre-Production" : "Stage"
-  "STAGE" : "Stage"
-  "stage" : "Stage"
-  "stage8" : "Stage"
-  "Stage-A" : "Stage"
-  "Stage-CST" : "Stage"
-  "Stage-K" : "Stage"
-  "Stage-L" : "Stage"
-  "Stage-Ops" : "Stage"
-  "STAGETEST" : "Stage"
-  "StageTest" : "Stage"
-  "STAGING" : "Stage"
-  "Staging" : "Stage"
-  "staging" : "Stage"
+new_non_vpc_resource_tags = {
+  # aws-acm-certificate                      = "Enforce: Set tags"
+  # aws-apigateway-api                       = "Enforce: Set tags"
+  # aws-apigateway-stage                     = "Enforce: Set tags"
+  # aws-appstream-fleet                      = "Enforce: Set tags"
+  # aws-appstream-image                      = "Enforce: Set tags"
+  # aws-athena-namedQuery                    = "Enforce: Set tags"
+  # aws-athena-workgroup                     = "Enforce: Set tags"
+  # aws-cloudtrail-trail                     = "Enforce: Set tags"
+  # aws-cloudwatch-alarm                     = "Enforce: Set tags"
+  # aws-codebuild-project                    = "Enforce: Set tags"
+  # aws-codecommit-repository                = "Enforce: Set tags"
+  # aws-config-rule                          = "Enforce: Set tags"
+  # aws-dynamodb-table                       = "Enforce: Set tags"
+  # aws-ec2-ami                              = "Enforce: Set tags"
+  # aws-ec2-autoScalingGroup                 = "Enforce: Set tags"
+  # aws-ec2-launchTemplate                   = "Enforce: Set tags"
+  # aws-ec2-targetGroup                      = "Enforce: Set tags"
+  # aws-ecr-repository                       = "Enforce: Set tags"
+  # aws-elasticache-snapshot                 = "Enforce: Set tags"
+  # aws-elasticsearch-domain                 = "Enforce: Set tags"
+  # aws-glacier-vault                        = "Enforce: Set tags"
+  # aws-glue-crawler                         = "Enforce: Set tags"
+  # aws-glue-dev-endpoint                    = "Enforce: Set tags"
+  # aws-glue-job                             = "Enforce: Set tags"
+  # aws-glue-ml-transform                    = "Enforce: Set tags"
+  # aws-glue-trigger                         = "Enforce: Set tags"
+  # aws-glue-workflow                        = "Enforce: Set tags"
+  # aws-inspector-assessmentTemplate         = "Enforce: Set tags"
+  # aws-kinesis-stream                       = "Enforce: Set tags"
+  # aws-kms-key                              = "Enforce: Set tags"
+  # aws-lambda-function                      = "Enforce: Set tags"
+  # aws-logs-logGroup                        = "Enforce: Set tags"
+  # aws-rds-dbClusterParameterGroup          = "Enforce: Set tags"
+  # aws-rds-dbClusterSnapshotManual          = "Enforce: Set tags"
+  # aws-rds-dbParameterGroup                 = "Enforce: Set tags"
+  # aws-rds-dbSnapshotManual                 = "Enforce: Set tags"
+  # aws-rds-optionGroup                      = "Enforce: Set tags"
+  # aws-redshift-clusterParameterGroup       = "Enforce: Set tags"
+  # aws-redshift-clusterSnapshotManual       = "Enforce: Set tags"
+  # aws-s3-bucket                            = "Enforce: Set tags"
+  # aws-secretsmanager-secret                = "Enforce: Set tags"
+  # aws-sns-topic                            = "Enforce: Set tags"
+  # aws-sqs-queue                            = "Enforce: Set tags"
+  # aws-ssm-document                         = "Enforce: Set tags"
+  # aws-ssm-maintenanceWindow                = "Enforce: Set tags"
+  # aws-stepfunctions-stateMachine           = "Enforce: Set tags"
 }
 
 non_vpc_resource_tags = {
@@ -189,6 +99,18 @@ non_vpc_resource_tags = {
   aws-stepfunctions-stateMachine           = "Enforce: Set tags"
 }
 
+new_vpc_unreferenced_tags = {
+#  aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
+#  aws-ecs-cluster                             = "Enforce: Set tags"
+#  aws-elasticache-cacheCluster                = "Enforce: Set tags"
+#  aws-workspaces-workspace                    = "Enforce: Set tags"
+#  aws-rds-dbCluster                           = "Enforce: Set tags"
+#  aws-vpc-connect-vpnConnection               = "Enforce: Set tags"
+#  aws-vpc-connect-customerGateway             = "Enforce: Set tags"
+#  aws-vpc-connect-transitGateway              = "Enforce: Set tags"
+#  aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
+}
+
 vpc_unreferenced_tags = {
   aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
   aws-ecs-cluster                             = "Enforce: Set tags"
@@ -201,6 +123,18 @@ vpc_unreferenced_tags = {
   aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
 }
 
+new_vpc_child_resource_tags = {
+#  aws-vpc-connect-vpcPeeringConnection = "Enforce: Set tags"
+#  aws-vpc-core-routeTable              = "Enforce: Set tags"
+#  aws-vpc-core-subnet                  = "Enforce: Set tags"
+#  aws-vpc-internet-elasticIp           = "Enforce: Set tags"
+#  aws-vpc-internet-vpcEndpoint         = "Enforce: Set tags"
+#  aws-vpc-internet-vpcEndpointService  = "Enforce: Set tags"
+#  aws-vpc-security-flowLog             = "Enforce: Set tags"
+#  aws-vpc-security-networkAcl          = "Enforce: Set tags"
+#  aws-vpc-security-securityGroup       = "Enforce: Set tags"
+}
+
 vpc_child_resource_tags = {
   aws-vpc-connect-vpcPeeringConnection = "Enforce: Set tags"
   aws-vpc-core-routeTable              = "Enforce: Set tags"
@@ -211,17 +145,22 @@ vpc_child_resource_tags = {
   aws-vpc-security-flowLog             = "Enforce: Set tags"
   aws-vpc-security-networkAcl          = "Enforce: Set tags"
   aws-vpc-security-securityGroup       = "Enforce: Set tags"
-
 }
 
-# can't use regional ssm parameters because they are global resources.
-global_resource_tags = {
-  aws-cloudfront-distribution          = "Enforce: Set tags"
-  aws-cloudfront-streamingDistribution = "Enforce: Set tags"
-  aws-iam-role                         = "Enforce: Set tags"
-  aws-iam-user                         = "Enforce: Set tags"
-  aws-route53-hostedZone               = "Enforce: Set tags"
-  aws-waf-webacl                       = "Enforce: Set tags"
+new_vpc_referenced_tags = {
+#  aws-ec2-classicLoadBalancer                = "Enforce: Set tags"
+#  aws-ec2-applicationLoadBalancer            = "Enforce: Set tags"
+#  aws-ec2-networkLoadBalancer                = "Enforce: Set tags"
+#  aws-ec2-instance                           = "Enforce: Set tags"
+#  aws-ec2-networkInterface                   = "Enforce: Set tags"
+#  aws-eks-cluster                            = "Enforce: Set tags"
+#  aws-rds-dbInstance                         = "Enforce: Set tags"
+#  aws-rds-subnetGroup                        = "Enforce: Set tags"
+#  aws-redshift-cluster                       = "Enforce: Set tags"
+#  aws-redshift-clusterSubnetGroup            = "Enforce: Set tags"
+#  aws-vpc-connect-vpnGateway                 = "Enforce: Set tags"
+#  aws-vpc-internet-egressOnlyInternetGateway = "Enforce: Set tags"
+#  aws-vpc-internet-internetGateway           = "Enforce: Set tags"
 }
 
 vpc_referenced_tags = {
@@ -489,3 +428,259 @@ policy_map_template = {
   aws-waf-webacl                             = "tmod:@turbot/aws-waf#/policy/types/webaclTagsTemplate"
   aws-workspaces-workspace                   = "tmod:@turbot/aws-workspaces#/policy/types/workspaceTagsTemplate"
 }
+
+## Required Tags
+
+# These tags must exist
+required_tags = {
+  "/vaec/tag/VAECID" : "vaec:VAECID"
+  "/vaec/tag/CKID" : "vaec:CKID"
+}
+
+conn_id_map = {
+  "311" : "Production"
+  "312" : "Stage"
+  "313" : "Development"
+}
+
+conn_key_list = [
+  "ConnectionID",
+  "ConnectionId",
+  "connectionID",
+  "connectionId",
+  "connectionid",
+  "vaec:ConnectionID"
+]
+
+env_key_list = [
+  "Environment",
+  "environment",
+  "vaec:environment",
+  "vaec:Environment"
+]
+
+# These tags are set incorrectly
+wrong_tag_values = {
+  "Production" : "Production"
+  "Stage" : "Stage"
+  "Development" : "Development"
+  "Demo" : "Development"
+  "demo" : "Development"
+  "DEV" : "Development"
+  "Dev" : "Development"
+  "dev" : "Development"
+  "DEV02" : "Development"
+  "Dev02" : "Development"
+  "dev8" : "Development"
+  "DEVELOPMENT" : "Development"
+  "development" : "Development"
+  "Development " : "Development"
+  "Development2" : "Development"
+  "Development-2" : "Development"
+  "Development-A" : "Development"
+  "Development-CST" : "Development"
+  "Development-SBX" : "Development"
+  "devl" : "Development"
+  "devperf" : "Development"
+  "dev-shared" : "Development"
+  "DEVTEST" : "Development"
+  "DR Sandbox" : "Development"
+  "dr-dev" : "Development"
+  "fti-dev" : "Development"
+  "ivs-sandbox" : "Development"
+  "ldx-dev" : "Development"
+  "map-sandbox" : "Development"
+  "pexip-dev" : "Development"
+  "POC" : "Development"
+  "poc" : "Development"
+  "QA" : "Development"
+  "qa" : "Development"
+  "SANDBOX" : "Development"
+  "Sandbox" : "Development"
+  "sandbox" : "Development"
+  "SQA" : "Development"
+  "sqa" : "Development"
+  "SQA1" : "Development"
+  "SQA2" : "Development"
+  "SQA3" : "Development"
+  "SQA3C" : "Development"
+  "SQA4" : "Development"
+  "SQA5" : "Development"
+  "SQA6" : "Development"
+  "SQA7" : "Development"
+  "Test" : "Development"
+  "test" : "Development"
+  "Testing" : "Development"
+  "tst" : "Development"
+  "UAT" : "Development"
+  "uat" : "Development"
+  "UAT01" : "Development"
+  "UAT02" : "Development"
+  "UAT03" : "Development"
+  "aip-prod" : "Production"
+  "dr-prod" : "Production"
+  "fti-prod" : "Production"
+  "ivs-prod" : "Production"
+  "map-prod" : "Production"
+  "prd" : "Production"
+  "PROD" : "Production"
+  "Prod" : "Production"
+  "prod" : "Production"
+  "prod8" : "Production"
+  "Prod-A" : "Production"
+  "prod-aux" : "Production"
+  "prod-gov-internal" : "Production"
+  "Prod-Ops" : "Production"
+  "prod-shared" : "Production"
+  "Produciton" : "Production"
+  "PRODUCTION" : "Production"
+  "production" : "Production"
+  "Production-2" : "Production"
+  "Production-A" : "Production"
+  "Production-AUX" : "Production"
+  "Production-BCK" : "Production"
+  "Production-CM" : "Production"
+  "Production-CST" : "Production"
+  "Production-K" : "Production"
+  "Production-L" : "Production"
+  "Production-VPX" : "Production"
+  "DR-PreProd" : "Stage"
+  "fti-stage" : "Stage"
+  "ivs-staging" : "Stage"
+  "map-staging" : "Stage"
+  "Pre Production" : "Stage"
+  "PREPROD" : "Stage"
+  "PreProd" : "Stage"
+  "preprod" : "Stage"
+  "Pre-Prod" : "Stage"
+  "pre-prod" : "Stage"
+  "PreProduction" : "Stage"
+  "Pre-Production" : "Stage"
+  "STAGE" : "Stage"
+  "stage" : "Stage"
+  "stage8" : "Stage"
+  "Stage-A" : "Stage"
+  "Stage-CST" : "Stage"
+  "Stage-K" : "Stage"
+  "Stage-L" : "Stage"
+  "Stage-Ops" : "Stage"
+  "STAGETEST" : "Stage"
+  "StageTest" : "Stage"
+  "STAGING" : "Stage"
+  "Staging" : "Stage"
+  "staging" : "Stage"
+}
+
+template_init = <<EOT
+  {%- set req_tags = [] -%}
+  {%- set null_tags = [] -%}
+  {%- set env = false -%}
+  {%- set conn_id = false -%}
+  {%- set env_tags = ["Environment","environment","vaec:Environment"] -%}
+  {%- set conn_id_map = {"311":"Production","312":"Stage","313":"Development"} -%}
+  {%- set conn_key_list = ["ConnectionID","ConnectionId","connectionID","connectionId","connectionid","vaec:ConnectionID"] -%}
+EOT
+
+template_org_tags = <<EOT
+  {%- if "vaec:VAECID" in $.acct.tags -%}
+    {%- set req_tags = (req_tags.push({"vaec:VAECID": $.acct.tags["vaec:VAECID"]}), req_tags) -%}
+  {%- endif -%}
+  {%- if "vaec:CKID" in $.acct.tags -%}
+    {%- set req_tags = (req_tags.push({"vaec:CKID": $.acct.tags["vaec:CKID"]}), req_tags) -%}
+  {%- endif -%}
+EOT
+
+template_parent_conn_id = <<EOT
+  {%- for key in conn_key_list -%}
+    {%- if key in $.resource.parent.tags -%}
+      {%- set conn_id = $.resource.parent.tags[key] | truncate (3, false, "") -%}
+    {%- endif -%}
+  {%- endfor -%}
+EOT
+
+template_self_conn_id = <<EOT
+  {%- for key in conn_key_list -%}
+    {%- if key in $.resource.tags -%}
+      {%- set conn_id = $.resource.tags[key] | truncate (3, false, "") -%}
+    {%- endif -%}
+  {%- endfor -%}
+EOT
+
+template_related_conn_id = <<EOT
+  {%- for assoc_vpc in $.related.vpcs -%}
+    {#- grab connection id from vpc -#}
+    {%- for conn_tag_key in conn_key_list -%}
+      {%- if conn_tag_key in assoc_vpc.tags -%}
+        {%- set conn_id = assoc_vpc.tags[conn_tag_key] | truncate (3, false, "") -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {#- grab Environment from vpc -#}
+    {%- for env_tag_key in env_tags -%}
+      {%- if env_tag_key in assoc_vpc.tags -%}
+        {%- if assoc_vpc.tags[env_tag_key] in $.env_tag.data -%}
+          {%- set env = $.env_tag.data[assoc_vpc.tags[env_tag_key]] -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+EOT
+
+template_env_tag = <<EOT
+  {%- if conn_id in conn_id_map -%}
+    {%- set env = conn_id_map[conn_id] -%}
+  {%- else -%}
+    {%- for env_tag in env_tags -%}
+      {%- if (not env) and (env_tag in $.resource.tags) -%}
+        {%- if $.resource.tags[env_tag] in $.env_tag.data -%}
+          {%- set env = $.env_tag.data[$.resource.tags[env_tag]] -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- if env -%}
+    {%- set req_tags = (req_tags.push({"vaec:Environment":env}), req_tags) -%}
+  {%- else -%}
+    {%- set null_tags = (null_tags.push("vaec:Environment"), null_tags) -%}
+  {%- endif -%}
+EOT
+
+template_tenant_tags = <<EOT
+  {%- set tag_combo = "|" -%}
+  {%- set approved_combos = "" -%}
+  {%- if $.resource.acct_id in $.tenant.data -%}
+    {%- for t_vaecid, t_ckid in $.tenant.data[$.resource.acct_id] -%}
+      {%- set approved_combos = approved_combos + "|" + t_vaecid + "|" + t_ckid + "|," -%}
+      {%- set approved_combos = approved_combos + "|" + t_vaecid + "|" + "|," -%}
+      {%- set approved_combos = approved_combos + "|" + "|" + t_ckid + "|," -%}
+    {%- endfor -%}
+    {%- if "tenant:VAECID" in $.resource.tags -%}
+      {%- set tag_combo = tag_combo + $.resource.tags["tenant:VAECID"] -%}
+    {%- endif -%}
+    {%- set tag_combo = tag_combo + "|" -%}
+    {%- if "tenant:CKID" in $.resource.tags -%}
+      {%- set tag_combo = tag_combo + $.resource.tags["tenant:CKID"] -%}
+    {%- endif -%}
+    {%- set tag_combo = tag_combo + "|," -%}
+    {%- if tag_combo not in approved_combos -%}
+      {#- invalid vaecid:ckid combo -#}
+      {%- set null_tags = (null_tags.push("tenant:VAECID"), null_tags) -%}
+      {%- set null_tags = (null_tags.push("tenant:CKID"), null_tags) -%}
+    {%- endif -%}
+  {%- else -%}
+    {#- account not authorized to use tenant tags -#}
+    {%- set null_tags = (null_tags.push("tenant:VAECID"), null_tags) -%}
+    {%- set null_tags = (null_tags.push("tenant:CKID"), null_tags) -%}
+  {%- endif -%}
+EOT
+
+template_output_tags = <<EOT
+{%- set cf = "\n" -%}
+{%- for tag in req_tags -%}
+  {%- for key, value in tag -%}
+    "{{ key }}": "{{ value }}"{{ cf }}
+  {%- endfor -%}
+{%- endfor -%}
+{%- for null_tag in null_tags -%}
+    "{{ null_tag }}": null{{ cf }}
+{%- endfor -%}
+EOT

@@ -1,5 +1,5 @@
 #####################################################################
-## Tagging for resources related to the VPC that have VPC References
+## Tagging for EFS
 #####################################################################
 resource "turbot_policy_setting" "efs_resource_tag_enforcement" {
   resource        = turbot_smart_folder.vaec_aws_tagging.id
@@ -17,27 +17,28 @@ resource "turbot_policy_setting" "efs_resource_tag_template" {
       eni: resource {
         mounts: get(path:"MountTargets")
       }
+      account: resource {
+        id: get(path:"turbot.custom.aws.accountId")
+      }
     }
   - |
     {
+      acct: resource(id:"${var.org_arn}/{{$.account.id}}") {
+        tags: get(path:"turbot.tags")
+      }
       resource {
-        turbot {
-          tags
-        }
+        tags: get(path:"turbot.tags")
+        acct_id: get(path:"turbot.custom.aws.accountId")
       }
-      params: region {
-        children(filter:"title:'/vaec/tag/*' resourceTypeId:tmod:@turbot/aws-ssm#/resource/types/ssmParameter resourceTypeLevel:self") {
-          items {
-            name: get(path: "Name")
-            value: get(path: "Value")
-          }
-        }
+      tenant: resource(id:"vaectenant"){
+        data
       }
-      enis: resources(filter:"title:'{{ $.eni['mounts'][0]['NetworkInterfaceId'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/networkInterface") {
+      env_tag: resource(id:"envtagvalues"){
+        data
+      }
+      enis: resources(filter:"$.NetworkInterfaceId:'{{ $.eni['mounts'][0]['NetworkInterfaceId'] }}' resourceType:tmod:@turbot/aws-ec2#/resource/types/networkInterface") {
         items {
-          turbot {
-            tags
-          }
+          tags: get(path:"turbot.tags")
         }
       }
     }
@@ -45,62 +46,24 @@ resource "turbot_policy_setting" "efs_resource_tag_template" {
   
   # Nunjucks template to set tags and check for tag validity.
   template = <<-TEMPLATE
-    {%- if $.resource.turbot.tags -%}
-    {#- --------------------------- -#}
-    {#-    initialize variables     -#}
-    {#- --------------------------- -#}
-    {%- set new_tags = "" -%}
-    {%- set required_tags = ${jsonencode(var.required_tags)} -%}
-    {%- set tag_value_map = ${jsonencode(var.wrong_tag_values)} -%}
-    {%- set env_key_list = ${jsonencode(var.env_key_list)} -%}
-    {#- --------------------------- -#}
-    {#- set default tags from ssm   -#}
-    {#- --------------------------- -#}
-    {%- for ssm_param in $.params.children.items -%}
-      {%- if ssm_param.name in required_tags -%}
-        {%- set new_tags = new_tags + '- "' + required_tags[ssm_param.name] + '": ' -%}
-        {%- set new_tags = new_tags + '"' + ssm_param.value + '"\n' -%}
-      {%- endif -%}
-    {%- endfor -%}
+    {%- if ($.resource.tags) and ($.env_tag.data) and ($.tenant.data) and ($.enis.items) -%}
+    ${var.template_init}
+    ${var.template_org_tags}
     {#- ---------------------------- -#}
-    {#- grab environment from volume -#}
+    {#-   grab environment from ENI  -#}
     {#- ---------------------------- -#}
-    {%- set assoc_eni = false -%}
-    {#- grab Environment from Volume -#}
-    {%- for env_tag_key in env_key_list -%}
-      {%- if $.enis.items[0] -%}
-        {%- if env_tag_key in $.enis.items[0].turbot.tags -%}
-          {%- if $.enis.items[0].turbot.tags[env_tag_key] in tag_value_map -%}
-            {%- set assoc_eni = $.enis.items[0].turbot.tags[env_tag_key] -%}
+    {%- for env_tag_key in env_tags -%}
+      {%- for eni in $.enis.items -%}
+        {%- if env_tag_key in eni.tags -%}
+          {%- if eni.tags[env_tag_key] in $.env_tag.data -%}
+            {%- set env = $.env_tag.data[eni.tags[env_tag_key]] -%}
           {%- endif -%}
         {%- endif -%}
-      {%- endif -%}
+      {%- endfor -%}
     {%- endfor -%}
-    {#- --------------------------- -#}
-    {#-     set environment tag     -#}
-    {#- --------------------------- -#}
-    {%- set env_tag = "null" -%}
-    {%- if assoc_eni in tag_value_map -%}
-      {%- set env_tag = '"' + tag_value_map[assoc_eni] + '"\n' -%}
-    {%- elif "Environment" in $.resource.turbot.tags -%}
-      {%- if $.resource.turbot.tags["Environment"] in tag_value_map -%}
-        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["Environment"]] + '"\n'  -%}
-      {%- endif -%}
-    {%- elif "environment" in $.resource.turbot.tags -%}
-      {%- if $.resource.turbot.tags["environment"] in tag_value_map -%}
-        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["environment"]] + '"\n'  -%}
-      {%- endif -%}
-    {%- endif -%}
-    {%- if (env_tag == "null") and ("vaec:Environment" in $.resource.turbot.tags) -%}
-      {%- if $.resource.turbot.tags["vaec:Environment"] in tag_value_map -%}
-        {%- set env_tag = '"' + tag_value_map[$.resource.turbot.tags["vaec:Environment"]] + '"\n'  -%}
-      {%- endif -%}
-    {%- endif -%}
-    {%- set new_tags = new_tags + '- "vaec:Environment": ' + env_tag -%}
-    {#- --------------------------- -#}
-    {#-     output required tags    -#}
-    {#- --------------------------- -#}
-    {{ new_tags }}
+    ${var.template_env_tag}
+    ${var.template_tenant_tags}
+    ${var.template_output_tags}
     {%- endif -%}
     TEMPLATE
 }

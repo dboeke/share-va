@@ -2,14 +2,14 @@
 ## Tagging for resources related to the VPC that have VPC References
 #####################################################################
 resource "turbot_policy_setting" "vpc_related_resource_tag_enforcement" {
-  for_each        = var.vpc_referenced_tags 
+  for_each        = var.new_vpc_referenced_tags 
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = var.policy_map[each.key]
   value           = each.value
 }
 
 resource "turbot_policy_setting" "vpc_related_resource_tag_template" {
-  for_each        = var.vpc_referenced_tags
+  for_each        = var.new_vpc_referenced_tags
   resource        = turbot_smart_folder.vaec_aws_tagging.id
   type            = var.policy_map_template[each.key]
   # GraphQL to pull policy Statements

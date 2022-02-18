@@ -24,12 +24,13 @@ resource "turbot_policy_setting" "default_tag_template" {
     }
   - |
     {
-      org: resource(id:${var.org_account_turbot_id}) {
-        descendants(filter: "resourceTypeId:'tmod:@turbot/aws-organizations#/resource/types/organizationalAccount' resourceTypeLevel:self {{$.account.id}}") {
-          items {
-            id: get(path:"Id")
-            tags: get(path:"Tags")
-          }
+      {
+        acct: resource(id:"arn:aws:organizations::676944191433:account/o-c3a5y4wd52/{{$.account.id}}") {
+          ckid: get(path:"turbot.tags.CKID")
+          vaecid: get(path:"turbot.tags.VAECID")
+        }
+        resource {
+          tags: get(path:"turbot.tags")
         }
       }
       resource {
