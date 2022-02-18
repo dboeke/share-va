@@ -1,5 +1,6 @@
 ###  Check this for correct value on Prod
-org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
+#org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
+org_arn = "arn:aws:organizations::676944191433:account/o-c3a5y4wd52"
 
 # These tags must exist
 required_tags = {
