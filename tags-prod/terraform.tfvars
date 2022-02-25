@@ -2,64 +2,58 @@
 org_arn = "arn:aws-us-gov:organizations::348286891446:account/o-fgsg4ev0lb"
 
 new_non_vpc_resource_tags = {
-   aws-acm-certificate                      = "Enforce: Set tags"
-   aws-apigateway-api                       = "Enforce: Set tags"
-   aws-apigateway-stage                     = "Enforce: Set tags"
-   aws-appstream-fleet                      = "Enforce: Set tags"
-   aws-appstream-image                      = "Enforce: Set tags"
-   aws-athena-namedQuery                    = "Enforce: Set tags"
-   aws-athena-workgroup                     = "Enforce: Set tags"
-   aws-cloudtrail-trail                     = "Enforce: Set tags"
-   aws-cloudwatch-alarm                     = "Enforce: Set tags"
-   aws-codebuild-project                    = "Enforce: Set tags"
-   aws-codecommit-repository                = "Enforce: Set tags"
-   aws-config-rule                          = "Enforce: Set tags"
-   aws-dynamodb-table                       = "Enforce: Set tags"
-   aws-ec2-ami                              = "Enforce: Set tags"
-   aws-ec2-autoScalingGroup                 = "Enforce: Set tags"
-   aws-ec2-launchTemplate                   = "Enforce: Set tags"
-   aws-ec2-targetGroup                      = "Enforce: Set tags"
-   aws-ecr-repository                       = "Enforce: Set tags"
-   aws-elasticache-snapshot                 = "Enforce: Set tags"
-   aws-elasticsearch-domain                 = "Enforce: Set tags"
-   aws-glacier-vault                        = "Enforce: Set tags"
-   aws-glue-crawler                         = "Enforce: Set tags"
-   aws-glue-dev-endpoint                    = "Enforce: Set tags"
-   aws-glue-job                             = "Enforce: Set tags"
-   aws-glue-ml-transform                    = "Enforce: Set tags"
-   aws-glue-trigger                         = "Enforce: Set tags"
-   aws-glue-workflow                        = "Enforce: Set tags"
-   aws-inspector-assessmentTemplate         = "Enforce: Set tags"
-   aws-kinesis-stream                       = "Enforce: Set tags"
-   aws-kms-key                              = "Enforce: Set tags"
-   aws-lambda-function                      = "Enforce: Set tags"
-   aws-logs-logGroup                        = "Enforce: Set tags"
-   aws-rds-dbClusterParameterGroup          = "Enforce: Set tags"
-   aws-rds-dbClusterSnapshotManual          = "Enforce: Set tags"
-   aws-rds-dbParameterGroup                 = "Enforce: Set tags"
-   aws-rds-dbSnapshotManual                 = "Enforce: Set tags"
-   aws-rds-optionGroup                      = "Enforce: Set tags"
-   aws-redshift-clusterParameterGroup       = "Enforce: Set tags"
-   aws-redshift-clusterSnapshotManual       = "Enforce: Set tags"
-   aws-s3-bucket                            = "Enforce: Set tags"
-   aws-secretsmanager-secret                = "Enforce: Set tags"
-   aws-sns-topic                            = "Enforce: Set tags"
-   aws-sqs-queue                            = "Enforce: Set tags"
-   aws-ssm-document                         = "Enforce: Set tags"
-   aws-ssm-maintenanceWindow                = "Enforce: Set tags"
-   aws-stepfunctions-stateMachine           = "Enforce: Set tags"
-   aws-iam-role                             = "Enforce: Set tags"
-   aws-iam-user                             = "Enforce: Set tags"
-   aws-route53-hostedZone                   = "Enforce: Set tags"
-   aws-waf-webacl                           = "Enforce: Set tags"
+  aws-acm-certificate                      = "Enforce: Set tags"
+  aws-apigateway-api                       = "Enforce: Set tags"
+  aws-apigateway-stage                     = "Enforce: Set tags"
+  aws-appstream-fleet                      = "Enforce: Set tags"
+  aws-appstream-image                      = "Enforce: Set tags"
+  aws-athena-namedQuery                    = "Enforce: Set tags"
+  aws-athena-workgroup                     = "Enforce: Set tags"
+  aws-cloudtrail-trail                     = "Enforce: Set tags"
+  aws-cloudwatch-alarm                     = "Enforce: Set tags"
+  aws-codebuild-project                    = "Enforce: Set tags"
+  aws-codecommit-repository                = "Enforce: Set tags"
+  aws-config-rule                          = "Enforce: Set tags"
+  aws-dynamodb-table                       = "Enforce: Set tags"
+  aws-ec2-ami                              = "Enforce: Set tags"
+  aws-ec2-autoScalingGroup                 = "Enforce: Set tags"
+  aws-ec2-launchTemplate                   = "Enforce: Set tags"
+  aws-ec2-targetGroup                      = "Enforce: Set tags"
+  aws-ecr-repository                       = "Enforce: Set tags"
+  aws-elasticache-snapshot                 = "Enforce: Set tags"
+  aws-elasticsearch-domain                 = "Enforce: Set tags"
+  aws-glacier-vault                        = "Enforce: Set tags"
+  aws-glue-crawler                         = "Enforce: Set tags"
+  aws-glue-dev-endpoint                    = "Enforce: Set tags"
+  aws-glue-job                             = "Enforce: Set tags"
+  aws-glue-ml-transform                    = "Enforce: Set tags"
+  aws-glue-trigger                         = "Enforce: Set tags"
+  aws-glue-workflow                        = "Enforce: Set tags"
+  aws-inspector-assessmentTemplate         = "Enforce: Set tags"
+  aws-kinesis-stream                       = "Enforce: Set tags"
+  aws-kms-key                              = "Enforce: Set tags"
+  aws-lambda-function                      = "Enforce: Set tags"
+  aws-logs-logGroup                        = "Enforce: Set tags"
+  aws-rds-dbClusterParameterGroup          = "Enforce: Set tags"
+  aws-rds-dbClusterSnapshotManual          = "Enforce: Set tags"
+  aws-rds-dbParameterGroup                 = "Enforce: Set tags"
+  aws-rds-dbSnapshotManual                 = "Enforce: Set tags"
+  aws-rds-optionGroup                      = "Enforce: Set tags"
+  aws-redshift-clusterParameterGroup       = "Enforce: Set tags"
+  aws-redshift-clusterSnapshotManual       = "Enforce: Set tags"
+  aws-s3-bucket                            = "Enforce: Set tags"
+  aws-secretsmanager-secret                = "Enforce: Set tags"
+  aws-sns-topic                            = "Enforce: Set tags"
+  aws-sqs-queue                            = "Enforce: Set tags"
+  aws-ssm-document                         = "Enforce: Set tags"
+  aws-ssm-maintenanceWindow                = "Enforce: Set tags"
+  aws-stepfunctions-stateMachine           = "Enforce: Set tags"
+   aws-iam-role                              = "Enforce: Set tags"
+   aws-iam-user                              = "Enforce: Set tags"
+   aws-route53-hostedZone                    = "Enforce: Set tags"
+   aws-waf-webacl                            = "Enforce: Set tags"
 }
 
-non_vpc_resource_tags = {
-}
-
-###########################
-######  unreferenced resources
-###########################
 
 new_vpc_unreferenced_tags = {
   aws-vpc-core-dhcpOptions                    = "Enforce: Set tags"
@@ -73,13 +67,6 @@ new_vpc_unreferenced_tags = {
   aws-vpc-connect-transitGatewayRouteTable    = "Enforce: Set tags"
 }
 
-vpc_unreferenced_tags = {
-}
-
-###########################
-######## CHILD RESOURCES
-###########################
-
 new_vpc_child_resource_tags = {
   aws-vpc-connect-vpcPeeringConnection = "Enforce: Set tags"
   aws-vpc-core-routeTable              = "Enforce: Set tags"
@@ -91,13 +78,6 @@ new_vpc_child_resource_tags = {
   aws-vpc-security-networkAcl          = "Enforce: Set tags"
   aws-vpc-security-securityGroup       = "Enforce: Set tags"
 }
-
-vpc_child_resource_tags = {
-}
-
-###############################
-##### REFERECED RESOURCES
-###########################
 
 new_vpc_referenced_tags = {
   aws-ec2-classicLoadBalancer                = "Enforce: Set tags"
@@ -114,14 +94,6 @@ new_vpc_referenced_tags = {
   aws-vpc-internet-egressOnlyInternetGateway = "Enforce: Set tags"
   aws-vpc-internet-internetGateway           = "Enforce: Set tags"
 }
-
-vpc_referenced_tags = {
-}
-
-
-#############################
-####  DONE WITH CHANGES  ####
-#############################
 
 vpc_referenced_resource_map = {
   aws-ec2-classicLoadBalancer                = "VPCId"
@@ -371,148 +343,6 @@ policy_map_template = {
   aws-vpc-security-securityGroup             = "tmod:@turbot/aws-vpc-security#/policy/types/securityGroupTagsTemplate"
   aws-waf-webacl                             = "tmod:@turbot/aws-waf#/policy/types/webaclTagsTemplate"
   aws-workspaces-workspace                   = "tmod:@turbot/aws-workspaces#/policy/types/workspaceTagsTemplate"
-}
-
-## Required Tags
-
-# These tags must exist
-required_tags = {
-  "/vaec/tag/VAECID" : "vaec:VAECID"
-  "/vaec/tag/CKID" : "vaec:CKID"
-}
-
-conn_id_map = {
-  "311" : "Production"
-  "312" : "Stage"
-  "313" : "Development"
-}
-
-conn_key_list = [
-  "ConnectionID",
-  "ConnectionId",
-  "connectionID",
-  "connectionId",
-  "connectionid",
-  "vaec:ConnectionID"
-]
-
-env_key_list = [
-  "Environment",
-  "environment",
-  "vaec:environment",
-  "vaec:Environment"
-]
-
-# These tags are set incorrectly
-wrong_tag_values = {
-  "Production" : "Production"
-  "Stage" : "Stage"
-  "Development" : "Development"
-  "Demo" : "Development"
-  "demo" : "Development"
-  "DEV" : "Development"
-  "Dev" : "Development"
-  "dev" : "Development"
-  "DEV02" : "Development"
-  "Dev02" : "Development"
-  "dev8" : "Development"
-  "DEVELOPMENT" : "Development"
-  "development" : "Development"
-  "Development " : "Development"
-  "Development2" : "Development"
-  "Development-2" : "Development"
-  "Development-A" : "Development"
-  "Development-CST" : "Development"
-  "Development-SBX" : "Development"
-  "devl" : "Development"
-  "devperf" : "Development"
-  "dev-shared" : "Development"
-  "DEVTEST" : "Development"
-  "DR Sandbox" : "Development"
-  "dr-dev" : "Development"
-  "fti-dev" : "Development"
-  "ivs-sandbox" : "Development"
-  "ldx-dev" : "Development"
-  "map-sandbox" : "Development"
-  "pexip-dev" : "Development"
-  "POC" : "Development"
-  "poc" : "Development"
-  "QA" : "Development"
-  "qa" : "Development"
-  "SANDBOX" : "Development"
-  "Sandbox" : "Development"
-  "sandbox" : "Development"
-  "SQA" : "Development"
-  "sqa" : "Development"
-  "SQA1" : "Development"
-  "SQA2" : "Development"
-  "SQA3" : "Development"
-  "SQA3C" : "Development"
-  "SQA4" : "Development"
-  "SQA5" : "Development"
-  "SQA6" : "Development"
-  "SQA7" : "Development"
-  "Test" : "Development"
-  "test" : "Development"
-  "Testing" : "Development"
-  "tst" : "Development"
-  "UAT" : "Development"
-  "uat" : "Development"
-  "UAT01" : "Development"
-  "UAT02" : "Development"
-  "UAT03" : "Development"
-  "aip-prod" : "Production"
-  "dr-prod" : "Production"
-  "fti-prod" : "Production"
-  "ivs-prod" : "Production"
-  "map-prod" : "Production"
-  "prd" : "Production"
-  "PROD" : "Production"
-  "Prod" : "Production"
-  "prod" : "Production"
-  "prod8" : "Production"
-  "Prod-A" : "Production"
-  "prod-aux" : "Production"
-  "prod-gov-internal" : "Production"
-  "Prod-Ops" : "Production"
-  "prod-shared" : "Production"
-  "Produciton" : "Production"
-  "PRODUCTION" : "Production"
-  "production" : "Production"
-  "Production-2" : "Production"
-  "Production-A" : "Production"
-  "Production-AUX" : "Production"
-  "Production-BCK" : "Production"
-  "Production-CM" : "Production"
-  "Production-CST" : "Production"
-  "Production-K" : "Production"
-  "Production-L" : "Production"
-  "Production-VPX" : "Production"
-  "DR-PreProd" : "Stage"
-  "fti-stage" : "Stage"
-  "ivs-staging" : "Stage"
-  "map-staging" : "Stage"
-  "Pre Production" : "Stage"
-  "PREPROD" : "Stage"
-  "PreProd" : "Stage"
-  "preprod" : "Stage"
-  "Pre-Prod" : "Stage"
-  "pre-prod" : "Stage"
-  "PreProduction" : "Stage"
-  "Pre-Production" : "Stage"
-  "STAGE" : "Stage"
-  "stage" : "Stage"
-  "stage8" : "Stage"
-  "Stage-A" : "Stage"
-  "Stage-CST" : "Stage"
-  "Stage-K" : "Stage"
-  "Stage-L" : "Stage"
-  "Stage-Ops" : "Stage"
-  "STAGETEST" : "Stage"
-  "StageTest" : "Stage"
-  "STAGING" : "Stage"
-  "Staging" : "Stage"
-  "staging" : "Stage"
 }
 
 template_init = <<EOT
