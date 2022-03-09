@@ -49,6 +49,7 @@ def run_report(profile, bucket):
 
     az_disk_filter = "resourceId:'210275942479682' resourceTypeId:'tmod:@turbot/azure-compute#/resource/types/disk' resourceTypeLevel:self limit:250"
     az_disk_filter = "resourceId:210275942479682 level:self,descendant resourceTypeId:tmod:@turbot/azure-compute#/resource/types/disk resourceTypeLevel:self,descendant limit:250"
+    items = []
     az_disks = []
     max_len = 0
     paging = None
@@ -64,17 +65,8 @@ def run_report(profile, bucket):
             break
 
         for item in result['data']['disks']['items']:
-            trunk = item['trunk']['title'].split(" > ")
-            trunk_len = len(trunk)
-            if trunk_len > max_len:
-                max_len = trunk_len
-            if item['encryption'] == 'EncryptionAtRestWithPlatformKey':
-                enc_type = 'PlatformKey'
-            elif item['encryption'] == 'EncryptionAtRestWithCustomerKey':
-                enc_type = 'CustomerKey'
-            else:
-                enc_type = "Unencrypted"
-            az_disks.append({"trunk": trunk, "encryption": enc_type, "parent": item['parent']['type']['category']['title']})
+            items.append(item)
+
         if not result['data']['disks']['paging']['next']:
             break
         else:
@@ -82,6 +74,19 @@ def run_report(profile, bucket):
             paging = result['data']['disks']['paging']['next']
 
     print("\nFound {} Total Azure Disks".format(len(az_disks)))
+
+    for item in items:
+        trunk = item['trunk']['title'].split(" > ")
+        trunk_len = len(trunk)
+        if trunk_len > max_len:
+            max_len = trunk_len
+        if item['encryption'] == 'EncryptionAtRestWithPlatformKey':
+            enc_type = 'PlatformKey'
+        elif item['encryption'] == 'EncryptionAtRestWithCustomerKey':
+            enc_type = 'CustomerKey'
+        else:  
+            enc_type = "Unencrypted"
+        az_disks.append({"trunk": trunk, "encryption": enc_type, "parent": item['parent']['type']['category']['title']})
 
     az_report = {}
     start = 3
