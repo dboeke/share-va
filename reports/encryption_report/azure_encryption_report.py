@@ -47,7 +47,7 @@ def run_report(profile, bucket):
         }
     '''
 
-    az_disk_filter = "resourceId:'' resourceTypeId:'tmod:@turbot/azure-compute#/resource/types/disk' resourceTypeLevel:self limit:250"
+    az_disk_filter = "resourceId:'208502675473223' resourceTypeId:'tmod:@turbot/azure-compute#/resource/types/disk' resourceTypeLevel:self limit:250"
     az_disks = []
     max_len = 0
     paging = None
