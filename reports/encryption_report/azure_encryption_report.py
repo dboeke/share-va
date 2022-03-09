@@ -32,6 +32,13 @@ def run_report(profile, bucket):
                     trunk {
                         title
                     }
+                    parent {
+                        type {
+                            category {
+                                title
+                            }
+                        }
+                    }
                 }
                 paging {
                     next
@@ -41,7 +48,7 @@ def run_report(profile, bucket):
     '''
 
     az_disk_filter = "resourceId:'210275942479682' resourceTypeId:'tmod:@turbot/azure-compute#/resource/types/disk' resourceTypeLevel:self limit:250"
-    az_disk_filter = "resourceId:210275942479682 level:self,descendant resourceTypeId:tmod:@turbot/azure-compute#/resource/types/disk resourceTypeLevel:self,descendant limit:250"
+    az_disk_filter = "resourceId:210275942479682 level:self,descendant resourceTypeId:tmod:@turbot/azure-compute#/resource/types/disk resourceTypeLevel:self,descendant sort:title limit:250"
     items = []
     az_disks = []
     max_len = 0
