@@ -32,13 +32,6 @@ def run_report(profile, bucket):
                     trunk {
                         title
                     }
-                    parent {
-                        type {
-                            category {
-                                title
-                            }
-                        }
-                    }
                 }
                 paging {
                     next
