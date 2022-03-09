@@ -139,7 +139,7 @@ def run_report(profile, bucket):
     filename = f"aws_volume_encryption_report_{profile}_{date}.csv"
     with open(filename, mode='w') as report_file:
         report_writer = csv.writer(report_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        header = ['Account','Region','Group','Title','Total Vol','Default Key','Custom Key','Unencrypted']
+        header = ['Account','Region','Group','Title','Total Vol','Default Key','Custom Key','Unencrypted', 'GP2', 'I01 < 3k']
         report_writer.writerow(header)
         for region, key in keys.items():
             if key['title'].isnumeric():
