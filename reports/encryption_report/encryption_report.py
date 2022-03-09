@@ -40,7 +40,7 @@ def run_report(profile, bucket):
         }
     '''
 
-    key_filter = "resourceTypeId:'tmod:@turbot/aws-kms#/resource/types/key' resourceTypeLevel:self title:'alias/aws/ebs' "
+    key_filter = "resourceTypeId:'tmod:@turbot/aws-kms#/resource/types/key' resourceTypeLevel:self title:'alias/aws/ebs' limit:250"
     keys = {}
     paging = None
     print("Pulling EBS default key List...")
@@ -71,7 +71,9 @@ def run_report(profile, bucket):
                 "total": 0,
                 "default": 0,
                 "cmk": 0,
-                "unencrypted": 0
+                "unencrypted": 0,
+                "gp2": 0,
+                "io1": 0
             }
         if not result['data']['keys']['paging']['next']:
             break
@@ -87,6 +89,8 @@ def run_report(profile, bucket):
                 items {
                     key: get(path:"KmsKeyId")
                     encrypted: get(path:"Encrypted")
+                    type: get(path: "VolumeType")
+                    iops: get(path: "Iops")
                 }
                 paging {
                     next
@@ -96,7 +100,7 @@ def run_report(profile, bucket):
     '''
 
     for region, key in keys.items():
-        aws_vol_filter = f"resourceId:'{region}' resourceTypeId:'tmod:@turbot/aws-ec2#/resource/types/volume' resourceTypeLevel:self"
+        aws_vol_filter = f"resourceId:'{region}' resourceTypeId:'tmod:@turbot/aws-ec2#/resource/types/volume' resourceTypeLevel:self limit:250"
         paging = None
         count = 0
         print("Looking for volumes in {}...".format(region))
@@ -112,6 +116,10 @@ def run_report(profile, bucket):
 
             for item in result['data']['volumes']['items']:
                 keys[region]['total'] = keys[region]['total'] + 1
+                if item['type'] == "gp2":
+                    keys[region]['gp2'] = keys[region]['gp2'] + 1
+                if item['type'] == "io1" and item['iops'] < 3000:
+                    keys[region]['io1'] = keys[region]['io1'] + 1
                 if item['encrypted']:
                     if item['key'] == key['ebs_key']:
                         keys[region]['default'] = keys[region]['default'] + 1
@@ -147,7 +155,9 @@ def run_report(profile, bucket):
                     key['total'],
                     key['default'],
                     key['cmk'],
-                    key['unencrypted']
+                    key['unencrypted'],
+                    key['gp2'],
+                    key['io1']
                 ])
     
     if len(bucket) > 0:
@@ -180,7 +190,7 @@ def run_report(profile, bucket):
         }
     '''
 
-    az_disk_filter = "resourceTypeId:'tmod:@turbot/azure-compute#/resource/types/disk'"
+    az_disk_filter = "resourceTypeId:'tmod:@turbot/azure-compute#/resource/types/disk' resourceTypeLevel:self limit:250"
     az_disks = []
     max_len = 0
     paging = None
