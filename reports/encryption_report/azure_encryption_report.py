@@ -30,7 +30,7 @@ def run_report(profile, bucket):
                 items {
                     encryption: get(path: "encryption.type")
                     trunk {
-                        title(delimiter: "|")
+                        title
                     }
                     parent {
                         type {
@@ -67,7 +67,7 @@ def run_report(profile, bucket):
             break
 
         for item in result['data']['disks']['items']:
-            trunk = item['trunk']['title'].split("|")
+            trunk = item['trunk']['title'].split(" > ")
             trunk_len = len(trunk)
             if trunk_len > max_len:
                 max_len = trunk_len
