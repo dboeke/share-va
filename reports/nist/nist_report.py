@@ -52,11 +52,12 @@ def run_report(profile):
   sp_config = f'''
 connection "aws" {{
   plugin        = "aws"
-  secret_key    = {auth_response['Credentials']['SecretAccessKey']}
-  access_key    = {auth_response['Credentials']['AccessKeyId']}
-  session_token = {auth_response['Credentials']['SessionToken']}
+  secret_key    = "{auth_response['Credentials']['SecretAccessKey']}"
+  access_key    = "{auth_response['Credentials']['AccessKeyId']}"
+  session_token = "{auth_response['Credentials']['SessionToken']}"
   regions       = ["us-gov*"]
 }}
+
 '''
 
   with open("/home/ec2-user/.steampipe/config/aws.spc","w+") as f:
