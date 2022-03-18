@@ -67,12 +67,16 @@ connection "aws" {{
 
   os.chdir('./mod')
 
+  print("Running Report...")
   report = run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","html","--progress=false"], capture_output=True).stdout
+  print("Formatting Report...")
 
   report = report.replace(sp_logo, "https://turbot.com/images/turbot-icon-wordmark.svg")
   report = report.replace("steampipe.io", "turbot.com")
   report = report.replace("Steampipe", "Turbot")
 
+  print("Outputting Report...")
+  
   with open("../reports/latest_nist.html","w+") as f:
     f.writelines(report)
 
