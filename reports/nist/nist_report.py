@@ -67,11 +67,16 @@ connection "aws" {{
   with open("/home/ec2-user/.steampipe/config/aws.spc","w+") as f:
     f.writelines(sp_config)
 
-  output = run("pwd", capture_output=True).stdout
-  print(f"before: {output}")
   os.chdir('./mod')
-  output = run("pwd", capture_output=True).stdout
-  print(f"after: {output}")
+
+  report = run("steampipe check benchmark.nist_800_53_rev_4 --output html", capture_output=True).stdout
+
+  report = report.replace(sp_logo, "https://turbot.com/images/turbot-icon-wordmark.svg")
+  report = report.replace("steampipe.io", "turbot.com")
+  report = report.replace("Steampipe", "Turbot")
+
+  with open("../reports/latest_nist.html","w+") as f:
+    f.write(report)
 
 
 
