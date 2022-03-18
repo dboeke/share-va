@@ -29,7 +29,7 @@ def run_report(profile, account):
   result = endpoint(role_query, {})
   role_arn = result["data"]["role"]["value"]
 
-  extid_query = '''
+  extid_query = f'''
     query {{
       extid: policySetting(resourceAka:"arn:aws-us-gov:::{account}",uri:"tmod:@turbot/aws#/policy/types/turbotIamRoleExternalId") {{
         value
