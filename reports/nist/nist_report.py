@@ -10,34 +10,31 @@ import os
 
 @click.command()
 @click.option('-p', '--profile', default="default", help="[String] Profile to be used from config file.")
+@click.option('-a', '--account', help="[String] AWS Account Id.")
 
-def run_report(profile):
+def run_report(profile, account):
   config = turbot.Config(None, profile)
   headers = {'Authorization': 'Basic {}'.format(config.auth_token)}
   endpoint = HTTPEndpoint(config.graphql_endpoint, headers)
 
-  accounts = [
-    "arn:aws:::899206412154"
-  ]
-
   "tmod:@turbot/aws#/policy/types/turbotIamRole"
 
-  role_query = '''
-    query {
-      role: policySetting(resourceAka: "arn:aws:::899206412154",uri:"tmod:@turbot/aws#/policy/types/turbotIamRole") {
+  role_query = f'''
+    query {{
+      role: policySetting(resourceAka:"arn:aws-us-gov:::{account}",uri:"tmod:@turbot/aws#/policy/types/turbotIamRole") {{
         value
-      }
-    }
+      }}
+    }}
   '''
   result = endpoint(role_query, {})
   role_arn = result["data"]["role"]["value"]
 
   extid_query = '''
-    query {
-      extid: policySetting(resourceAka:"arn:aws:::899206412154",uri:"tmod:@turbot/aws#/policy/types/turbotIamRoleExternalId") {
+    query {{
+      extid: policySetting(resourceAka:"arn:aws-us-gov:::{account}",uri:"tmod:@turbot/aws#/policy/types/turbotIamRoleExternalId") {{
         value
-      }
-    }
+      }}
+    }}
   '''
   result = endpoint(extid_query, {})
   ext_id = result["data"]["extid"]["value"]
@@ -55,7 +52,7 @@ connection "aws" {{
   secret_key    = "{auth_response['Credentials']['SecretAccessKey']}"
   access_key    = "{auth_response['Credentials']['AccessKeyId']}"
   session_token = "{auth_response['Credentials']['SessionToken']}"
-  regions       = ["us-east*"]
+  regions       = ["us-gov*"]
 }}
 
 '''
@@ -66,20 +63,21 @@ connection "aws" {{
     f.writelines(sp_config)
 
   os.chdir('./mod')
+  new_file = f"nist_report_acct_{account}.html"
 
   print("Running Report...")
   report = subprocess.run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","none","--progress=false","--export","html"], stdout=subprocess.DEVNULL)
 
   print("Outputting Report...")
-  os.system('mv benchmark.nist*.html ../reports/latest_nist.html')
+  os.system(f'mv benchmark.nist*.html {new_file}')
 
-  with open(r'../reports/latest_nist.html', 'r') as file:
+  with open(new_file, 'r') as file:
       data = file.read()
       data = data.replace(sp_logo, "https://turbot.com/images/turbot-icon-wordmark.svg")
       data = data.replace("steampipe.io", "turbot.com")
       data = data.replace("Steampipe", "Turbot")
 
-  with open(r'../reports/latest_nist.html', 'w') as file:
+  with open(new_file, 'w') as file:
       file.write(data)
 
 if __name__ == "__main__":
