@@ -71,7 +71,7 @@ connection "aws" {{
   report = subprocess.run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","none","--progress=false","--export","html"], stdout=subprocess.DEVNULL)
 
   print("Outputting Report...")
-  report = subprocess.run(["mv","benchmark.nist*.html","../reports/latest_nist.html"], stdout=subprocess.DEVNULL)
+  os.system('mv benchmark.nist*.html ../reports/latest_nist.html')
 
   with open(r'../reports/latest_nist.html', 'r') as file:
       data = file.read()
