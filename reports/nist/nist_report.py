@@ -5,7 +5,7 @@ from datetime import datetime
 import csv
 import boto3
 from botocore.exceptions import ClientError
-from subprocess import run
+import subprocess
 import os
 
 @click.command()
@@ -68,21 +68,19 @@ connection "aws" {{
   os.chdir('./mod')
 
   print("Running Report...")
-  report = run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","html","--progress=false"], capture_output=True).stdout
-  
+  report = subprocess.run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","none","--progress=false","--export","html"], stdout=subprocess.DEVNULL)
+
   print("Outputting Report...")
+  report = subprocess.run(["mv","benchmark.nist*.html","../reports/latest_nist.html"], stdout=subprocess.DEVNULL)
 
-  with open("../reports/latest_nist.html","w+") as f:
-    f.write(report)
+  with open(r'../reports/latest_nist.html', 'r') as file:
+      data = file.read()
+      data = data.replace(sp_logo, "https://turbot.com/images/turbot-icon-wordmark.svg")
+      data = data.replace("steampipe.io", "turbot.com")
+      data = data.replace("Steampipe", "Turbot")
 
-  print("Formatting Report 1...")
-  report = report.replace(sp_logo, "https://turbot.com/images/turbot-icon-wordmark.svg")
-  print("Formatting Report 2...")
-  report = report.replace("steampipe.io", "turbot.com")
-  print("Formatting Report 3..")
-  report = report.replace("Steampipe", "Turbot")
-
-  
+  with open(r'../reports/latest_nist.html', 'w') as file:
+      file.write(data)
 
 if __name__ == "__main__":
   run_report()
