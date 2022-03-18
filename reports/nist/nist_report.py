@@ -49,6 +49,16 @@ def run_report(profile):
 
   print(auth_response)
 
+  sp_config = '''
+connection "aws" {
+  plugin        = "aws"
+  secret_key    = ""
+  access_key    = ""
+  session_token = ""
+  regions       = ["us-gov*"]
+}
+'''
+
 
 
 if __name__ == "__main__":
