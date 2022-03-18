@@ -49,8 +49,6 @@ def run_report(profile):
     ExternalId=ext_id,
   )
 
-  print(auth_response)
-
   sp_config = f'''
 connection "aws" {{
   plugin        = "aws"
@@ -69,14 +67,14 @@ connection "aws" {{
 
   os.chdir('./mod')
 
-  report = run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","html"], capture_output=True).stdout
+  report = run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","html","--progress=false"], capture_output=True).stdout
 
   report = report.replace(sp_logo, "https://turbot.com/images/turbot-icon-wordmark.svg")
   report = report.replace("steampipe.io", "turbot.com")
   report = report.replace("Steampipe", "Turbot")
 
   with open("../reports/latest_nist.html","w+") as f:
-    f.write(report)
+    f.writelines(report)
 
 
 
