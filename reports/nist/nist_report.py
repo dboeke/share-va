@@ -69,26 +69,20 @@ connection "aws" {{
 
   print("Running Report...")
   report = run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","html","--progress=false"], capture_output=True).stdout
-  print("Formatting Report...")
+  
+  print("Outputting Report...")
 
+  with open("../reports/latest_nist.html","w+") as f:
+    f.write(report)
+
+  print("Formatting Report 1...")
   report = report.replace(sp_logo, "https://turbot.com/images/turbot-icon-wordmark.svg")
+  print("Formatting Report 2...")
   report = report.replace("steampipe.io", "turbot.com")
+  print("Formatting Report 3..")
   report = report.replace("Steampipe", "Turbot")
 
-  print("Outputting Report...")
   
-  with open("../reports/latest_nist.html","w+") as f:
-    f.writelines(report)
-
-
-
-  
-  
-
-
 
 if __name__ == "__main__":
-    try:
-        run_report()
-    except Exception as e:
-        print(e)
+  run_report()
