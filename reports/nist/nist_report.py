@@ -63,7 +63,7 @@ connection "aws" {{
     f.writelines(sp_config)
 
   os.chdir('./mod')
-  new_file = f"nist_report_acct_{account}.html"
+  new_file = f"../reports/nist_report_acct_{account}.html"
 
   print("Running Report...")
   report = subprocess.run(["steampipe","check","benchmark.nist_800_53_rev_4","--output","none","--progress=false","--export","html"], stdout=subprocess.DEVNULL)
