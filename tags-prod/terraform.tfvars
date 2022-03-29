@@ -420,7 +420,7 @@ EOT
 
 template_tenant_tags = <<EOT
   {%- set tag_combo = "|" -%}
-  {%- set approved_combos = "" -%}
+  {%- set approved_combos = "|||," -%}
   {%- if $.resource.acct_id in $.tenant.data -%}
     {%- for t_vaecid, t_ckid in $.tenant.data[$.resource.acct_id] -%}
       {%- set approved_combos = approved_combos + "|" + t_vaecid + "|" + t_ckid + "|," -%}
