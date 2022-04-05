@@ -44,44 +44,44 @@ resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_requi
   # "Disabled"
 }
 
-# AWS > IAM > Policy > Approved > Usage
-resource "turbot_policy_setting" "aws_iam_iam_policy_approved_usage" {
-  resource       = turbot_smart_folder.iam_controls_enforce.id
-  type           = "tmod:@turbot/aws-iam#/policy/types/iamPolicyApprovedUsage"
-  template_input = <<EOT
-{
-  policy: resource {
-    statements: get(path: "PolicyVersion.Document.Statement")
-  }
-}
-EOT
-  template       = <<EOT
-{%- set anyStar = r/\*/g -%}
-{%- set goodStar = r/(Get|List)\*/g -%}
-{%- set approved = true -%}
-{%- for statement in $.policy.statements -%}
-    {%- if 'Action' in statement -%}
-    	{%- set actions_string = statement.Action | string -%}
-    	{%- set actions = actions_string.split(",") -%}
-    	{%- for action in actions -%}
-        	{%- if anyStar.test(action) -%}
-            		{%- if not goodStar.test(action) -%}
-                	{%- set approved = false -%}
-            		{%- endif -%}
-        	{%- endif -%}
-    	{%- endfor -%}
-    {%- endif -%}
-{%- endfor -%}
-{%- if approved  -%}
-    "Approved"
-{%- else -%}
-    "Not approved"
-{%- endif -%}
-EOT
-  # Not approved
-  # Approved
-  # Approved if AWS > IAM > Enabled
-}
+# # AWS > IAM > Policy > Approved > Usage
+# resource "turbot_policy_setting" "aws_iam_iam_policy_approved_usage" {
+#   resource       = turbot_smart_folder.iam_controls_enforce.id
+#   type           = "tmod:@turbot/aws-iam#/policy/types/iamPolicyApprovedUsage"
+#   template_input = <<EOT
+# {
+#   policy: resource {
+#     statements: get(path: "PolicyVersion.Document.Statement")
+#   }
+# }
+# EOT
+#   template       = <<EOT
+# {%- set anyStar = r/\*/g -%}
+# {%- set goodStar = r/(Get|List)\*/g -%}
+# {%- set approved = true -%}
+# {%- for statement in $.policy.statements -%}
+#     {%- if 'Action' in statement -%}
+#     	{%- set actions_string = statement.Action | string -%}
+#     	{%- set actions = actions_string.split(",") -%}
+#     	{%- for action in actions -%}
+#         	{%- if anyStar.test(action) -%}
+#             		{%- if not goodStar.test(action) -%}
+#                 	{%- set approved = false -%}
+#             		{%- endif -%}
+#         	{%- endif -%}
+#     	{%- endfor -%}
+#     {%- endif -%}
+# {%- endfor -%}
+# {%- if approved  -%}
+#     "Approved"
+# {%- else -%}
+#     "Not approved"
+# {%- endif -%}
+# EOT
+#   # Not approved
+#   # Approved
+#   # Approved if AWS > IAM > Enabled
+# }
 
 # AWS > IAM > Access Key > Active
 resource "turbot_policy_setting" "aws_iam_access_key_active" {
@@ -157,13 +157,11 @@ resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_minim
   value    = 14
 }
 
-
-
 # AWS > IAM > Group > Policy Attachments > Approved
 resource "turbot_policy_setting" "aws_iam_group_policy_attachments_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/groupPolicyAttachmentsApproved"
-  value    = "Enforce: Delete unapproved"
+  value    = "Check: Approved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete unapproved"
@@ -173,7 +171,7 @@ resource "turbot_policy_setting" "aws_iam_group_policy_attachments_approved" {
 resource "turbot_policy_setting" "aws_iam_iam_policy_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/iamPolicyApproved"
-  value    = "Enforce: Delete unapproved if new"
+  value    = "Check: Approved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete unapproved if new"
@@ -218,7 +216,7 @@ EOT
 resource "turbot_policy_setting" "aws_iam_user_policy_attachments_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/userPolicyAttachmentsApproved"
-  value    = "Enforce: Delete unapproved"
+  value    = "Check: Approved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete unapproved"
@@ -228,7 +226,7 @@ resource "turbot_policy_setting" "aws_iam_user_policy_attachments_approved" {
 resource "turbot_policy_setting" "aws_iam_role_inline_policy_statements_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/roleInlinePolicyStatementsApproved"
-  value    = "Enforce: Delete Unapproved"
+  value    = "Check: Approved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete Unapproved"
@@ -254,7 +252,7 @@ resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_max_a
 resource "turbot_policy_setting" "aws_iam_user_inline_policy_statements_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/userInlinePolicyStatementsApproved"
-  value    = "Enforce: Delete Unapproved"
+  value    = "Check: Approved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete Unapproved"
@@ -303,7 +301,7 @@ EOT
 resource "turbot_policy_setting" "aws_iam_role_policy_attachments_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/rolePolicyAttachmentsApproved"
-  value    = "Enforce: Delete unapproved"
+  value    = "Check: Approved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete unapproved"
