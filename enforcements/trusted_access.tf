@@ -1,7 +1,7 @@
 #Smart Folder
 resource "turbot_smart_folder" "enforce_public_trusted_access_baseline" {
   parent = "tmod:@turbot/turbot#/"
-  title  = "AWS Public Trusted Access - Enforce"
+  title  = "RASP AWS - Public Access"
 }
 
 # AWS > Account > Trusted Accounts [Default]

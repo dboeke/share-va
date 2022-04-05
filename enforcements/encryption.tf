@@ -3,7 +3,7 @@
 #Smart Folder
 resource "turbot_smart_folder" "enforce_encryption_baseline" {
   parent = "tmod:@turbot/turbot#/"
-  title  = "AWS Encryption - Enforce"
+  title  = "RASP AWS - Encryption"
 }
 
 # AWS > EC2 > Classic Load Balancer Listener > SSL Policy
@@ -250,12 +250,24 @@ resource "turbot_policy_setting" "aws_lambda_function_encryption_at_rest" {
 resource "turbot_policy_setting" "aws_ec2_instance_approved" {
   resource = turbot_smart_folder.enforce_encryption_baseline.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/instanceApproved"
-  value    = "Enforce: Stop unapproved if new"
+  value    = "Enforce: Stop unapproved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Stop unapproved"
   # "Enforce: Stop unapproved if new"
   # "Enforce: Delete unapproved if new"
+}
+
+# AWS > RDS > DB Instance > Approved
+resource "turbot_policy_setting" "aws_rds_db_instance_approved" {
+  resource = turbot_smart_folder.enforce_encryption_baseline.id
+  type     = "tmod:@turbot/aws-rds#/policy/types/dbInstanceApproved"
+  value    = "Enforce: Stop unapproved"
+  # "Skip"
+  # "Check: Approved"
+  # "Enforce: Stop unapproved"
+  # "Enforce: Stop unapproved if new"
+  # "Enforce: Snapshot and delete unapproved if new"
 }
 
 # AWS > RDS > DB Instance > Approved > Encryption at Rest
@@ -320,4 +332,10 @@ resource "turbot_policy_setting" "aws_dynamodb_table_encryption_at_rest" {
   # "Enforce: AWS managed key or higher"
   # "Enforce: Customer managed key"
   # "Enforce: Encryption at Rest > Customer Managed Key"
+}
+
+resource "turbot_policy_setting" "aws_ec2_ec2_account_attributes_ebs_encryption_by_default" {
+  resource = turbot_smart_folder.enforce_encryption_baseline.id
+  type     = "tmod:@turbot/aws-ec2#/policy/types/ec2AccountAttributesEbsEncryptionByDefault"
+  value    = "Enforce: AWS managed key or higher"
 }

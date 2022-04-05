@@ -1,7 +1,19 @@
 #Smart Folder
 resource "turbot_smart_folder" "iam_controls_enforce" {
   parent = "tmod:@turbot/turbot#/"
-  title  = "AWS IAM Controls - Enforce"
+  title  = "RASP AWS - IAM Controls"
+}
+
+resource "turbot_policy_setting" "aws_iam_iam_policy_approved_turbot" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/iamPolicyApprovedTurbot"
+  value    = "Force Approved for Turbot Policies"
+}
+
+resource "turbot_policy_setting" "aws_iam_role_inline_policy_approved_usage" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/roleInlinePolicyApprovedUsage"
+  value    = "Not approved"
 }
 
 # AWS > IAM > Group > Inline Policy > Statements > Approved
@@ -71,45 +83,11 @@ EOT
   # Approved if AWS > IAM > Enabled
 }
 
-# AWS > IAM > Access Key > Active > Age
-resource "turbot_policy_setting" "aws_iam_access_key_active_age" {
-  resource = turbot_smart_folder.iam_controls_enforce.id
-  type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActiveAge"
-  value    = "Force inactive if age > 90 days"
-  # "Skip"
-  # "Force inactive if age > 1 day"
-  # "Force inactive if age > 3 days"
-  # "Force inactive if age > 7 days"
-  # "Force inactive if age > 14 days"
-  # "Force inactive if age > 30 days"
-  # "Force inactive if age > 60 days"
-  # "Force inactive if age > 90 days"
-  # "Force inactive if age > 180 days"
-  # "Force inactive if age > 365 days"
-}
-
-# AWS > IAM > User > Approved
-resource "turbot_policy_setting" "aws_iam_user_approved" {
-  resource = turbot_smart_folder.iam_controls_enforce.id
-  type     = "tmod:@turbot/aws-iam#/policy/types/userApproved"
-  value    = "Enforce: Delete unapproved if new"
-  # "Skip"
-  # "Check: Approved"
-  # "Enforce: Delete unapproved if new"
-}
-
-# AWS > IAM > Account Password Policy > Settings > Minimum Length
-resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_minimum_length" {
-  resource = turbot_smart_folder.iam_controls_enforce.id
-  type     = "tmod:@turbot/aws-iam#/policy/types/accountPasswordPolicySettingsMinimumLength"
-  value    = 14
-}
-
 # AWS > IAM > Access Key > Active
 resource "turbot_policy_setting" "aws_iam_access_key_active" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActive"
-  value    = "Enforce: Deactivate inactive with 90 days warning"
+  value    = "Enforce: Deactivate inactive with 7 days warning"
   # "Skip"
   # "Check: Active"
   # "Enforce: Delete inactive with 1 day warning"
@@ -131,6 +109,55 @@ resource "turbot_policy_setting" "aws_iam_access_key_active" {
   # "Enforce: Deactivate inactive with 180 days warning"
   # "Enforce: Deactivate inactive with 365 days warning"
 }
+
+# AWS > IAM > Access Key > Active > Age
+resource "turbot_policy_setting" "aws_iam_access_key_active_age" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActiveAge"
+  value    = "Force inactive if age > 180 days"
+  # "Skip"
+  # "Force inactive if age > 1 day"
+  # "Force inactive if age > 3 days"
+  # "Force inactive if age > 7 days"
+  # "Force inactive if age > 14 days"
+  # "Force inactive if age > 30 days"
+  # "Force inactive if age > 60 days"
+  # "Force inactive if age > 90 days"
+  # "Force inactive if age > 180 days"
+  # "Force inactive if age > 365 days"
+}
+
+# AWS > IAM > Access Key > Active > Status
+resource "turbot_policy_setting" "aws_iam_access_key_active_status" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActiveStatus"
+  value    = "Force active if $.Status is active"
+  # "Active if $.Status is active"
+  # "Force active if $.Status is active"
+}
+
+# AWS > IAM > Access Key > Active > Last Modified
+resource "turbot_policy_setting" "aws_iam_access_key_active_last_modified" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActiveLastModified"
+  value    = "Force active if last modified <= 14 days"
+}
+
+# AWS > IAM > User > Approved > Recently Used
+resource "turbot_policy_setting" "aws_iam_access_key_active_recently_used" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActiveRecentlyUsed"
+  value    = "Force active if recently used <= 90 days"
+}
+
+# AWS > IAM > Account Password Policy > Settings > Minimum Length
+resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_minimum_length" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/accountPasswordPolicySettingsMinimumLength"
+  value    = 14
+}
+
+
 
 # AWS > IAM > Group > Policy Attachments > Approved
 resource "turbot_policy_setting" "aws_iam_group_policy_attachments_approved" {
@@ -185,9 +212,6 @@ EOT
 "Not approved"
 {%- endif -%}
 EOT
-  # Not approved
-  # Approved
-  # Approved if AWS > AppStream > Enabled
 }
 
 # AWS > IAM > User > Policy Attachments > Approved
@@ -223,7 +247,7 @@ resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_requi
 resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_max_age" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/accountPasswordPolicySettingsMaxAge"
-  value    = 90
+  value    = 60
 }
 
 # AWS > IAM > User > Inline Policy > Statements > Approved
@@ -302,6 +326,24 @@ resource "turbot_policy_setting" "aws_iam_account_password_policy_settings" {
   # "Skip"
   # "Check: Configured"
   # "Enforce: Configured"
+}
+
+# AWS > IAM > Account Password Policy > Settings > Allow Users to Change
+resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_allow_change" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/accountPasswordPolicySettingsAllowUsersToChange"
+  value    = "Enabled"
+  # "Enabled"
+  # "Disabled"
+}
+
+# AWS > IAM > Account Password Policy > Settings > Hard Expiry
+resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_hard_expiry" {
+  resource = turbot_smart_folder.iam_controls_enforce.id
+  type     = "tmod:@turbot/aws-iam#/policy/types/accountPasswordPolicySettingsHardExpiry"
+  value    = "Enabled"
+  # "Enabled"
+  # "Disabled"
 }
 
 
