@@ -4,6 +4,10 @@ resource "turbot_file" "vaec_approved_tenants" {
   akas = ["vaectenant"]
   content = <<-EOT
     {
+      "659485066229": {
+        "AWG20190128001":"93",
+        "AWG20200918001":"839"
+      },
       "311421544014": {
         "AWG20190715002":"519",
         "AWG20220310001":"1356",
