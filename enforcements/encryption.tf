@@ -20,11 +20,9 @@ resource "turbot_policy_setting" "aws_ec2_classic_load_balancer_listener_ssl_pol
 resource "turbot_policy_setting" "aws_ec2_classic_load_balancer_listener_ssl_policy_allowed" {
   resource = turbot_smart_folder.enforce_encryption_baseline.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/classicLoadBalancerListenerSslPolicyAllowed"
-  value    = <<EOT
-- ELBSecurityPolicy-2016-08
-- ELBSecurityPolicy-TLS-1-1-2017-01
-- ELBSecurityPolicy-TLS-1-2-2017-01
-EOT
+  value    = <<-EOT
+    - ELBSecurityPolicy-TLS-1-2-2017-01
+    EOT
   # "Custom"
   # "ELBSample-ELBDefaultNegotiationPolicy"
   # "ELBSample-OpenSSLDefaultNegotiationPolicy"
@@ -39,6 +37,12 @@ EOT
   # "ELBSecurityPolicy-TLS-1-2-2017-01"
 }
 
+resource "turbot_policy_setting" "aws_ec2_classic_load_balancer_listener_ssl_policy_default" {
+  resource = turbot_smart_folder.enforce_encryption_baseline.id
+  type     = "tmod:@turbot/aws-ec2#/policy/types/classicLoadBalancerListenerSslPolicyDefault"
+  value    = "ELBSecurityPolicy-TLS-1-2-2017-01"
+}
+
 # AWS > EC2 > Load Balancer Listener > SSL Policy
 resource "turbot_policy_setting" "aws_ec2_load_balancer_listener_ssl_policy" {
   resource = turbot_smart_folder.enforce_encryption_baseline.id
@@ -49,17 +53,21 @@ resource "turbot_policy_setting" "aws_ec2_load_balancer_listener_ssl_policy" {
   # "Enforce: Set to SSL Policy > Default"
 }
 
+resource "turbot_policy_setting" "aws_ec2_load_balancer_listener_ssl_policy_default" {
+  resource = turbot_smart_folder.enforce_encryption_baseline.id
+  type     = "tmod:@turbot/aws-ec2#/policy/types/loadBalancerListenerSslPolicyDefault"
+  value    = "ELBSecurityPolicy-FS-1-2-Res-2019-08"
+}
+
 # AWS > EC2 > Load Balancer Listener > SSL Policy > Allowed
 resource "turbot_policy_setting" "aws_ec2_load_balancer_listener_ssl_policy_allowed" {
   resource = turbot_smart_folder.enforce_encryption_baseline.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/loadBalancerListenerSslPolicyAllowed"
-  value    = <<EOT
-- ELBSecurityPolicy-FS-1-1-2019-08
-- ELBSecurityPolicy-FS-1-2-2019-08
-- ELBSecurityPolicy-FS-1-2-Res-2019-08
-- ELBSecurityPolicy-FS-2018-06
-- ELBSecurityPolicy-TLS-1-2-Ext-2018-06
-EOT
+  value    = <<-EOT
+    - ELBSecurityPolicy-FS-1-2-2019-08
+    - ELBSecurityPolicy-FS-1-2-Res-2019-08
+    - ELBSecurityPolicy-FS-1-2-Res-2020-10
+    EOT
   # "ELBSecurityPolicy-2015-05"
   # "ELBSecurityPolicy-2016-08"
   # "ELBSecurityPolicy-FS-1-1-2019-08"
@@ -160,7 +168,7 @@ resource "turbot_policy_setting" "aws_ec2_snapshot_approved" {
 resource "turbot_policy_setting" "aws_cloudtrail_trail_encryption_at_rest" {
   resource = turbot_smart_folder.enforce_encryption_baseline.id
   type     = "tmod:@turbot/aws-cloudtrail#/policy/types/trailEncryptionAtRest"
-  value    = "Enforce: Customer managed key"
+  value    = "Skip"
   # "Skip"
   # "Check: None"
   # "Check: None or higher"

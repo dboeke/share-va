@@ -8,16 +8,28 @@ resource "turbot_smart_folder" "enforce_public_trusted_access_baseline" {
 resource "turbot_policy_setting" "aws_trusted_accounts" {
   resource       = turbot_smart_folder.enforce_public_trusted_access_baseline.id
   type           = "tmod:@turbot/aws#/policy/types/trustedAccounts"
-  template_input = <<EOT
-{
-account{
- Id
-  }
-}
-EOT
-  template       = <<EOT
-- "{{ $.account.Id }}" {# Checks for your own account #}
-EOT
+  template_input = <<-EOT
+    { 
+      resources(filter:"resourceTypeId:tmod:@turbot/aws#/resource/types/account"){
+        items{
+          id: get(path:"Id")
+        }
+      }
+    }
+    EOT
+  template       = <<-EOT
+    {%- if $.resources.items -%}
+    {%- for account in $.resources.items -%}
+    {%- if account.id != null -%}
+    - "{{ account.id }}" # rasp member acct
+    {% endif -%}
+    {%- endfor-%}
+    {%- endif -%}
+    - "589589590718" # rasp-mgt
+    - "608763096427" # rasp-devtest-internal
+    - "804298029709" # vaec-tbt-prod
+    - "348286891446" # core-gov-internal
+    EOT
 }
 
 # AWS > VPC > Endpoint > Policy > Trusted Access
@@ -140,29 +152,6 @@ resource "turbot_policy_setting" "aws_ec2_snapshot_trusted_access" {
   # "Enforce: Trusted Access > Accounts"
 }
 
-# AWS > Lambda > Function > Approved > Usage
-# resource "turbot_policy_setting" "aws_lambda_function_approved_usage" {
-#   resource       = turbot_smart_folder.enforce_public_trusted_access_baseline.id
-#   type           = "tmod:@turbot/aws-lambda#/policy/types/functionApprovedUsage"
-#   template_input = <<EOT
-# {
-#     resource {
-#       object
-#     }
-# }
-# EOT
-#   template       = <<EOT
-# {% if 'VpcConfig' in $.resource.object %}
-#     Approved
-# {% else %}
-#     Not approved
-# {% endif %}
-# EOT
-#   # Not approved
-#   # Approved
-#   # Approved if AWS > Lambda > Enabled
-# }
-
 # AWS > EC2 > AMI > Trusted Access
 resource "turbot_policy_setting" "aws_ec2_ami_trusted_access" {
   resource = turbot_smart_folder.enforce_public_trusted_access_baseline.id
@@ -174,14 +163,13 @@ resource "turbot_policy_setting" "aws_ec2_ami_trusted_access" {
 }
 
 # AWS > VPC > Security Group > Ingress Rules > Approved > CIDR Ranges
-resource "turbot_policy_setting" "aws_vpc_security_security_group_ingress_rules_approved_cidr_ranges" {
+resource "turbot_policy_setting" "aws_vpc_security_security_group__rules_approved_cidr_ranges" {
   resource = turbot_smart_folder.enforce_public_trusted_access_baseline.id
   type     = "tmod:@turbot/aws-vpc-security#/policy/types/securityGroupIngressRulesApprovedCidrRanges"
   value    = <<EOT
 # RFC 1918
 - 10.0.0.0/8
-- 172.16.0.0/12
-- 192.168.0.0/16
+- 100.64.0.0/10
 EOT
 }
 
@@ -258,7 +246,7 @@ resource "turbot_policy_setting" "aws_sns_topic_policy_trusted_access" {
 resource "turbot_policy_setting" "aws_ec2_instance_metadata_service" {
   resource = turbot_smart_folder.enforce_public_trusted_access_baseline.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/instanceMetadataService"
-  value    = "Enforce: Enabled for V1 and V2"
+  value    = "Enforce: Enabled for V2 only"
   # "Skip"
   # "Check: Disabled"
   # "Check: Enabled for V1 and V2"
@@ -305,7 +293,7 @@ EOT
 resource "turbot_policy_setting" "aws_vpc_core_subnet_approved" {
   resource = turbot_smart_folder.enforce_public_trusted_access_baseline.id
   type     = "tmod:@turbot/aws-vpc-core#/policy/types/subnetApproved"
-  value    = "Enforce: Delete unapproved if new"
+  value    = "Check: Approved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete unapproved if new"

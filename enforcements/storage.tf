@@ -6,19 +6,19 @@ resource "turbot_smart_folder" "storage_controls" {
 resource "turbot_policy_setting" "aws_ec2_volume_active" {
   resource = turbot_smart_folder.storage_controls.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/volumeActive"
-  value    = "Enforce: Detach, snapshot and delete inactive with 30 days warning"
+  value    = "Check: Active"
 }
 
 resource "turbot_policy_setting" "aws_ec2_volume_active_last_modified" {
   resource = turbot_smart_folder.storage_controls.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/volumeActiveLastModified"
-  value    = "Force active if last modified <= 60 days"
+  value    = "Force active if last modified <= 14 days"
 }
 
 resource "turbot_policy_setting" "aws_ec2_volume_active_age" {
   resource = turbot_smart_folder.storage_controls.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/volumeActiveAge"
-  value    = "Force inactive if age > 60 days"
+  value    = "Force inactive if age > 14 days"
 }
 
 resource "turbot_policy_setting" "aws_ec2_volume_active_attached" {

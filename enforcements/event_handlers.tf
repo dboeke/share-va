@@ -31,7 +31,7 @@ resource "turbot_policy_setting" "eventHandlers" {
 resource "turbot_policy_setting" "serviceRoles" {
   resource    = turbot_smart_folder.event_handlers_enforce.id
   type        = "tmod:@turbot/aws#/policy/types/serviceRoles"
-  value       = "Enforce: Configured"
+  value       = "Skip"
 }
 
 resource "turbot_policy_setting" "loggingBucket" {
