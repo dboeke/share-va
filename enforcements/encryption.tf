@@ -63,21 +63,10 @@ resource "turbot_policy_setting" "aws_ec2_load_balancer_listener_ssl_policy_defa
 resource "turbot_policy_setting" "aws_ec2_load_balancer_listener_ssl_policy_allowed" {
   resource = turbot_smart_folder.enforce_encryption_baseline.id
   type     = "tmod:@turbot/aws-ec2#/policy/types/loadBalancerListenerSslPolicyAllowed"
-  value    = <<-EOT
-    - ELBSecurityPolicy-FS-1-2-2019-08
-    - ELBSecurityPolicy-FS-1-2-Res-2019-08
-    #- ELBSecurityPolicy-FS-1-2-Res-2020-10
-    EOT
-  # "ELBSecurityPolicy-2015-05"
-  # "ELBSecurityPolicy-2016-08"
-  # "ELBSecurityPolicy-FS-1-1-2019-08"
-  # "ELBSecurityPolicy-FS-1-2-2019-08"
-  # "ELBSecurityPolicy-FS-1-2-Res-2019-08"
-  # "ELBSecurityPolicy-FS-2018-06"
-  # "ELBSecurityPolicy-TLS-1-0-2015-04"
-  # "ELBSecurityPolicy-TLS-1-1-2017-01"
-  # "ELBSecurityPolicy-TLS-1-2-2017-01"
-  # "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+  value    = <<EOT
+- ELBSecurityPolicy-FS-1-2-2019-08
+- ELBSecurityPolicy-FS-1-2-Res-2019-08
+EOT
 }
 
 # AWS > KMS > Key > Rotation
