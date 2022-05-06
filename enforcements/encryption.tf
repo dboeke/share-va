@@ -66,7 +66,7 @@ resource "turbot_policy_setting" "aws_ec2_load_balancer_listener_ssl_policy_allo
   value    = <<-EOT
     - ELBSecurityPolicy-FS-1-2-2019-08
     - ELBSecurityPolicy-FS-1-2-Res-2019-08
-    - ELBSecurityPolicy-FS-1-2-Res-2020-10
+    #- ELBSecurityPolicy-FS-1-2-Res-2020-10
     EOT
   # "ELBSecurityPolicy-2015-05"
   # "ELBSecurityPolicy-2016-08"

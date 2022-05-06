@@ -27,27 +27,7 @@ resource "turbot_policy_setting" "aws_iam_account_password_policy_settings_requi
 resource "turbot_policy_setting" "aws_iam_access_key_active" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActive"
-  value    = "Enforce: Deactivate inactive with 1 days warning"
-  # "Skip"
-  # "Check: Active"
-  # "Enforce: Delete inactive with 1 day warning"
-  # "Enforce: Delete inactive with 3 days warning"
-  # "Enforce: Delete inactive with 7 days warning"
-  # "Enforce: Delete inactive with 14 days warning"
-  # "Enforce: Delete inactive with 30 days warning"
-  # "Enforce: Delete inactive with 60 days warning"
-  # "Enforce: Delete inactive with 90 days warning"
-  # "Enforce: Delete inactive with 180 days warning"
-  # "Enforce: Delete inactive with 365 days warning"
-  # "Enforce: Deactivate inactive with 1 day warning"
-  # "Enforce: Deactivate inactive with 3 days warning"
-  # "Enforce: Deactivate inactive with 7 days warning"
-  # "Enforce: Deactivate inactive with 14 days warning"
-  # "Enforce: Deactivate inactive with 30 days warning"
-  # "Enforce: Deactivate inactive with 60 days warning"
-  # "Enforce: Deactivate inactive with 90 days warning"
-  # "Enforce: Deactivate inactive with 180 days warning"
-  # "Enforce: Deactivate inactive with 365 days warning"
+  value    = "Enforce: Deactivate inactive with 1 day warning"
 }
 
 # AWS > IAM > Access Key > Active > Age
