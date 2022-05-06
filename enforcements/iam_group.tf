@@ -9,7 +9,7 @@ resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approve
 }
 
 # AWS > IAM > Group > Inline Policy > Statements > Approved > Usage
-resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved" {
+resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved_usage" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyStatementsApprovedUsage"
   value    = "Not approved"
