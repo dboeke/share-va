@@ -39,7 +39,7 @@ resource "turbot_policy_setting" "aws_iam_role_policy_attachments_approved" {
     }
     EOT
   template       = <<-EOT
-    {%- set result = "Enforce: Delete unapproved" -%}
+    {%- set result = "Check: Approved" -%}
     {%- if "stacksets-exec-" in $.role.RoleName -%}
       {%- set result = "Check: Approved" -%}
     {%- endif -%}
