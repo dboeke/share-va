@@ -1,22 +1,15 @@
-# AWS > IAM > Group > Inline Policy > Statements > Approved
-resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved" {
+# AWS > IAM > Group > Inline Policy > Approved
+resource "turbot_policy_setting" "aws_iam_group_inline_policy_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApproved"
-  value    = "Enforce: Delete Unapproved"
+  value    = "Enforce: Delete unapproved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete Unapproved"
 }
 
-# # AWS > IAM > Group > Inline Policy > Statements > Approved > Usage
-# resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved_usage" {
-#   resource = turbot_smart_folder.iam_controls_enforce.id
-#   type     = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApprovedUsage"
-#   value    = "Not approved"
-# }
-
-# AWS > IAM > Group > Inline Policy > Statements > Approved > Usage
-resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved_usage" {
+# AWS > IAM > Group > Inline Policy > Approved > Usage
+resource "turbot_policy_setting" "aws_iam_group_inline_policy_approved_usage" {
   resource       = turbot_smart_folder.iam_controls_enforce.id
   type           = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApprovedUsage"
   template_input = <<-EOT

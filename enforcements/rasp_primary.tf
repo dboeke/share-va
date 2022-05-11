@@ -138,8 +138,8 @@ resource "turbot_policy_setting" "rasp_primary_loggingBucket" {
   value       = "Skip"
 }
 
-# AWS > IAM > Group > Inline Policy > Statements > Approved
-resource "turbot_policy_setting" "rasp_primary_aws_iam_group_inline_policy_statements_approved" {
+# AWS > IAM > Group > Inline Policy > Approved
+resource "turbot_policy_setting" "rasp_primary_aws_iam_group_inline_policy_approved" {
   resource = turbot_smart_folder.rasp_primary_skip.id
   type     = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApproved"
   value    = "Check: Approved"
