@@ -1,7 +1,7 @@
 # Skip enforcements for RASP-PRIMARY
 
 #Smart Folder
-resource "turbot_smart_folder" "rasp-primary-skip" {
+resource "turbot_smart_folder" "rasp_primary_skip" {
   parent = "tmod:@turbot/turbot#/"
   title  = "RASP Primary - Enforcement Skips"
 }
