@@ -218,12 +218,6 @@ resource "turbot_policy_setting" "rasp_primary_aws_iam_access_key_active" {
   value    = "Check: Active"
 }
 
-resource "turbot_policy_setting" "rasp_primary_aws_iam_credential_report_cmdb" {
-  resource = turbot_smart_folder.rasp_primary_skip.id
-  type     = "tmod:@turbot/aws-iam#/policy/types/credentialReportCmdb"
-  value    = "Check: Enabled"
-}
-
 # AWS > IAM > Account Password Policy > Settings
 resource "turbot_policy_setting" "rasp_primary_aws_iam_account_password_policy_settings" {
   resource = turbot_smart_folder.rasp_primary_skip.id
