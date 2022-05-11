@@ -2,17 +2,37 @@
 resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
   type     = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApproved"
-  value    = "Check: Approved"
+  value    = "Enforce: Delete Unapproved"
   # "Skip"
   # "Check: Approved"
   # "Enforce: Delete Unapproved"
 }
 
+# # AWS > IAM > Group > Inline Policy > Statements > Approved > Usage
+# resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved_usage" {
+#   resource = turbot_smart_folder.iam_controls_enforce.id
+#   type     = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApprovedUsage"
+#   value    = "Not approved"
+# }
+
 # AWS > IAM > Group > Inline Policy > Statements > Approved > Usage
 resource "turbot_policy_setting" "aws_iam_group_inline_policy_statements_approved_usage" {
-  resource = turbot_smart_folder.iam_controls_enforce.id
-  type     = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApprovedUsage"
-  value    = "Not approved"
+  resource       = turbot_smart_folder.iam_controls_enforce.id
+  type           = "tmod:@turbot/aws-iam#/policy/types/groupInlinePolicyApprovedUsage"
+  template_input = <<-EOT
+    { resource {
+        data
+      }
+    }
+    EOT
+  template       = <<-EOT
+    {%- set result = "Not approved" -%}
+    {%- set exceptions = ["Administrators"] -%}
+    {%- if $.resource.data.GroupName in exceptions -%}
+      {%- set result = "Approved" -%}
+    {%- endif -%}
+    {{ result }}
+    EOT
 }
 
 # AWS > IAM > Group > Policy Attachments > Approved

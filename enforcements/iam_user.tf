@@ -17,60 +17,66 @@ resource "turbot_policy_setting" "aws_iam_access_key_active_recently_used" {
 resource "turbot_policy_setting" "aws_iam_user_approved_custom" {
   resource       = turbot_smart_folder.iam_controls_enforce.id
   type           = "tmod:@turbot/aws-iam#/policy/types/userApprovedCustom"
-  template_input = <<EOT
-{ account {
-        Id
-        children(filter: "resourceTypeId:tmod:@turbot/aws-iam#/resource/types/credentialReport resourceTypeLevel:self") {
-          items {
-            credentialInfo: get(path: "credentialInfo")
+  template_input = <<-EOT
+    { account {
+            Id
+            children(filter: "resourceTypeId:tmod:@turbot/aws-iam#/resource/types/credentialReport resourceTypeLevel:self") {
+              items {
+                credentialInfo: get(path: "credentialInfo")
+              }
+            }
           }
-        }
+      user {
+        UserName
       }
-  user {
-    UserName
-  }
-}
-EOT
-  template       = <<EOT
-{%- set credReportExists = false -%}
-{%- set userCredReport = false -%}
-{%- set userHasPassword = false -%}
-{%- set userHasMfa = false -%}
-{%- set result = "Approved" -%}
-{%- set title = "CmdbNotUpdated" -%}
-{%- set message = "Approving user, waiting on CMDB Update" -%}
-{%- if $.user.UserName -%}
-  {%- if $.account.children.items[0] -%}
-    {%- if "credentialInfo" in $.account.children.items[0] -%}
-      {%- set credReportExists = true -%}
-      {%- if $.user.UserName in $.account.children.items[0]["credentialInfo"] -%}
-        {%- set userCredReport = $.account.children.items[0]["credentialInfo"][$.user.UserName] -%}
-        {%- if userCredReport["password_enabled"] == "true" -%}
-          {%- set userHasPassword = true -%}
+    }
+    EOT
+  template       = <<-EOT
+    {%- set credReportExists = false -%}
+    {%- set userCredReport = false -%}
+    {%- set userHasPassword = false -%}
+    {%- set userHasMfa = false -%}
+    {%- set result = "Approved" -%}
+    {%- set title = "CmdbNotUpdated" -%}
+    {%- set message = "Approving user, waiting on CMDB Update" -%}
+    {%- if $.user.UserName -%}
+      {%- if $.account.children.items[0] -%}
+        {%- if "credentialInfo" in $.account.children.items[0] -%}
+          {%- set credReportExists = true -%}
+          {%- if $.user.UserName in $.account.children.items[0]["credentialInfo"] -%}
+            {%- set userCredReport = $.account.children.items[0]["credentialInfo"][$.user.UserName] -%}
+            {%- if userCredReport["password_enabled"] == "true" -%}
+              {%- set userHasPassword = true -%}
+            {%- endif -%}
+            {%- if userCredReport["mfa_active"] == "true" -%}
+              {%- set userHasMfa = true -%}
+            {%- endif -%}
+          {%- endif -%}
         {%- endif -%}
-        {%- if userCredReport["mfa_active"] == "true" -%}
-          {%- set userHasMfa = true -%}
+      {%- endif -%}
+      {%- if not credReportExists -%}
+        {%- set result  = "Approved" -%}
+        {%- set title   = "NoCredentialReport" -%}
+        {%- set message = "Approving user, waiting on Credential Report" -%}
+      {%- elif not userCredReport -%}
+        {%- set result  = "Approved" -%}
+        {%- set title   = "UserMissingFromCredentialreport" -%}
+        {%- set message = "Approving user, waiting on Credential Report update" -%}
+      {%- elif userHasPassword and not userHasMfa -%}
+        {%- if $.user.UserName == "Administrator" -%}
+          {%- set result  = "Approved" -%}
+          {%- set title   = "AdministratorException" -%}
+          {%- set message = "Admin exception for no MFA" -%}
+        {%- else -%}
+          {%- set result  = "Not approved" -%}
+          {%- set title   = "NoMFAonUser" -%}
+          {%- set message = "User has password, but no MFA" -%}
         {%- endif -%}
       {%- endif -%}
     {%- endif -%}
-  {%- endif -%}
-  {%- if not credReportExists -%}
-    {%- set result  = "Approved" -%}
-    {%- set title   = "NoCredentialReport" -%}
-    {%- set message = "Approving user, waiting on Credential Report" -%}
-  {%- elif not userCredReport -%}
-    {%- set result  = "Approved" -%}
-    {%- set title   = "UserMissingFromCredentialreport" -%}
-    {%- set message = "Approving user, waiting on Credential Report update" -%}
-  {%- elif userHasPassword and not userHasMfa -%}
-    {%- set result  = "Not approved" -%}
-    {%- set title   = "NoMFAonUser" -%}
-    {%- set message = "User has password, but no MFA" -%}
-  {%- endif -%}
-{%- endif -%}
-- title: "{{ title }}"
-  result: "{{ result }}"
-  message: "{{ message }}"
+    - title: "{{ title }}"
+      result: "{{ result }}"
+      message: "{{ message }}"
 EOT
 }
 

@@ -36,11 +36,20 @@ resource "turbot_policy_setting" "aws_trusted_accounts" {
 resource "turbot_policy_setting" "aws_vpc_internet_vpc_endpoint_policy_trusted_access" {
   resource = turbot_smart_folder.enforce_public_trusted_access_baseline.id
   type     = "tmod:@turbot/aws-vpc-internet#/policy/types/vpcEndpointPolicyTrustedAccess"
-  value    = "Enforce: Revoke untrusted access"
+  value    = "Check: Trusted Access"
   # "Skip"
   # "Check: Trusted Access"
   # "Enforce: Revoke untrusted access"
 }
+
+# # AWS > VPC > Endpoint > Policy > Trusted Access > Accounts
+# resource "turbot_policy_setting" "aws_vpc_internet_vpc_endpoint_policy_trusted_access_accounts" {
+#   resource = turbot_smart_folder.enforce_public_trusted_access_baseline.id
+#   type     = "tmod:@turbot/aws-vpc-internet#/policy/types/vpcEndpointPolicyTrustedAccounts"
+#   value    = <<-EOT
+#     - "*"
+#     EOT
+# }
 
 # AWS > Lambda > Function > Policy > Trusted Access
 resource "turbot_policy_setting" "aws_lambda_function_policy_trusted_access" {
