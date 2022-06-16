@@ -4,30 +4,6 @@ resource "turbot_smart_folder" "enforce_github_actions_limits" {
   title  = "GitHub Actions Role Enforcement"
 }
 
-# resource "turbot_policy_setting" "conditional_aws_iam_role_approved" {
-#   resource       = turbot_smart_folder.enforce_github_actions_limits.id
-#   type           = "tmod:@turbot/aws-iam#/policy/types/roleApproved"
-#   template_input = <<-EOT
-#     { role {
-#         AssumeRolePolicyDocument
-#       }
-#     }
-#     EOT
-#   template       = <<-EOT
-#     {%- set policy_value = 'Check: Approved' -%}
-#     {%- if "Statement" in $.role.AssumeRolePolicyDocument -%}
-#       {%- for statement in $.role.AssumeRolePolicyDocument.Statement -%}
-#         {%- if "Federated" in statement.Principal -%}
-#           {%- if "token.actions.githubusercontent.com" in statement.Principal.Federated -%}
-#             {%- set policy_value = 'Enforce: Delete unapproved if new' -%}
-#           {%- endif -%}
-#       {%- endif -%}
-#       {%- endfor -%}
-#     {%- endif -%}
-#     "{{ policy_value }}"
-#     EOT
-# }
-
 resource "turbot_policy_setting" "conditional_aws_iam_role_approved" {
   resource       = turbot_smart_folder.enforce_github_actions_limits.id
   type           = "tmod:@turbot/aws-iam#/policy/types/roleApproved"
@@ -38,12 +14,12 @@ resource "turbot_policy_setting" "conditional_aws_iam_role_approved" {
     }
     EOT
   template       = <<-EOT
-    {%- set policy_value = 'Skip' -%}
+    {%- set policy_value = 'Check: Approved' -%}
     {%- if "Statement" in $.role.AssumeRolePolicyDocument -%}
       {%- for statement in $.role.AssumeRolePolicyDocument.Statement -%}
         {%- if "Federated" in statement.Principal -%}
           {%- if "token.actions.githubusercontent.com" in statement.Principal.Federated -%}
-            {%- set policy_value = 'Check: Approved' -%}
+            {%- set policy_value = 'Enforce: Delete unapproved if new' -%}
           {%- endif -%}
       {%- endif -%}
       {%- endfor -%}
@@ -51,6 +27,30 @@ resource "turbot_policy_setting" "conditional_aws_iam_role_approved" {
     "{{ policy_value }}"
     EOT
 }
+
+# resource "turbot_policy_setting" "conditional_aws_iam_role_approved" {
+#   resource       = turbot_smart_folder.enforce_github_actions_limits.id
+#   type           = "tmod:@turbot/aws-iam#/policy/types/roleApproved"
+#   template_input = <<-EOT
+#     { role {
+#         AssumeRolePolicyDocument
+#       }
+#     }
+#     EOT
+#   template       = <<-EOT
+#     {%- set policy_value = 'Skip' -%}
+#     {%- if "Statement" in $.role.AssumeRolePolicyDocument -%}
+#       {%- for statement in $.role.AssumeRolePolicyDocument.Statement -%}
+#         {%- if "Federated" in statement.Principal -%}
+#           {%- if "token.actions.githubusercontent.com" in statement.Principal.Federated -%}
+#             {%- set policy_value = 'Check: Approved' -%}
+#           {%- endif -%}
+#       {%- endif -%}
+#       {%- endfor -%}
+#     {%- endif -%}
+#     "{{ policy_value }}"
+#     EOT
+# }
 
 resource "turbot_policy_setting" "aws_iam_role_approved_custom" {
   resource       = turbot_smart_folder.enforce_github_actions_limits.id
