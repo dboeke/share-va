@@ -1,6 +1,3 @@
-
-
-
 # AWS > IAM > Role > Inline Policy > Statements > Approved
 resource "turbot_policy_setting" "aws_iam_role_inline_policy_statements_approved" {
   resource = turbot_smart_folder.iam_controls_enforce.id
@@ -47,7 +44,7 @@ resource "turbot_policy_setting" "aws_iam_role_policy_attachments_approved" {
     {%- if $.role.RoleName in exceptions -%}
       {%- set result = "Skip" -%}
     {%- endif -%}
-    {{ result }}
+    "{{ result }}"
     EOT
 }
 
