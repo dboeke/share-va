@@ -73,7 +73,7 @@ resource "turbot_policy_setting" "aws_iam_role_approved_custom" {
               {%- if "Condition" in statement -%}
                 {%- if "StringLike" in statement.Condition -%}
                   {%- if "token.actions.githubusercontent.com:sub" in statement.Condition.StringLike -%}
-                    {%- if "repo:dboeke/" in statement.Condition.StringLike["token.actions.githubusercontent.com:sub"] -%}
+                    {%- if "repo:department-of-veterans-affairs/" in statement.Condition.StringLike["token.actions.githubusercontent.com:sub"] -%}
                       {%- set policy_result = 'Approved' -%}
                       {%- set policy_message = "GitHub role limited to VA Github Organization" -%}
                     {%- endif -%}
