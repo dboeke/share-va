@@ -38,6 +38,11 @@ variable "security_groups" {
 }
 
 variable "workspace_emails" {
-  description = "Enter name of cross account role for sending security hub issues"
+  description = "Enter comma delimited list of recipient emails"
   type        = map
+}
+
+variable "smtp_server" {
+  description = "Enter hostname of the smtp server"
+  type        = string
 }
