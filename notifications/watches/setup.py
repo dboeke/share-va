@@ -85,7 +85,7 @@ if __name__ == "__main__":
   '''
 
   SSM_PREFIX = "/turbot/firehose/"
-  AWS_REGION = "eu-central-1"
+  AWS_REGION = "us-gov-west-1"
 
   for workspace_name, accounts in workspace_accounts.items():
     workspace = {}
