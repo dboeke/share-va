@@ -37,12 +37,7 @@ variable "security_groups" {
   type        = list(string)
 }
 
-variable "assume_role_name" {
+variable "workspace_emails" {
   description = "Enter name of cross account role for sending security hub issues"
-  type        = string
-}
-
-variable "assume_role_external_id" {
-  description = "Enter external id cross account role for sending security hub issues"
-  type        = string
+  type        = map
 }
