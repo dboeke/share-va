@@ -13,14 +13,14 @@ resource "aws_sqs_queue" "raw_alarms_queue" {
   delay_seconds              = 1
   receive_wait_time_seconds  = 10
   visibility_timeout_seconds = 150
-  redrive_policy = jsonencode({
-    deadLetterTargetArn = aws_sqs_queue.raw_alarms_dlq[each.key].arn
-    maxReceiveCount     = 4
-  })
-  redrive_allow_policy = jsonencode({
-    redrivePermission = "byQueue",
-    sourceQueueArns   = [aws_sqs_queue.raw_alarms_dlq[each.key].arn]
-  })
+  # redrive_policy = jsonencode({
+  #   deadLetterTargetArn = aws_sqs_queue.raw_alarms_dlq[each.key].arn
+  #   maxReceiveCount     = 4
+  # })
+  # redrive_allow_policy = jsonencode({
+  #   redrivePermission = "byQueue",
+  #   sourceQueueArns   = [aws_sqs_queue.raw_alarms_dlq[each.key].arn]
+  # })
 }
 
 resource "aws_sqs_queue_policy" "raw_alarms_queue_policy" {
