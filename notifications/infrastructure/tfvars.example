@@ -1,0 +1,32 @@
+## Deployment AWS Profile
+
+aws_profile = "default"
+
+aws_region = "us-gov-west-1"
+
+workspaces = {
+  rasp = "https://rasp.prod.tbt.va.gov/"
+}
+
+workspace_access_key = {
+  rasp = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+}
+
+workspace_secret_key = {
+  rasp = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+}
+
+subnet_ids = [
+  "subnet-0a4a4862", 
+  "subnet-296b1353"
+]
+
+security_groups = [
+  "sg-20da9941"
+]
+
+smtp_server = "smtp.va.gov"
+
+workspace_emails = {
+  rasp = "email@va.gov,email2@va.gov"
+}
