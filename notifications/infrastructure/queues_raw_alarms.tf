@@ -12,7 +12,7 @@ resource "aws_sqs_queue" "raw_alarms_queue" {
   sqs_managed_sse_enabled    = true
   delay_seconds              = 1
   receive_wait_time_seconds  = 10
-  visibility_timeout_seconds = 150
+  visibility_timeout_seconds = 30
   # redrive_policy = jsonencode({
   #   deadLetterTargetArn = aws_sqs_queue.raw_alarms_dlq[each.key].arn
   #   maxReceiveCount     = 4
