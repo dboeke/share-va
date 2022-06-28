@@ -104,11 +104,11 @@ def convert_to_asff(timestamp, control, aws_metadata, resource_akas):
   control_id = control["turbot"]["id"]
   region = aws_metadata["regionName"] if "regionName" in aws_metadata else "global"
   account_id = aws_metadata["accountId"]
-  finding["Id"] = f"arn:aws:securityhub:{region}:{account_id}:turbot/{control_id}"
+  finding["Id"] = f"arn:aws-gov-cloud:{region}:{account_id}:turbot/{control_id}"
   finding["CreatedAt"] = timestamp
   finding["UpdatedAt"] = timestamp
   AWS_REGION = os.environ['AWS_REGION']
-  finding["ProductArn"] = f"arn:aws:securityhub:{AWS_REGION}:453761072151:product/turbot/turbot"
+  finding["ProductArn"] = f"arn:aws-gov-cloud:{AWS_REGION}:{account_id}:product/turbot/turbot"
   finding["AwsAccountId"] = account_id
   control_reason = control["reason"]
   finding["Description"] = control_reason if control_reason else "No reason given"
@@ -120,7 +120,7 @@ def convert_to_asff(timestamp, control, aws_metadata, resource_akas):
       "Type": "Resource AKA",
       "Id": aka,
       "Tags": {
-        "Source": "Turbot-Sec-Hub-Integration"
+        "Source": "Turbot-Firehose-Integration"
       }
     }
     if "partition" in aws_metadata:
@@ -135,7 +135,7 @@ def convert_to_asff(timestamp, control, aws_metadata, resource_akas):
   resources.append(resource_id)
   finding["Resources"] = resources
   generator_id = control_type.replace(" > ", "-").replace(" ", "-").lower()
-  finding["GeneratorId"] = f"arn:aws:securityhub:::ruleset/turbot/{generator_id}"
+  finding["GeneratorId"] = f"arn:aws-gov-cloud:::ruleset/turbot/{generator_id}"
   print("[INFO] Create finding complete")
   print(finding)
   return finding

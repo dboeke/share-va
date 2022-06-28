@@ -1,6 +1,6 @@
 
 resource "aws_sqs_queue" "findings_queue" {
-  name                       = "security_hub_findings_queue"
+  name                       = "turbot_firehose_findings_queue"
   sqs_managed_sse_enabled    = true
   delay_seconds              = 0
   receive_wait_time_seconds  = 10
@@ -16,7 +16,7 @@ resource "aws_sqs_queue" "findings_queue" {
 }
 
 resource "aws_sqs_queue" "findings_dlq" {
-  name                    = "security_hub_findings_dlq"
+  name                    = "turbot_firehose_findings_dlq"
   sqs_managed_sse_enabled = true
 }
 
