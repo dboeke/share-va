@@ -84,7 +84,6 @@ resource "aws_lambda_function" "lambda_filter_functions" {
   environment {
     variables = {
       WORKSPACE_NAME = each.key
-      FINDINGS_QUEUE_URL = aws_sqs_queue.findings_queue.url
     }
   }
 }

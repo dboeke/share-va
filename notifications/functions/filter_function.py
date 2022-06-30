@@ -146,8 +146,8 @@ def convert_to_asff(timestamp, control, aws_metadata, resource_akas):
 def lambda_handler(event, context):
   print("Parse Lambda Params")
   AWS_REGION = os.environ['AWS_REGION']
-  # WORKSPACE_NAME = os.environ['WORKSPACE_NAME']
-  FINDINGS_QUEUE_URL = os.environ['FINDINGS_QUEUE_URL']
+  WORKSPACE_NAME = os.environ['WORKSPACE_NAME']
+  # FINDINGS_QUEUE_URL = os.environ['FINDINGS_QUEUE_URL']
   SSM_PREFIX = "/turbot/firehose/"
 
   print("Parse SSM Params")
