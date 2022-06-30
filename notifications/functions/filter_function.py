@@ -213,6 +213,7 @@ def lambda_handler(event, context):
       print("Message to Send:")
       print(msg_body)
       TO = rasp_emails
+      FROM = "vaec_turbot_events@va.gov"
       MSG = MIMEText(str(msg_body))
       MSG['Subject'] = control["reason"]
       MSG['From'] = FROM
