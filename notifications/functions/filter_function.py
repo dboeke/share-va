@@ -217,7 +217,7 @@ def lambda_handler(event, context):
       MSG = MIMEText(str(msg_body))
       MSG['Subject'] = control["reason"]
       MSG['From'] = FROM
-      MSG['To'] = ", ".join(rasp_emails)
+      MSG['To'] = ", ".join(TO)
       server.sendmail(FROM, TO, MSG.as_string())
 
       print ("Email Sent")
@@ -233,7 +233,7 @@ def lambda_handler(event, context):
       MSG = MIMEText(str(msg_body))
       MSG['Subject'] = "AWS Resource Deleted by Turbot"
       MSG['From'] = FROM
-      MSG['To'] = ", ".join(rasp_emails)
+      MSG['To'] = ", ".join(TO)
       server.sendmail(FROM, TO, MSG.as_string())
 
       print ("Email Sent")
