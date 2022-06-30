@@ -75,7 +75,7 @@ resource "aws_lambda_function" "lambda_filter_functions" {
   runtime          = "python3.9"
   filename         = "Archive.zip"
   function_name    = "turbot_firehose_${each.key}_filter_function"
-  source_code_hash = filebase64sha256("lambdas.zip")
+  source_code_hash = filebase64sha256("Archive.zip")
   timeout          = 120
   vpc_config {
     subnet_ids         = var.subnet_ids
