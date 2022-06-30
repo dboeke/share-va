@@ -154,7 +154,9 @@ def lambda_handler(event, context):
 
   print("Parse SSM Email Params")
   smtp_host = get_param(ssm_client, f'{SSM_PREFIX}vaec/smtp/server/name', False)
+  print(f"SMTP Host: {smtp_host}")
   rasp_emails = get_param(ssm_client, f'{SSM_PREFIX}{WORKSPACE_NAME}/workspace/emails', False)
+  print(f"Emails: {rasp_emails}")
   server = smtplib.SMTP(smtp_host)
 
   print("Parse SSM Workspace Params")
@@ -210,11 +212,10 @@ def lambda_handler(event, context):
       print ("Sending Control email")
       print("Message to Send:")
       print(msg_body)
-      FROM = "vaec_turbot_events@va.gov"
       TO = rasp_emails
-      MSG = MIMEText(msg_body.as_string())
+      MSG = MIMEText(str(msg_body))
       MSG['Subject'] = control["reason"]
-      MSG['From'] = "vaec_turbot_events@va.gov"
+      MSG['From'] = FROM
       MSG['To'] = ", ".join(rasp_emails)
       server.sendmail(FROM, TO, MSG.as_string())
 
@@ -228,9 +229,9 @@ def lambda_handler(event, context):
       print(msg_body)
       FROM = "vaec_turbot_events@va.gov"
       TO = rasp_emails
-      MSG = MIMEText(msg_body.as_string())
+      MSG = MIMEText(str(msg_body))
       MSG['Subject'] = "AWS Resource Deleted by Turbot"
-      MSG['From'] = "vaec_turbot_events@va.gov"
+      MSG['From'] = FROM
       MSG['To'] = ", ".join(rasp_emails)
       server.sendmail(FROM, TO, MSG.as_string())
 
