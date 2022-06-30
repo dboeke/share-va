@@ -149,18 +149,16 @@ def lambda_handler(event, context):
   WORKSPACE_NAME = os.environ['WORKSPACE_NAME']
   # FINDINGS_QUEUE_URL = os.environ['FINDINGS_QUEUE_URL']
   SSM_PREFIX = "/turbot/firehose/"
-
-  print("Parse SSM Params")
   print("ssm_client")
   ssm_client = boto3.client('ssm')
-  smtp_host = get_param(ssm_client, f'{SSM_PREFIX}/vaec/smtp/server/name', False)
-  rasp_emails = get_param(ssm_client, f'{SSM_PREFIX}/rasp/workspace/emails', False)
+
+  print("Parse SSM Email Params")
+  smtp_host = get_param(ssm_client, f'{SSM_PREFIX}vaec/smtp/server/name', False)
+  rasp_emails = get_param(ssm_client, f'{SSM_PREFIX}{WORKSPACE_NAME}/workspace/emails', False)
   server = smtplib.SMTP(smtp_host)
 
-  print("Parse SSM Params")
+  print("Parse SSM Workspace Params")
   workspace = {}
-  print("ssm_client")
-  ssm_client = boto3.client('ssm')
   workspace_url = get_param(ssm_client, f'{SSM_PREFIX}{WORKSPACE_NAME}/workspace/url', True)
   workspace["endpoint"] = workspace_url + "api/v5/graphql"
   workspace["access_key"] = get_param(ssm_client, f'{SSM_PREFIX}{WORKSPACE_NAME}/workspace/access_key', True)
