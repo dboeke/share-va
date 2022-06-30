@@ -73,7 +73,7 @@ resource "aws_lambda_function" "lambda_filter_functions" {
   role             = aws_iam_role.lambda_function_execution_role.arn
   handler          = "filter_function.lambda_handler"
   runtime          = "python3.9"
-  filename         = "lambdas.zip"
+  filename         = "Archive.zip"
   function_name    = "turbot_firehose_${each.key}_filter_function"
   source_code_hash = filebase64sha256("lambdas.zip")
   timeout          = 120

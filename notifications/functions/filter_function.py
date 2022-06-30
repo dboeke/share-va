@@ -212,7 +212,7 @@ def lambda_handler(event, context):
       print ("Sending Control email")
       print("Message to Send:")
       print(msg_body)
-      TO = rasp_emails
+      TO = rasp_emails.split(",")
       FROM = "vaec_turbot_events@va.gov"
       MSG = MIMEText(str(msg_body))
       MSG['Subject'] = control["reason"]
@@ -229,7 +229,7 @@ def lambda_handler(event, context):
       print("Message to Send:")
       print(msg_body)
       FROM = "vaec_turbot_events@va.gov"
-      TO = rasp_emails
+      TO = rasp_emails.split(",")
       MSG = MIMEText(str(msg_body))
       MSG['Subject'] = "AWS Resource Deleted by Turbot"
       MSG['From'] = FROM
