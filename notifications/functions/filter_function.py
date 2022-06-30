@@ -2,6 +2,8 @@ import os
 import json
 import boto3
 import requests
+import smtplib
+from email.mime.text import MIMEText
 from botocore.exceptions import ClientError
 
 def get_param(ssm_client, param_name, encrypted):
@@ -47,7 +49,8 @@ class GraphQl:
     response = requests.post(
       self.get_endpoint(),
       auth=(self.get_access_key(), self.get_secret_access_key()),
-      json={'query': query, 'variables': variables}
+      json={'query': query, 'variables': variables},
+      verify=False
     )
 
     if response.status_code != 200 or response.json().get("errors"):
@@ -143,9 +146,16 @@ def convert_to_asff(timestamp, control, aws_metadata, resource_akas):
 def lambda_handler(event, context):
   print("Parse Lambda Params")
   AWS_REGION = os.environ['AWS_REGION']
-  WORKSPACE_NAME = os.environ['WORKSPACE_NAME']
+  # WORKSPACE_NAME = os.environ['WORKSPACE_NAME']
   FINDINGS_QUEUE_URL = os.environ['FINDINGS_QUEUE_URL']
   SSM_PREFIX = "/turbot/firehose/"
+
+  print("Parse SSM Params")
+  print("ssm_client")
+  ssm_client = boto3.client('ssm')
+  smtp_host = get_param(ssm_client, f'{SSM_PREFIX}/vaec/smtp/server/name', False)
+  rasp_emails = get_param(ssm_client, f'{SSM_PREFIX}/rasp/workspace/emails', False)
+  server = smtplib.SMTP(smtp_host)
 
   print("Parse SSM Params")
   workspace = {}
@@ -162,75 +172,71 @@ def lambda_handler(event, context):
     #receipt_handle = event_record['receiptHandle']
     body = json.loads(event_record['body'])
     msg_body = json.loads(body['Message'])
-    msg_time = msg_body["turbot"]["createTimestamp"]
     msg_type = msg_body["notificationType"]
-    if msg_type != "control_updated":
-      print(f"[INFO] Ignore record - Notification type: {msg_type}")
-      continue
-    control = msg_body["control"]
-    print("Parsing Resource Metadata")
-    resource_metadata = control["resource"]["metadata"]
-    if "aws" not in resource_metadata:
-      print(f"[INFO] Ignore record - Cloud provider not AWS")
-      continue
-    aws_metadata = resource_metadata["aws"]
-    print("Checking if latest Event")
-    control_id = control["turbot"]["id"]
-    control_state = control["state"]
-    curr_control = get_control(gql, control_id)
-    if not curr_control:
-      print("FILTER: No Control State, Skipping Event")
-      continue
-    curr_control_state = curr_control["state"]
-    resource_akas = curr_control["akas"]
-    old_control_state = "TBD"
-    if "oldControl" in msg_body:
-      old_control_state = msg_body["oldControl"]["state"]
-    if control_state != curr_control_state:
-      print("FILTER: Control states DO NOT match, Skipping Event")
-      print(f"Current State: {curr_control_state} | Event State: {control_state}")
-      continue
-    if control_state == old_control_state:
-      print("FILTER: Control states HAVE NOT changed, Skipping Event")
-      print(f"Event State: {control_state} | Old State: {old_control_state}")
-      continue
-    if control_state not in ["alarm", "ok"]:
-      print("FILTER: Control not ALARM or OK, Skipping Event")
-      print(f"Event State: {control_state}")
-      continue
-    if (control_state == "ok") and (old_control_state != "alarm"):
-      print("FILTER: Control is OK, but previous control state is not ALARM")
-      print(f"Event State: {control_state} | Old State: {old_control_state}")
-      continue
-    print("FILTER: Control Passes All Filters, Processing...")
-    finding = convert_to_asff(msg_time, control, aws_metadata, resource_akas)
-    partition = aws_metadata["partition"] if "partition" in aws_metadata else None
-    region_name = aws_metadata["regionName"] if "regionName" in aws_metadata else None
-    msg_attributes = {
-        'account': {
-            'DataType': 'String',
-            'StringValue': aws_metadata["accountId"]
-        },
-        'partition': {
-            'DataType': 'String',
-            'StringValue': partition
-        },
-        'region': {
-            'DataType': 'String',
-            'StringValue': region_name
-        }
-    }
-    data = json.dumps(finding)
-    print("sqs_client")
-    sqs_client = boto3.client('sqs')
-    try:
-      response = sqs_client.send_message(
-        QueueUrl=FINDINGS_QUEUE_URL,
-        MessageAttributes=msg_attributes,
-        MessageBody=data
-      )
-      print(f"[SUCCESS] Message sent")
-      print(response)
-    except ClientError as e:
-      print(f'Could not send meessage to: {FINDINGS_QUEUE_URL}.')
-      print(e)
+    if msg_type == "control_updated":
+      control = msg_body["control"]
+      print("Parsing Resource Metadata")
+      resource_metadata = control["resource"]["metadata"]
+      if "aws" not in resource_metadata:
+        print(f"[INFO] Ignore record - Cloud provider not AWS")
+        continue
+      print("Checking if latest Event")
+      control_id = control["turbot"]["id"]
+      control_state = control["state"]
+      curr_control = get_control(gql, control_id)
+      if not curr_control:
+        print("FILTER: No Control State, Skipping Event")
+        continue
+      curr_control_state = curr_control["state"]
+      old_control_state = "TBD"
+      if "oldControl" in msg_body:
+        old_control_state = msg_body["oldControl"]["state"]
+      if control_state != curr_control_state:
+        print("FILTER: Control states DO NOT match, Skipping Event")
+        print(f"Current State: {curr_control_state} | Event State: {control_state}")
+        continue
+      if control_state == old_control_state:
+        print("FILTER: Control states HAVE NOT changed, Skipping Event")
+        print(f"Event State: {control_state} | Old State: {old_control_state}")
+        continue
+      if control_state not in ["alarm", "ok"]:
+        print("FILTER: Control not ALARM or OK, Skipping Event")
+        print(f"Event State: {control_state}")
+        continue
+      if (control_state == "ok") and (old_control_state != "alarm"):
+        print("FILTER: Control is OK, but previous control state is not ALARM")
+        print(f"Event State: {control_state} | Old State: {old_control_state}")
+        continue
+      print("FILTER: Control Passes All Filters, Processing...")
+    
+      print ("Sending Control email")
+      print("Message to Send:")
+      print(msg_body)
+      FROM = "vaec_turbot_events@va.gov"
+      TO = rasp_emails
+      MSG = MIMEText(msg_body.as_string())
+      MSG['Subject'] = control["reason"]
+      MSG['From'] = "vaec_turbot_events@va.gov"
+      MSG['To'] = ", ".join(rasp_emails)
+      server.sendmail(FROM, TO, MSG.as_string())
+
+      print ("Email Sent")
+      print(MSG.as_string())
+  
+    if msg_type == "resource_deleted":
+      
+      print("Sending Resource Deleted email")
+      print("Message to Send:")
+      print(msg_body)
+      FROM = "vaec_turbot_events@va.gov"
+      TO = rasp_emails
+      MSG = MIMEText(msg_body.as_string())
+      MSG['Subject'] = "AWS Resource Deleted by Turbot"
+      MSG['From'] = "vaec_turbot_events@va.gov"
+      MSG['To'] = ", ".join(rasp_emails)
+      server.sendmail(FROM, TO, MSG.as_string())
+
+      print ("Email Sent")
+      print(MSG.as_string())
+
+  server.quit()

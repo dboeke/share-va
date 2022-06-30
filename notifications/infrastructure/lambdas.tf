@@ -96,24 +96,24 @@ resource "aws_lambda_event_source_mapping" "filter_function_to_sqs" {
   batch_size       = 10
 }
 
-resource "aws_lambda_function" "lambda_smtp_function" {
-  role             = aws_iam_role.lambda_function_execution_role.arn
-  handler          = "smtp_function.lambda_handler"
-  runtime          = "python3.9"
-  filename         = "lambdas.zip"
-  function_name    = "turbot_firehose_smtp_function"
-  source_code_hash = filebase64sha256("lambdas.zip")
-  timeout          = 30
-  environment {
-    variables = {
-      foo = "bar"
-    }
-  }
-}
+# resource "aws_lambda_function" "lambda_smtp_function" {
+#   role             = aws_iam_role.lambda_function_execution_role.arn
+#   handler          = "smtp_function.lambda_handler"
+#   runtime          = "python3.9"
+#   filename         = "lambdas.zip"
+#   function_name    = "turbot_firehose_smtp_function"
+#   source_code_hash = filebase64sha256("lambdas.zip")
+#   timeout          = 30
+#   environment {
+#     variables = {
+#       foo = "bar"
+#     }
+#   }
+# }
 
-resource "aws_lambda_event_source_mapping" "smtp_function_to_sqs" {
-  for_each         = var.workspaces
-  event_source_arn = aws_sqs_queue.findings_queue.arn
-  function_name    = aws_lambda_function.lambda_smtp_function.arn
-  batch_size       = 1
-}
+# resource "aws_lambda_event_source_mapping" "smtp_function_to_sqs" {
+#   for_each         = var.workspaces
+#   event_source_arn = aws_sqs_queue.findings_queue.arn
+#   function_name    = aws_lambda_function.lambda_smtp_function.arn
+#   batch_size       = 1
+# }
