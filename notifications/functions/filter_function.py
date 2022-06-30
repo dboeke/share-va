@@ -215,7 +215,7 @@ def lambda_handler(event, context):
       TO = rasp_emails.split(",")
       FROM = "vaec_turbot_events@va.gov"
       MSG = MIMEText(json.dumps(msg_body, indent=2))
-      MSG['Subject'] = body['Message']
+      MSG['Subject'] = body['Subject']
       MSG['From'] = FROM
       MSG['To'] = ", ".join(TO)
       server.sendmail(FROM, TO, MSG.as_string())
