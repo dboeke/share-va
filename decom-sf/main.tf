@@ -86,23 +86,3 @@ resource "turbot_policy_setting" "aws_iam_access_key_active" {
   type     = "tmod:@turbot/aws-iam#/policy/types/accessKeyActive"
   value    = "Skip"
 }
- 
-resource "turbot_smart_folder_attachment" "decommission_accounts_vaec_rwa" {
-  smart_folder = turbot_smart_folder.decommission_accounts.id
-  resource     = "arn:aws-us-gov:::481476089909"
-}
- 
-resource "turbot_smart_folder_attachment" "decommission_accounts_vaec_edp" {
-  smart_folder = turbot_smart_folder.decommission_accounts.id
-  resource     = "arn:aws-us-gov:::055850741655"
-}
- 
-resource "turbot_smart_folder_attachment" "decommission_accounts_vaec_ets_vmware_dr" {
-  smart_folder = turbot_smart_folder.decommission_accounts.id
-  resource     = "arn:aws-us-gov:::169145274161"
-}
- 
-resource "turbot_smart_folder_attachment" "decommission_accounts_vaec_dcv" {
-  smart_folder = turbot_smart_folder.decommission_accounts.id
-  resource     = "arn:aws-us-gov:::864437653072"
-}
