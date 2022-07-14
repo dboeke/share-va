@@ -5,8 +5,8 @@ variable "turbot_profile" {
 
 resource "turbot_smart_folder" "decommission_accounts" {
   parent      = "tmod:@turbot/turbot#/"
-  title       = "Decommission Accounts "
-  description = "Attach to decommissioned accounts."
+  title       = "Decommission Accounts"
+  description = "Attach to decommissioned accounts"
 }
  
 resource "turbot_policy_setting" "aws_regions_default" {
